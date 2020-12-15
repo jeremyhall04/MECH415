@@ -10,7 +10,7 @@ SceneHandler SH;
 
 void main()
 {
-	BulletHandler BH;
+	BulletHandler BH(SH.get_WIDTH(), SH.get_HEIGHT());
 	bool is_running = 1;
 
 	//Get_screen_size();
@@ -32,7 +32,12 @@ void main()
 
 		//GAME OBJECTS
 	Player player(500, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 1);
-	Player player2(300, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 2);
+	Player player2(500, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 2);
+
+	Player* players;
+	players = new Player[2];
+	players[0] = player;
+	players[1] = player2;
 
 	//vector<Bullet> bullets;
 
@@ -41,8 +46,8 @@ void main()
 	Enemy* enemies;
 	int N_enemy = 2;
 	enemies = new Enemy[N_enemy];
-	enemies[0] = turret2;
 	enemies[1] = smallboy;
+	enemies[0] = turret2;
 
 	//____________________________________GAME LOOP____________________________________
 
@@ -63,58 +68,12 @@ void main()
 
 					//Player 1
 
-		/*for (int i = 0; i < player.i_bullet; i++)
-		{
-			player.bullets[i]->move();
-			player.bullets[i]->draw();
-			if (player.bullets[i]->x_p >= SH.get_WIDTH() || player.bullets[i]->x_p <= 0 || //bullet collision with edges
-				player.bullets[i]->y_p >= SH.get_HEIGHT() || player.bullets[i]->y_p <= 0)
-			{
-				player.bullet_collided(i);
-			}
-			if (player.i_bullet > 0)
-			{
-				for (int j = 0; j < N_enemy; j++) //player bullet collision with enemy
-				{
-					float distance;
-					distance = sqrt(pow((enemies[j].x_p - player.bullets[i]->x_p), 2) + pow((enemies[j].y_p - player.bullets[i]->y_p), 2));
-					if (distance <= player.bullets[i]->R + enemies[j].R)
-					{
-						enemies[j].damage(*player.bullets[i]); //gets the damage from the bullet object pointed at by bullets[i]
-						player.bullet_collided(i);
-					}
-				}
-			}
-		}*/
-		for (int i = 0; i < player.i_bullet; i++)
-		{
-			player.bullets[i]->move();
-			player.bullets[i]->draw();
-			if (player.bullets[i]->x_p >= SH.get_WIDTH() || player.bullets[i]->x_p <= 0 || //bullet collision with edges
-				player.bullets[i]->y_p >= SH.get_HEIGHT() || player.bullets[i]->y_p <= 0)
-			{
-				player.bullet_collided(i);
-			}
-		}
-		if (player.i_bullet > 0)
-		{
-			for (int j = 0; j < N_enemy; j++) //player bullet collision with enemy
-			{
-				for (int i = 0; i < player.i_bullet; i++)
-				{
-					float distance;
-					distance = sqrt(pow((enemies[j].x_p - player.bullets[i]->x_p), 2) + pow((enemies[j].y_p - player.bullets[i]->y_p), 2));
-					if (distance <= player.bullets[i]->R + enemies[j].R)
-					{
-						enemies[j].damage(*player.bullets[i]); //gets the damage from the bullet object pointed at by bullets[i]
-						player.bullet_collided(i);
-					}
-				}
-			}
-		}
-
-
 		player.update(c_x, c_y);
+		//BH.update_bullets(&player, enemies, N_enemy);
+		for (int i = 0; i < N_enemy; i++)
+		{
+			BH.update_bullets(&player, &enemies[i]); //update and check collisions of the player bullets
+		}
 
 		//Player 2****
 		/*
@@ -129,58 +88,19 @@ void main()
 		
 		player2.update(buffer_in); //*** Put the parsing in the update function
 
+		//BH.update_bullets(&player2, enemies, N_enemy);
+
 		//Enemies
 
 		for (int i = 0; i < N_enemy; i++)
 		{
 			if (enemies[i].is_alive)
 			{
-				if (enemies[i].shoot_player)
-				{
-					enemies[i].facing(player);
-				}
-				if (enemies[i].is_moving)
-				{
-					enemies[i].move();
-				}
-				enemies[i].draw();
-
-				if (round_timer < 0) //countdown till start of game
-				{
-					if (enemies[i].can_shoot())
-					{
-						enemies[i].shoot();
-					}
-					for (int j = 0; j < enemies[i].i_bullet; j++)
-					{
-						enemies[i].bullets[j]->move();
-						enemies[i].bullets[j]->draw();
-						//Collision detection for enemy bullets
-						if (enemies[i].bullets[j]->x_p >= SH.get_WIDTH() || enemies[i].bullets[j]->x_p <= 0 ||
-							enemies[i].bullets[j]->y_p >= SH.get_HEIGHT() || enemies[i].bullets[j]->y_p <= 0)
-						{
-							enemies[i].bullet_collided(j);
-						}
-					}
-					if (enemies[i].i_bullet > 0)
-					{
-						for (int j = 0; j < enemies[i].i_bullet; j++)
-						{
-							float distance;
-							distance = sqrt(pow((player.x_p - enemies[i].bullets[j]->x_p), 2) + pow((player.y_p - enemies[i].bullets[j]->y_p), 2));
-							if (distance <= enemies[i].R + player.R)
-							{
-								player.damage(*enemies[i].bullets[j]);
-								enemies[i].bullet_collided(j);
-							}
-						}
-					}
-				}
+				enemies[i].update(player, player2); //update takes players
+				BH.update_bullets(&enemies[i], &player);
+			//	BH.update_bullets(&enemies[i], &player2);
 			}
 		}
-
-
-		//____________BULLET HANDLER___________//
 
 
 		if (round_timer > 0.0)

@@ -71,13 +71,3 @@ void GameObject::draw_healthbar()
 	strcpy(txt, str.c_str());
 	text(txt, x_p - (width), y_p + height / 2 + 40, 0.5);
 }
-
-void GameObject::damage() 
-{
-	health -= 20;
-}
-
-void GameObject::damage(Bullet b)
-{
-	 health -= b.get_damage();
-}

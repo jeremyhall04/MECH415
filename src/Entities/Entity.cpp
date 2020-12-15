@@ -29,7 +29,6 @@ Entity::Entity(float x, float y)
 
 void Entity::shoot()
 {
-	//MODIFY SHOOT() to scan for uninitialized bullet, then initialize that one
 	if (i_bullet >= N_MAX_BULLETS)
 	{
 		std::cout << "\nOut of Bullets!";
@@ -40,16 +39,16 @@ void Entity::shoot()
 		if (bullets[i_bullet] == NULL)
 		{
 			//initialize new bullet
-			bullets[i_bullet] = new Bullet(x_p + R * atan(facing_dir[1] / facing_dir[0]),
-				y_p + R * atan(facing_dir[1] / facing_dir[0]), facing_dir, bullet_speed, bullet_damage);
+			bullets[i_bullet] = new Bullet(x_p + R * cos(theta),
+				y_p + R * sin(theta), facing_dir, bullet_speed, bullet_damage);
 			i_bullet++;
 		}
 		else
 		{
 			//re-initialize bullet with new parameters
 			bullets[i_bullet]->is_alive = true;
-			bullets[i_bullet]->x_p = x_p + R * atan(facing_dir[1] / facing_dir[0]);
-			bullets[i_bullet]->y_p = y_p + R * atan(facing_dir[1] / facing_dir[0]);
+			bullets[i_bullet]->x_p = x_p + R * cos(theta);
+			bullets[i_bullet]->y_p = y_p + R * sin(theta);
 			bullets[i_bullet]->direction[0] = facing_dir[0];
 			bullets[i_bullet]->direction[1] = facing_dir[1];
 			bullets[i_bullet]->speed = bullet_speed;
@@ -58,11 +57,6 @@ void Entity::shoot()
 		}
 	}
 }
-
-//void Entity::Update()
-//{
-//	std::cout << "\nEntity update";
-//}
 
 void Entity::bullet_collided(int index)
 {
@@ -82,4 +76,14 @@ void Entity::bullet_collided(int index)
 			bullets[i_bullet] = tmp;
 		}
 	}
+}
+
+void Entity::damage()
+{
+	health -= 20;
+}
+
+void Entity::damage(Bullet b)
+{
+	health -= b.get_damage();
 }

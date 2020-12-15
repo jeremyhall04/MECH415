@@ -9,8 +9,12 @@ class Entity: public GameObject
 public:
 	Entity();
 	Entity(float x, float y);
-	void shoot(); //probably virtual as well unless we want a default
-	void bullet_collided(int index); //replace with collision_check
+	void shoot();
+	void bullet_collided(int index);
+	void damage();
+	void damage(Bullet b);
+
+
 	bool is_alive;
 	float max_speed, facing_dir[2], ScreenWidth, ScreenHeight;
 	int i_bullet; //number of active bullets
