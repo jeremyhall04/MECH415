@@ -14,7 +14,7 @@ void main()
 	//_________________________________Game Init________________________________________//
 	BulletHandler BH(SH.get_WIDTH(), SH.get_HEIGHT());
 	bool is_running = true;
-	bool multiplayer = false;
+	bool multiplayer = true;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
@@ -69,11 +69,11 @@ void main()
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
 	
-	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Enter your IP
+	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
 	char IP_address_recv[NMAX_ADDRESS];
 
-	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:6:6f77:7188:9d49"; //Enter other player's IP
+	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
 
 	port = 37000;//Socket 
 	activate_network();
@@ -104,94 +104,9 @@ void main()
 			cout << "\n\nConnected";
 			is_running = true;
 		}
-		while (is_running)
-		{
-		clear();
-		draw_sprite(map_sprite_id, 200, 200, 0, -1);
-		GetCursorPos(&pt);
-		ScreenToClient(hwnd, &pt);
-		c_x = static_cast<float>(pt.x);
-		c_y = SH.get_HEIGHT() - static_cast<float>(pt.y);
-
-		if (KEY('Q')) exit(1);
-
-		//____________________SENDING DATA____________________________//
-		if (multiplayer)
-		{
-			p = p_buffer_out;//Setting p to buffer_out start
-
-			pf = (float*)p;//Loading player position in buffer
-			*pf = player.x_p;
-			p += sizeof(float);
-
-			pf = (float*)p;
-			*pf = player.y_p;
-			p += sizeof(float);
-
-			pd = (double*)p;
-			*pd = player.theta;
-
-			size = (2 * sizeof(float)) + sizeof(double);//calculating buffer size
-
-			send6(buffer_out, size, IP_address_send, sock, port);
-		}
-		
-		//___________________________UPDATE() & RENDER____________________________________________//
-
-			//Player 1
-		player.update(c_x, c_y);
-		for (int i = 0; i < N_enemy; i++)
-		{
-			BH.update_bullets(&player, &enemies[i]); //update and check collisions of the player bullets
-		}
-
-		//______________________________RECEIVE DATA__________________________________________//
-
-		if (multiplayer)
-		{
-			//Player 2
-			for (i = 0; i < 10; i++)
-			{
-				if (recv6(buffer_in, size, IP_address_recv, sock) > 0)
-				{
-					p_buffer_in = buffer_in;
-					break;
-				}
-			}
-		}
-		
-		//player2.update(p_buffer_in); //Passing in the buffer with received data
-
-		//BH.update_bullets(&player2, enemies, N_enemy);
-
-
-		//Enemies
-
-		for (int i = 0; i < N_enemy; i++)
-		{
-			if (enemies[i].is_alive)
-			{
-				enemies[i].update(player, player2);
-				BH.update_bullets(&enemies[i], &player);
-			//	BH.update_bullets(&enemies[i], &player2);
-			}
-		}
-
-
-		if (round_timer > 0.0)
-		{
-			round_timer -= 0.05;
-		}
-		if (round_timer <= 0.0)
-		{
-			round_timer = -1.0;
-		}
-
-		//(*map).drawMap();
-
-		update();
 	}
-	}
+	
+
 	//____________________________________GAME LOOP____________________________________//
 
 	while (is_running)
@@ -203,9 +118,12 @@ void main()
 		c_x = static_cast<float>(pt.x);
 		c_y = SH.get_HEIGHT() - static_cast<float>(pt.y);
 
-		if (KEY('Q')) exit(1);
+		if (KEY('Q')) break;
 
 		//____________________SENDING DATA____________________________//
+
+		//Add into buffer player.has_shot
+
 		if (multiplayer)
 		{
 			p = p_buffer_out;//Setting p to buffer_out start
@@ -220,6 +138,14 @@ void main()
 
 			pd = (double*)p;
 			*pd = player.theta;
+
+			/*for (int i = 0; i < N_MAX_BULLETS; i++)
+			{
+				Bullet* pbullet;
+				pbullet = (Bullet*)p;
+				pbullet = player.bullets[0];
+				p += sizeof(Bullet);
+			}*/
 
 			size = (2 * sizeof(float)) + sizeof(double);//calculating buffer size
 
@@ -237,9 +163,10 @@ void main()
 
 		//______________________________RECEIVE DATA__________________________________________//
 
+			//Player 2
+
 		if (multiplayer)
 		{
-			//Player 2
 			for (i = 0; i < 10; i++)
 			{
 				if (recv6(buffer_in, size, IP_address_recv, sock) > 0)
@@ -248,11 +175,9 @@ void main()
 					break;
 				}
 			}
+			player2.update(p_buffer_in); //Passing in the buffer with received data
+			//BH.update_bullets(&player2, enemies, N_enemy);
 		}
-		
-		//player2.update(p_buffer_in); //Passing in the buffer with received data
-
-		//BH.update_bullets(&player2, enemies, N_enemy);
 
 
 		//Enemies

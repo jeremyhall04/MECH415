@@ -13,7 +13,7 @@ public:
 	void update(float cursorX, float cursorY);
 	void update(char* buffer_in); //this overload of update() takes in the character buffer recieved from network
 								//containing the x and y positions of the player 2
-
+	bool has_shot = false;
 	float bullet_timer = 1.0f, bullet_dt = 0.05f;
 private:
 	int playerID;

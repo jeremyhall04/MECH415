@@ -61,6 +61,10 @@ void Player::facing(float direction[2])
 
 void Player::update(float cursorX, float cursorY) //For player 1
 {
+	if (has_shot)
+	{
+		has_shot = false;
+	}
 	if (KEY('D') && x_p + R < ScreenWidth) x_p += max_speed;
 	if (KEY('A') && x_p - R > 0) x_p -= max_speed;
 	if (KEY('W') && y_p + R < ScreenHeight) y_p += max_speed;
@@ -68,6 +72,7 @@ void Player::update(float cursorX, float cursorY) //For player 1
 	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0 && bullet_timer == 1.0f)
 	{
 		shoot();
+		has_shot = true;
 		bullet_timer -= bullet_dt;
 	}
 
@@ -99,11 +104,16 @@ void Player::update(char* p_buffer_in) //For player 2
 	p2 += sizeof(float);
 
 	pf2 = (float*)p2;
-	x_p = *pf2;
+	y_p = *pf2;
 	p2 += sizeof(float);
 
 	pd2 = (double*)p2;
 	theta = *pd2;
 	
+	//Need to extract has_shot bool,
+	
+
+	//Some logic to determine if player 2 has shot
+
 	draw();
 }
