@@ -99,7 +99,7 @@ void Player::update(char* p_buffer_in) //For player 2
 	p2 += sizeof(float);
 
 	pf2 = (float*)p2;
-	x_p = *pf2;
+	y_p = *pf2;
 	p2 += sizeof(float);
 
 	pd2 = (double*)p2;
