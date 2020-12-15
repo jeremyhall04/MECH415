@@ -80,3 +80,8 @@ void BulletHandler::bullet_collided(Entity* shooter, int index)
 		}
 	}
 }
+
+void BulletHandler::test()
+{
+
+}

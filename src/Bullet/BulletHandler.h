@@ -13,6 +13,8 @@ public:
 	void update_bullets(Entity* shooter, Entity* shootee);
 	void bullet_collided(Entity* shooter, int index);
 
+	void test();
+
 	int N_entities;
 	float ScreenWidth, ScreenHeight;
 };
