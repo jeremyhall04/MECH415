@@ -9,7 +9,7 @@ public:
 	void draw();
 	void move();
 	float get_damage();
-	float get_w(); 
+	float get_w();
 
 	float x_p, y_p, direction[2], speed, R; //bullet hitbox radius
 	bool is_alive = false;

@@ -11,10 +11,10 @@ SceneHandler SH;
 
 void main()
 {
-	BulletHandler BH;
+	//_________________________________Game Init________________________________________//
+	BulletHandler BH(SH.get_WIDTH(), SH.get_HEIGHT());
 	bool is_running = 0;
 
-	//Get_screen_size();
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
 	float c_x, c_y;
@@ -33,7 +33,12 @@ void main()
 
 		//GAME OBJECTS
 	Player player(500, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 1);
-	Player player2(300, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 2);
+	Player player2(500, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 2);
+
+	Player* players;
+	players = new Player[2];
+	players[0] = player;
+	players[1] = player2;
 
 	//vector<Bullet> bullets;
 
@@ -42,10 +47,10 @@ void main()
 	Enemy* enemies;
 	int N_enemy = 2;
 	enemies = new Enemy[N_enemy];
-	enemies[0] = turret2;
 	enemies[1] = smallboy;
+	enemies[0] = turret2;
 
-	//____________________________________Networking_init____________________________________
+	//____________________________________Network init____________________________________//
 
 	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
 	char buffer_out[NMAX_UDP_BUFFER];//Buffer for outgoing data
@@ -60,58 +65,43 @@ void main()
 	char* p_buffer_out, * p_buffer_in, * p;
 	float* pf;
 	double* pd;
-
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
-	//Enter your IP
-	char IP_address_local[NMAX_ADDRESS]
-		= "2001:0:2877:7aa:6:6f77:7188:9d49";
+	
+	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:6:6f77:7188:9d49"; //Enter your IP
 
 	char IP_address_recv[NMAX_ADDRESS];
 
-	// Enter other player's IP
-	char IP_address_send[NMAX_ADDRESS]
-		= "2001:0:2877:7aa:3003:6f77:bd7c:618";
+	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Enter other player's IP
 
 	port = 37000;//Socket 
-
 	activate_network();
-
 	activate_socket6(port, IP_address_local, sock);
-
 	strcpy(buffer_init, "Connecting....");
 	size = 16;
-
 	bool connected = false;
 
-
-	while (!connected) {
-
+	while (!connected) 
+	{
 		send6(buffer_init, size, IP_address_send, sock, port);
 		cout << "\n\nConnecting ...";
-
-		// check for a received message up to 1s before 
-		// sending a new message
-			// note the 6 at the end of the recv(...) function
-
-		if (recv6(buffer_init, size, IP_address_recv, sock) > 0) {
+		if (recv6(buffer_init, size, IP_address_recv, sock) > 0) 
+		{
 			cout << "\nConnection secured from: " << IP_address_recv;
 			connected = true;
 		}
-
 		Sleep(100);
 	}
-	if (connected) {
+	if (connected) 
+	{
 		strcpy_s(buffer_init, "Connected!");
 		size = 11;
-
 		send6(buffer_init, size, IP_address_send, sock, port);
 		cout << "\n\nConnected";
-
 		is_running = true;
 	}
 
-	//____________________________________GAME LOOP____________________________________
+	//____________________________________GAME LOOP____________________________________//
 
 	while (is_running)
 	{
@@ -122,11 +112,9 @@ void main()
 		c_x = static_cast<float>(pt.x);
 		c_y = SH.get_HEIGHT() - static_cast<float>(pt.y);
 
-		//__________________________________INPUTS_____________________________________
-
 		if (KEY('Q')) exit(1);
 
-		//_________________Game loop send ____________________________
+		//____________________SENDING DATA____________________________//
 
 		p = p_buffer_out;//Setting p to buffer_out start
 
@@ -144,88 +132,32 @@ void main()
 		size = (2 * sizeof(float))+sizeof(double);//calculating buffer size
 
 		send6(buffer_out, size, IP_address_send, sock, port);
-
 		
+		//___________________________UPDATE() & RENDER____________________________________________//
 
-		//___________________________RENDERER____________________________________________
-
-					//Player 1
-
-		/*for (int i = 0; i < player.i_bullet; i++)
-		{
-			player.bullets[i]->move();
-			player.bullets[i]->draw();
-			if (player.bullets[i]->x_p >= SH.get_WIDTH() || player.bullets[i]->x_p <= 0 || //bullet collision with edges
-				player.bullets[i]->y_p >= SH.get_HEIGHT() || player.bullets[i]->y_p <= 0)
-			{
-				player.bullet_collided(i);
-			}
-			if (player.i_bullet > 0)
-			{
-				for (int j = 0; j < N_enemy; j++) //player bullet collision with enemy
-				{
-					float distance;
-					distance = sqrt(pow((enemies[j].x_p - player.bullets[i]->x_p), 2) + pow((enemies[j].y_p - player.bullets[i]->y_p), 2));
-					if (distance <= player.bullets[i]->R + enemies[j].R)
-					{
-						enemies[j].damage(*player.bullets[i]); //gets the damage from the bullet object pointed at by bullets[i]
-						player.bullet_collided(i);
-					}
-				}
-			}
-		}*/
-		for (int i = 0; i < player.i_bullet; i++)
-		{
-			player.bullets[i]->move();
-			player.bullets[i]->draw();
-			if (player.bullets[i]->x_p >= SH.get_WIDTH() || player.bullets[i]->x_p <= 0 || //bullet collision with edges
-				player.bullets[i]->y_p >= SH.get_HEIGHT() || player.bullets[i]->y_p <= 0)
-			{
-				player.bullet_collided(i);
-			}
-		}
-		if (player.i_bullet > 0)
-		{
-			for (int j = 0; j < N_enemy; j++) //player bullet collision with enemy
-			{
-				for (int i = 0; i < player.i_bullet; i++)
-				{
-					float distance;
-					distance = sqrt(pow((enemies[j].x_p - player.bullets[i]->x_p), 2) + pow((enemies[j].y_p - player.bullets[i]->y_p), 2));
-					if (distance <= player.bullets[i]->R + enemies[j].R)
-					{
-						enemies[j].damage(*player.bullets[i]); //gets the damage from the bullet object pointed at by bullets[i]
-						player.bullet_collided(i);
-					}
-				}
-			}
-		}
-
-
+			//Player 1
 		player.update(c_x, c_y);
+		for (int i = 0; i < N_enemy; i++)
+		{
+			BH.update_bullets(&player, &enemies[i]); //update and check collisions of the player bullets
+		}
 
-		//_________________Game loop receive ____________________________
+		//______________________________RECEIVE DATA__________________________________________//
 
-		//Player 2****
-		for (i = 0; i < 10; i++) {
-			if (recv6(buffer_in, size, IP_address_recv, sock) > 0) {
-
-				p_buffer_in = buffer_in;
-				
+			//Player 2
+		for (i = 0; i < 10; i++) 
+		{
+			if (recv6(buffer_in, size, IP_address_recv, sock) > 0) 
+			{
+				p_buffer_in = buffer_in;	
 				break;
 			}
 		}
-		/*
-			Basically, the player2 will have an update function, which will take in the buffer consisting of the data from 
-			player 2. In the update function, it will parse through the buffer and assign the position and angle of the player.
-			The bullets will be parsed by the Bullet Manager class, which will take in the bullets from player 1 and player 2
-			and caluclate the collisions between everyone. 
-
-			As of right now, we need the player2 x, y, and theta to be passed into the player update function.
-		*/
-		 //change this however you want this is the buffer with all player 2 data
 		
-		player2.update(p_buffer_in); //*** Put the parsing in the update function
+		player2.update(p_buffer_in); //Passing in the buffer with received data
+
+		//BH.update_bullets(&player2, enemies, N_enemy);
+
 
 		//Enemies
 
@@ -233,52 +165,11 @@ void main()
 		{
 			if (enemies[i].is_alive)
 			{
-				if (enemies[i].shoot_player)
-				{
-					enemies[i].facing(player);
-				}
-				if (enemies[i].is_moving)
-				{
-					enemies[i].move();
-				}
-				enemies[i].draw();
-
-				if (round_timer < 0) //countdown till start of game
-				{
-					if (enemies[i].can_shoot())
-					{
-						enemies[i].shoot();
-					}
-					for (int j = 0; j < enemies[i].i_bullet; j++)
-					{
-						enemies[i].bullets[j]->move();
-						enemies[i].bullets[j]->draw();
-						//Collision detection for enemy bullets
-						if (enemies[i].bullets[j]->x_p >= SH.get_WIDTH() || enemies[i].bullets[j]->x_p <= 0 ||
-							enemies[i].bullets[j]->y_p >= SH.get_HEIGHT() || enemies[i].bullets[j]->y_p <= 0)
-						{
-							enemies[i].bullet_collided(j);
-						}
-					}
-					if (enemies[i].i_bullet > 0)
-					{
-						for (int j = 0; j < enemies[i].i_bullet; j++)
-						{
-							float distance;
-							distance = sqrt(pow((player.x_p - enemies[i].bullets[j]->x_p), 2) + pow((player.y_p - enemies[i].bullets[j]->y_p), 2));
-							if (distance <= enemies[i].R + player.R)
-							{
-								player.damage(*enemies[i].bullets[j]);
-								enemies[i].bullet_collided(j);
-							}
-						}
-					}
-				}
+				enemies[i].update(player, player2);
+				BH.update_bullets(&enemies[i], &player);
+			//	BH.update_bullets(&enemies[i], &player2);
 			}
 		}
-
-
-		//____________BULLET HANDLER___________//
 
 
 		if (round_timer > 0.0)

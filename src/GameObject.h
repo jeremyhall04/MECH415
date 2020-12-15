@@ -17,8 +17,6 @@ public:
 	GameObject(float x, float y, double w, double h, double r, double g, double b);
 	void draw();
 	void draw_healthbar();
-	void damage();
-	void damage(Bullet b);
 
 	int sprite_id, sprite_size;
 	double theta;
