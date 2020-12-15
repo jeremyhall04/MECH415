@@ -17,7 +17,7 @@ void BulletHandler::update_bullets(Entity* shooter, Entity shootees[], int N_ene
 			bullet_collided(shooter, i);
 		}
 	}
-	if (shooter->bullets > 0)
+	if (shooter->i_bullet > 0)
 	{
 		for (int j = 0; j < N_enemies; j++)
 		{
@@ -46,7 +46,7 @@ void BulletHandler::update_bullets(Entity* shooter, Entity* shootee)
 			bullet_collided(shooter, i);
 		}
 	}
-	if (shooter->bullets > 0)
+	if (shooter->i_bullet > 0)
 	{
 		for (int i = 0; i < shooter->i_bullet; i++)
 		{

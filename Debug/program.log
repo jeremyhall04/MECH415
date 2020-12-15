@@ -1,50 +1,6 @@
-﻿  Bullet.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Bullet\Bullet.cpp(14,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  BulletHandler.cpp
-  Enemy.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Enemies\Enemy.cpp(42,29): warning C4101: 'aim_dir': unreferenced local variable
-  Smallboy.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Enemies\Smallboy\Smallboy.cpp(21,19): warning C4305: '=': truncation from 'double' to 'float'
-  Turret.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Enemies\Turret\Turret.cpp(20,19): warning C4305: '=': truncation from 'double' to 'float'
-  Entity.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(7,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(8,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(43,53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(43,9): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(42,39): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(50,33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(51,33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(54,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Entity.cpp(55,32): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Player.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Player\Player.cpp(42,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Player\Player.cpp(43,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  Game.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(21,65): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(177,23): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(80,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  GameObject.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\GameObject.cpp(71,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  Levels.cpp
-  Map.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(7,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(8,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(12,31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(56,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(56,48): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(57,20): warning C4018: '<': signed/unsigned mismatch
-  Tile.cpp
-  SceneHandler.cpp
-  timer.cpp
-  UDP_com.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\UDP_com.cpp(77,35): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\UDP_com.cpp(131,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\UDP_com.cpp(149,30): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  UDP_com6.cpp
-  Generating Code...
-  LINK : .\Debug\program.exe not found or not built by the last incremental link; performing full link
-Bullet.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-2D_graphics_ver1.lib(2D_graphics.obj) : warning LNK4099: PDB 'program.pdb' was not found with '2D_graphics_ver1.lib(2D_graphics.obj)' or at 'C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\Debug\program.pdb'; linking object as if no debug info
-2D_graphics_ver1.lib(shared_memory.obj) : warning LNK4099: PDB 'program.pdb' was not found with '2D_graphics_ver1.lib(shared_memory.obj)' or at 'C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\Debug\program.pdb'; linking object as if no debug info
+﻿  Game.cpp
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(22,65): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(183,23): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(273,23): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(81,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   program.vcxproj -> C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\.\Debug\program.exe
