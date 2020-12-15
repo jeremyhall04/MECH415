@@ -86,7 +86,24 @@ void Player::update(float cursorX, float cursorY) //For player 1
 		bullet_timer = 1.0;
 }
 
-void Player::update(char* buffer_in) //For player 2
+void Player::update(char* p_buffer_in) //For player 2
 {
-	//*** PLEASE CREATE FUNCTION PLEASE HELP
+	char* p2;
+	float* pf2;
+	double* pd2;
+
+	p2 = p_buffer_in;
+
+	pf2 = (float*)p2;
+	x_p = *pf2;
+	p2 += sizeof(float);
+
+	pf2 = (float*)p2;
+	x_p = *pf2;
+	p2 += sizeof(float);
+
+	pd2 = (double*)p2;
+	theta = *pd2;
+	
+	draw();
 }

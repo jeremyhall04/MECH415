@@ -1,6 +1,7 @@
 #include "Header.h"
 #include <time.h>
 #include "../UDP_com.h"
+#include "../UDP_com6.h"
 
 #include "Bullet/BulletHandler.h"
 
@@ -11,7 +12,7 @@ SceneHandler SH;
 void main()
 {
 	BulletHandler BH;
-	bool is_running = 1;
+	bool is_running = 0;
 
 	//Get_screen_size();
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
@@ -44,6 +45,72 @@ void main()
 	enemies[0] = turret2;
 	enemies[1] = smallboy;
 
+	//____________________________________Networking_init____________________________________
+
+	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
+	char buffer_out[NMAX_UDP_BUFFER];//Buffer for outgoing data
+	char buffer_in[NMAX_UDP_BUFFER];//Buffer for incoming data
+
+	int sock; // UDP socket ID number
+	int port; // socket port number 
+	int size; // size of sent/received message
+	int i;
+
+	//Declaring buffer loading pointers
+	char* p_buffer_out, * p_buffer_in, * p;
+	float* pf;
+	double* pd;
+
+	p_buffer_out = buffer_out;
+	p_buffer_in = buffer_in;
+	//Enter your IP
+	char IP_address_local[NMAX_ADDRESS]
+		= "2001:0:2877:7aa:6:6f77:7188:9d49";
+
+	char IP_address_recv[NMAX_ADDRESS];
+
+	// Enter other player's IP
+	char IP_address_send[NMAX_ADDRESS]
+		= "2001:0:2877:7aa:3003:6f77:bd7c:618";
+
+	port = 37000;//Socket 
+
+	activate_network();
+
+	activate_socket6(port, IP_address_local, sock);
+
+	strcpy(buffer_init, "Connecting....");
+	size = 16;
+
+	bool connected = false;
+
+
+	while (!connected) {
+
+		send6(buffer_init, size, IP_address_send, sock, port);
+		cout << "\n\nConnecting ...";
+
+		// check for a received message up to 1s before 
+		// sending a new message
+			// note the 6 at the end of the recv(...) function
+
+		if (recv6(buffer_init, size, IP_address_recv, sock) > 0) {
+			cout << "\nConnection secured from: " << IP_address_recv;
+			connected = true;
+		}
+
+		Sleep(100);
+	}
+	if (connected) {
+		strcpy_s(buffer_init, "Connected!");
+		size = 11;
+
+		send6(buffer_init, size, IP_address_send, sock, port);
+		cout << "\n\nConnected";
+
+		is_running = true;
+	}
+
 	//____________________________________GAME LOOP____________________________________
 
 	while (is_running)
@@ -58,6 +125,27 @@ void main()
 		//__________________________________INPUTS_____________________________________
 
 		if (KEY('Q')) exit(1);
+
+		//_________________Game loop send ____________________________
+
+		p = p_buffer_out;//Setting p to buffer_out start
+
+		pf = (float*)p;//Loading player position in buffer
+		*pf = player.x_p;
+		p += sizeof(float);
+
+		pf = (float*)p;
+		*pf = player.y_p;
+		p += sizeof(float);
+
+		pd = (double*)p;
+		*pd = player.theta;
+
+		size = (2 * sizeof(float))+sizeof(double);//calculating buffer size
+
+		send6(buffer_out, size, IP_address_send, sock, port);
+
+		
 
 		//___________________________RENDERER____________________________________________
 
@@ -116,7 +204,17 @@ void main()
 
 		player.update(c_x, c_y);
 
+		//_________________Game loop receive ____________________________
+
 		//Player 2****
+		for (i = 0; i < 10; i++) {
+			if (recv6(buffer_in, size, IP_address_recv, sock) > 0) {
+
+				p_buffer_in = buffer_in;
+				
+				break;
+			}
+		}
 		/*
 			Basically, the player2 will have an update function, which will take in the buffer consisting of the data from 
 			player 2. In the update function, it will parse through the buffer and assign the position and angle of the player.
@@ -125,9 +223,9 @@ void main()
 
 			As of right now, we need the player2 x, y, and theta to be passed into the player update function.
 		*/
-		char* buffer_in; //change this however you want this is the buffer with all player 2 data
+		 //change this however you want this is the buffer with all player 2 data
 		
-		player2.update(buffer_in); //*** Put the parsing in the update function
+		player2.update(p_buffer_in); //*** Put the parsing in the update function
 
 		//Enemies
 
@@ -202,4 +300,11 @@ void main()
 		delete map; //free the memory back up
 	}
 	else { cout << "*map is NULLPTR and could not be deleted"; }
+
+	// close a UDP socket -- note the 6 at the end of the function
+	deactivate_socket6(sock);
+
+	// shutdown the socket API
+	// -- this will shutdown both IPv4 and IPv6
+	deactivate_network();
 }
