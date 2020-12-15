@@ -13,7 +13,7 @@ void main()
 {
 	//_________________________________Game Init________________________________________//
 	BulletHandler BH(SH.get_WIDTH(), SH.get_HEIGHT());
-	bool is_running = false;
+	bool is_running = true;
 	bool multiplayer = true;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
@@ -69,11 +69,12 @@ void main()
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
 	
-	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Enter your IP
+
+	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
 	char IP_address_recv[NMAX_ADDRESS];
 
-	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Enter other player's IP
+	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
 
 	//Jeremy :2001:0:2877:7aa:3003:6f77:bd7c:618
 	//nathan:2001:0:2877:7aa:18df:6f77:7189:757d
@@ -107,6 +108,8 @@ void main()
 			is_running = true;
 		}
 	}
+	
+
 	//____________________________________GAME LOOP____________________________________//
 
 	while (is_running)
@@ -121,6 +124,9 @@ void main()
 		if (KEY('Q')) break;
 
 		//____________________SENDING DATA____________________________//
+
+		//Add into buffer player.has_shot
+
 		if (multiplayer)
 		{
 			p = p_buffer_out;//Setting p to buffer_out start
@@ -135,6 +141,14 @@ void main()
 
 			pd = (double*)p;
 			*pd = player.theta;
+
+			/*for (int i = 0; i < N_MAX_BULLETS; i++)
+			{
+				Bullet* pbullet;
+				pbullet = (Bullet*)p;
+				pbullet = player.bullets[0];
+				p += sizeof(Bullet);
+			}*/
 
 			size = (2 * sizeof(float)) + sizeof(double);//calculating buffer size
 
@@ -152,9 +166,10 @@ void main()
 
 		//______________________________RECEIVE DATA__________________________________________//
 
+			//Player 2
+
 		if (multiplayer)
 		{
-			//Player 2
 			for (i = 0; i < 10; i++)
 			{
 				if (recv6(buffer_in, size, IP_address_recv, sock) > 0)
@@ -166,7 +181,6 @@ void main()
 			player2.update(p_buffer_in); //Passing in the buffer with received data
 			//BH.update_bullets(&player2, enemies, N_enemy);
 		}
-		
 
 
 		//Enemies
