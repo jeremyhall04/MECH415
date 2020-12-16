@@ -96,6 +96,7 @@ void Player::update(char* p_buffer_in) //For player 2
 	char* p2;
 	float* pf2;
 	double* pd2;
+	bool* pb2;
 
 	p2 = p_buffer_in;
 
@@ -109,11 +110,14 @@ void Player::update(char* p_buffer_in) //For player 2
 
 	pd2 = (double*)p2;
 	theta = *pd2;
+	p2 += sizeof(double);
 	
-	//Need to extract has_shot bool,
-	
+	pb2 = (bool*)p2;
+	has_shot=*pb2;
 
-	//Some logic to determine if player 2 has shot
+	if (has_shot) {
+		shoot();
+	}
 
 	draw();
 }

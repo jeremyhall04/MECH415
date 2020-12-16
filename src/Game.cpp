@@ -66,6 +66,7 @@ void main()
 	char* p_buffer_out, * p_buffer_in, * p;
 	float* pf;
 	double* pd;
+	bool* pb;
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
 	
@@ -141,6 +142,13 @@ void main()
 
 			pd = (double*)p;
 			*pd = player.theta;
+			p += sizeof(double);
+
+			pb = (bool*)p;
+			*pb = player.has_shot;
+
+
+
 
 			/*for (int i = 0; i < N_MAX_BULLETS; i++)
 			{

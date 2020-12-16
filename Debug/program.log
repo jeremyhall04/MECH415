@@ -26,8 +26,8 @@ C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for 
 C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Entities\Player\Player.cpp(43,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Game.cpp
 C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Game.cpp(22,65): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Game.cpp(201,23): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Game.cpp(84,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Game.cpp(209,23): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Game.cpp(85,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   GameObject.cpp
 C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\GameObject.cpp(71,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   Levels.cpp
