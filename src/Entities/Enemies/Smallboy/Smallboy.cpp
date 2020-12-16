@@ -1,9 +1,9 @@
 #include "Smallboy.h"
 
-Smallboy::Smallboy(float x, float y, float ScreenWidth, float ScreenHeight)
+Smallboy::Smallboy(float x, float y, SceneHandler* SH) : Enemy(SH)
 {
-	this->ScreenWidth = ScreenWidth;
-	this->ScreenHeight = ScreenHeight;
+	this->ScreenWidth = SH->get_WIDTH();
+	this->ScreenHeight = SH->get_WIDTH();
 	create_sprite("src/Entities/Enemies/Smallboy/smallboy.png", sprite_id);
 	sprite_size = 2;
 	x_p = x;
@@ -18,7 +18,7 @@ Smallboy::Smallboy(float x, float y, float ScreenWidth, float ScreenHeight)
 	max_speed = 3;
 	maxHealth = 70;
 	health = maxHealth;
-	fire_rate = 0.065;
+	fire_rate = 0.065f;
 	bullet_damage = 15;
 	is_moving = true;
 	move_dir[0] = 0; //x direction

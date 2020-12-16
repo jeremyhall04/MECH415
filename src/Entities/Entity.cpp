@@ -1,7 +1,10 @@
 #include "Entity.h"
 
-Entity::Entity()
+Entity::Entity() {}
+
+Entity::Entity(SceneHandler* SH)
 {
+	this->SH = SH;
 	is_alive = true;
 	theta = 0;
 	bullet_speed = 20.0f;
@@ -25,6 +28,19 @@ Entity::Entity(float x, float y)
 	maxHealth = 200;
 	is_alive = true;
 	theta = 0;
+}
+
+void Entity::initialize()
+{
+	is_alive = true;
+	health = default_health;
+	x_p = default_x;
+	y_p = default_y;
+	for (int i = 0; i < i_bullet; i++) //i_bullet is the number of active bullets
+	{
+		bullets[i]->is_alive = false;
+	}
+	i_bullet = 0;
 }
 
 void Entity::shoot()
@@ -81,9 +97,17 @@ void Entity::bullet_collided(int index)
 void Entity::damage()
 {
 	health -= 20;
+	if (health <= 0)
+	{
+		is_alive = false;
+	}
 }
 
 void Entity::damage(Bullet b)
 {
 	health -= b.get_damage();
+	if (health <= 0)
+	{
+		is_alive = false;
+	}
 }

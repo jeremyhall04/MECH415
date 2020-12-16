@@ -1,43 +1,27 @@
 #include "Player.h"
 
-Player::Player()
-{
-	create_sprite("src/Entities/Player/Player1.png", sprite_id);
-	x_p = 250.0f;
-	y_p = 250.0f;
-	width = 25.0;
-	height = 25.0;
-	for (int i = 0; i < 3; i++) {
-		r[i] = 1.0;
-		g[i] = 1.0;
-		b[i] = 1.0;
-	}
-	health = 100;
-	maxHealth = 100;
-	max_speed = 6;
-	playerID = 1;
-	R = 25.0f;
-}
+Player::Player() {}
 
-Player::Player(float x, float y, float ScreenWidth, float ScreenHeight, int playerID)
+Player::Player(float x, float y, SceneHandler* SH, int playerID) : Entity(SH)
 {
-	this->ScreenWidth = ScreenWidth;
-	this->ScreenHeight = ScreenHeight;
+	this->ScreenWidth = SH->get_WIDTH();
+	this->ScreenHeight = SH->get_HEIGHT();
 	create_sprite("src/Entities/Player/Player1.png", sprite_id);
 	this->playerID = playerID;
-	x_p = x;
-	y_p = y;
-	width = 25.0;
-	height = 25.0;
-	for (int i = 0; i < 3; i++) {
-		r[i] = 1.0;
-		g[i] = 1.0;
-		b[i] = 1.0;
-	}
-	health = 100;
+	x_p = default_x = x;
+	y_p = default_y = y;
+	health = default_health = 100;
 	maxHealth = 100;
 	max_speed = 8;
 	R = 50.0f;
+
+	width = 25.0;
+	height = 25.0;
+	for (int i = 0; i < 3; i++) {
+		r[i] = 1.0;
+		g[i] = 1.0;
+		b[i] = 1.0;
+	}
 
 	bullet_speed = 50.0f;
 	bullet_damage = 25.0f;
@@ -61,10 +45,22 @@ void Player::facing(float direction[2])
 
 void Player::update(float cursorX, float cursorY) //For player 1
 {
+	if (!is_alive)
+	{
+		death_timer -= death_dt;
+		if (death_timer <= 0.0f)
+		{
+			death_timer = 5.0f; //reset timer
+			initialize();
+		}
+		return;
+	}
+
 	if (has_shot)
 	{
 		has_shot = false;
 	}
+
 	if (KEY('D') && x_p + R < ScreenWidth) x_p += max_speed;
 	if (KEY('A') && x_p - R > 0) x_p -= max_speed;
 	if (KEY('W') && y_p + R < ScreenHeight) y_p += max_speed;
@@ -93,6 +89,10 @@ void Player::update(float cursorX, float cursorY) //For player 1
 
 void Player::update(char* p_buffer_in) //For player 2
 {
+	if (!is_alive)
+	{
+		return;
+	}
 	char* p2;
 	float* pf2;
 	double* pd2;

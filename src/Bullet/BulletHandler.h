@@ -1,17 +1,18 @@
 #pragma once
 #include "Bullet.h"
 #include "../Entities/Entity.h"
+#include "../Entities/Enemies/Enemy.h"
 class Bullet;
 class Entity;
+class Enemy;
 
 class BulletHandler
 {
 public:
 	BulletHandler(float ScreenWidth, float ScreenHeight); //all entities with bullets?
 
-	void update_bullets(Entity* shooter, Entity shootees[], int N_enemies); //this function takes in a bullet array and updates all of them
-	void update_bullets_TEST(Entity* shooter, Entity* shootees, int N_enemies);
-	void update_bullets(Entity* shooter, Entity* shootee);
+	void update_player_bullets(Entity* shooter, Enemy* shootees, int N_enemies);
+	void update_enemy_bullets(Entity* shooter, Entity* shootee);
 	void bullet_collided(Entity* shooter, int index);
 
 	int N_entities;

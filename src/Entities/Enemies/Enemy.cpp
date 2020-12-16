@@ -5,6 +5,8 @@ Enemy::Enemy()
 
 }
 
+Enemy::Enemy(SceneHandler* SH) : Entity(SH) {}
+
 Enemy::Enemy(float x, float y)
 {
 	x_p = x;
@@ -79,21 +81,26 @@ bool Enemy::can_shoot()
 
 void Enemy::update(Player p1, Player p2)
 {
-	//if (is_alive)
-	//{
-	if (shoot_player)
+	if (shoot_player) //ADD CONDITIONAL MULTIPLAYER
 	{
-		//If the enemy can aim at player, calculate which player is closest
-		float p1_d, p2_d;
-		p1_d = sqrt(pow(p1.x_p - x_p, 2) + pow(p1.y_p - y_p, 2));
-		p2_d = sqrt(pow(p2.x_p - x_p, 2) + pow(p2.y_p - y_p, 2));
-		if (p1_d < p2_d)
+		if (p2.is_alive)
+		{
+			//If the enemy can aim at player, calculate which player is closest
+			float p1_d, p2_d;
+			p1_d = sqrt(pow(p1.x_p - x_p, 2) + pow(p1.y_p - y_p, 2));
+			p2_d = sqrt(pow(p2.x_p - x_p, 2) + pow(p2.y_p - y_p, 2));
+			if (p1_d < p2_d)
+			{
+				facing(p1);
+			}
+			else if (p2_d < p1_d)
+			{
+				facing(p2);
+			}
+		}
+		else
 		{
 			facing(p1);
-		}
-		else if (p2_d < p1_d)
-		{
-			facing(p2);
 		}
 	}
 	if (is_moving)
@@ -106,5 +113,4 @@ void Enemy::update(Player p1, Player p2)
 	{
 		shoot();
 	}
-	//}
 }

@@ -1,6 +1,6 @@
 
 // maximum UDP buffer size
-#define NMAX_UDP_BUFFER 1000
+#define NMAX_UDP_BUFFER 30
 
 // maximum number of characters for addresses
 #define NMAX_ADDRESS 128

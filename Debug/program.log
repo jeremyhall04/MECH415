@@ -1,9 +1,8 @@
-﻿  Player.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Player\Player.cpp(42,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Player\Player.cpp(43,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+﻿  Enemy.cpp
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Entities\Enemies\Enemy.cpp(44,29): warning C4101: 'aim_dir': unreferenced local variable
   Game.cpp
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(22,65): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(221,23): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(84,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(25,65): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(215,23): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Game.cpp(95,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   Generating Code...
   program.vcxproj -> C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\.\Debug\program.exe

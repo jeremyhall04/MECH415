@@ -2,6 +2,7 @@
 #include <time.h>
 #include "../UDP_com.h"
 #include "../UDP_com6.h"
+#include <ctime>
 
 #include "Bullet/BulletHandler.h"
 
@@ -11,10 +12,12 @@ SceneHandler SH;
 
 void main()
 {
+	clock_t start;
+	double duration;
 	//_________________________________Game Init________________________________________//
 	BulletHandler BH(SH.get_WIDTH(), SH.get_HEIGHT());
 	bool is_running = true;
-	bool multiplayer = true;
+	bool multiplayer = false;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
@@ -33,17 +36,22 @@ void main()
 	Map* map = new Map(SH.get_WIDTH(), SH.get_HEIGHT()); //ALLOCATE DYNAMIC MEMORY TO MAP TO DECREASE LOCAL STACK
 
 		//GAME OBJECTS
-	Player player(500, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 1);
-	Player player2(500, 200, SH.get_WIDTH(), SH.get_HEIGHT(), 2);
+	Player player(500, 200, &SH, 1);
+	Player player2(500, 200, &SH, 2);
 
 	Player* players;
 	players = new Player[2];
 	players[0] = player;
 	players[1] = player2;
 
+	if (!multiplayer)
+	{
+		player2.is_alive = false;
+	}
 
-	Turret turret2(200.0f, 300.0f, SH.get_WIDTH(), SH.get_HEIGHT());
-	Smallboy smallboy(800.0f, 500.0f, SH.get_WIDTH(), SH.get_HEIGHT());
+	Turret turret2(200.0f, 300.0f, &SH);
+	Smallboy smallboy(800.0f, 500.0f, &SH);
+	
 	Enemy* enemies;
 	int N_enemy = 2;
 	enemies = new Enemy[N_enemy];
@@ -69,12 +77,15 @@ void main()
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
 	
-
 	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
+
+	//char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
 
 	char IP_address_recv[NMAX_ADDRESS];
 
 	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
+
+	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
 	//Jeremy :2001:0:2877:7aa:3003:6f77:bd7c:618
 	//nathan:2001:0:2877:7aa:18df:6f77:7189:757d
@@ -108,12 +119,14 @@ void main()
 			is_running = true;
 		}
 	}
-	
+
 
 	//____________________________________GAME LOOP____________________________________//
 
 	while (is_running)
 	{
+		start = clock();
+
 		clear();
 		draw_sprite(map_sprite_id, 200, 200, 0, -1);
 		GetCursorPos(&pt);
@@ -122,13 +135,18 @@ void main()
 		c_y = SH.get_HEIGHT() - static_cast<float>(pt.y);
 
 		if (KEY('Q')) break;
+		
+		//___________________________UPDATE() & RENDER____________________________________________//
 
-		//____________________SENDING DATA____________________________//
+			//Player 1
+		player.update(c_x, c_y);
+		BH.update_player_bullets(&player, enemies, N_enemy);
 
-		//Add into buffer player.has_shot
 
+			//Player 2
 		if (multiplayer)
 		{
+			//____________________SENDING DATA____________________________//
 			p = p_buffer_out;//Setting p to buffer_out start
 
 			pf = (float*)p;//Loading player position in buffer
@@ -144,6 +162,7 @@ void main()
 			p += sizeof(double);
 
 			pf = (float*)p;
+
 			*pf = player.facing_dir[0];
 			p += sizeof(float);
 
@@ -154,49 +173,25 @@ void main()
 			pb = (bool*)p;
 			*pb = player.has_shot;
 
-			/*for (int i = 0; i < N_MAX_BULLETS; i++)
-			{
-				Bullet* pbullet;
-				pbullet = (Bullet*)p;
-				pbullet = player.bullets[0];
-				p += sizeof(Bullet);
-			}*/
-
 			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool);//calculating buffer size
 
 			send6(buffer_out, size, IP_address_send, sock, port);
-		}
-		
-		//___________________________UPDATE() & RENDER____________________________________________//
 
-			//Player 1
-		player.update(c_x, c_y);
-		for (int i = 0; i < N_enemy; i++)
-		{
-			BH.update_bullets(&player, &enemies[i]); //update and check collisions of the player bullets
-		}
-		//BH.update_bullets(&player, enemies, N_enemy);
+			//Sleep(15);
 
-
-		//______________________________RECEIVE DATA__________________________________________//
-
-			//Player 2
-
-		if (multiplayer)
-		{
-			for (i = 0; i < 10; i++)
+			//______________________________RECEIVE DATA__________________________________________//
+			for (i = 0; i < 3; i++)
 			{
 				if (recv6(buffer_in, size, IP_address_recv, sock) > 0)
 				{
 					p_buffer_in = buffer_in;
+					cout << "\nrecv6 successful";
 					break;
 				}
+				Sleep(20); //TRY SLEEP HERE
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
-			for (int i = 0; i < N_enemy; i++)
-			{
-				BH.update_bullets(&player2, &enemies[i]); //update and check collisions of the player bullets
-			}
+			BH.update_player_bullets(&player2, enemies, N_enemy);
 		}
 
 
@@ -207,14 +202,13 @@ void main()
 			if (enemies[i].is_alive)
 			{
 				enemies[i].update(player, player2);
-				BH.update_bullets(&enemies[i], &player);
+				BH.update_enemy_bullets(&enemies[i], &player);
 				if (multiplayer)
 				{
-					BH.update_bullets(&enemies[i], &player2);
+					BH.update_enemy_bullets(&enemies[i], &player2);
 				}
 			}
 		}
-
 
 		if (round_timer > 0.0)
 		{
@@ -228,6 +222,9 @@ void main()
 		//(*map).drawMap();
 
 		update();
+
+		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+		//cout << "\nduration = " << duration;
 	}
 		//END OF GAME LOOP
 	if (map != NULL) 

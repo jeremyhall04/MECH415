@@ -4,5 +4,5 @@
 class Turret: public Enemy
 {
 public:
-	Turret(float x, float y, float ScreenWidth, float ScreenHeight);
+	Turret(float x, float y, SceneHandler* SH);
 };

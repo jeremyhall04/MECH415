@@ -4,5 +4,5 @@
 class Smallboy : public Enemy
 {
 public:
-	Smallboy(float x, float y, float ScreenWidth, float ScreenHeight);
+	Smallboy(float x, float y, SceneHandler* SH);
 };
