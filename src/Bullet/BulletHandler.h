@@ -10,6 +10,7 @@ public:
 	BulletHandler(float ScreenWidth, float ScreenHeight); //all entities with bullets?
 
 	void update_bullets(Entity* shooter, Entity shootees[], int N_enemies); //this function takes in a bullet array and updates all of them
+	void update_bullets_TEST(Entity* shooter, Entity* shootees, int N_enemies);
 	void update_bullets(Entity* shooter, Entity* shootee);
 	void bullet_collided(Entity* shooter, int index);
 

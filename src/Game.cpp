@@ -41,7 +41,6 @@ void main()
 	players[0] = player;
 	players[1] = player2;
 
-	//vector<Bullet> bullets;
 
 	Turret turret2(200.0f, 300.0f, SH.get_WIDTH(), SH.get_HEIGHT());
 	Smallboy smallboy(800.0f, 500.0f, SH.get_WIDTH(), SH.get_HEIGHT());
@@ -144,11 +143,16 @@ void main()
 			*pd = player.theta;
 			p += sizeof(double);
 
+			pf = (float*)p;
+			*pf = player.facing_dir[0];
+			p += sizeof(float);
+
+			pf = (float*)p;
+			*pf = player.facing_dir[1];
+			p += sizeof(float);
+
 			pb = (bool*)p;
 			*pb = player.has_shot;
-
-
-
 
 			/*for (int i = 0; i < N_MAX_BULLETS; i++)
 			{
@@ -158,7 +162,7 @@ void main()
 				p += sizeof(Bullet);
 			}*/
 
-			size = (2 * sizeof(float)) + sizeof(double);//calculating buffer size
+			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool);//calculating buffer size
 
 			send6(buffer_out, size, IP_address_send, sock, port);
 		}
@@ -171,6 +175,8 @@ void main()
 		{
 			BH.update_bullets(&player, &enemies[i]); //update and check collisions of the player bullets
 		}
+		//BH.update_bullets(&player, enemies, N_enemy);
+
 
 		//______________________________RECEIVE DATA__________________________________________//
 
@@ -187,7 +193,10 @@ void main()
 				}
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
-			//BH.update_bullets(&player2, enemies, N_enemy);
+			for (int i = 0; i < N_enemy; i++)
+			{
+				BH.update_bullets(&player2, &enemies[i]); //update and check collisions of the player bullets
+			}
 		}
 
 
@@ -199,7 +208,10 @@ void main()
 			{
 				enemies[i].update(player, player2);
 				BH.update_bullets(&enemies[i], &player);
-			//	BH.update_bullets(&enemies[i], &player2);
+				if (multiplayer)
+				{
+					BH.update_bullets(&enemies[i], &player2);
+				}
 			}
 		}
 

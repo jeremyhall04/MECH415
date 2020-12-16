@@ -35,6 +35,38 @@ void BulletHandler::update_bullets(Entity* shooter, Entity shootees[], int N_ene
 	}
 }
 
+void BulletHandler::update_bullets_TEST(Entity* shooter, Entity* shootees, int N_enemies)
+{
+	for (int i = 0; i < shooter->i_bullet; i++)
+	{
+		shooter->bullets[i]->update();
+		if (shooter->bullets[i]->x_p >= ScreenWidth || shooter->bullets[i]->x_p <= 0.0
+			|| shooter->bullets[i]->y_p >= ScreenHeight || shooter->bullets[i]->y_p <= 0.0)
+		{
+			bullet_collided(shooter, i);
+		}
+	}
+	if (shooter->i_bullet > 0)
+	{
+		int j = 0;
+		while (j < N_enemies)
+		{
+			for (int i = 0; i < shooter->i_bullet; i++)
+			{
+				float distance;
+				distance = sqrt(pow((shootees->x_p - shooter->bullets[i]->x_p), 2) + pow((shootees->y_p - shooter->bullets[i]->y_p), 2));
+				if (distance <= shooter->bullets[i]->R + shootees->R)
+				{
+					shootees->damage(*shooter->bullets[i]);
+					bullet_collided(shooter, i);
+				}
+			}
+			shootees++;
+			j++;
+		}
+	}
+}
+
 void BulletHandler::update_bullets(Entity* shooter, Entity* shootee)
 {
 	for (int i = 0; i < shooter->i_bullet; i++)

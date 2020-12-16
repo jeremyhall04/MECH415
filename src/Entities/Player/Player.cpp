@@ -111,9 +111,17 @@ void Player::update(char* p_buffer_in) //For player 2
 	pd2 = (double*)p2;
 	theta = *pd2;
 	p2 += sizeof(double);
-	
+
+	pf2 = (float*)p2;
+	facing_dir[0] = *pf2;
+	p2 += sizeof(float);
+
+	pf2 = (float*)p2;
+	facing_dir[1] = *pf2;
+	p2 += sizeof(float);
+
 	pb2 = (bool*)p2;
-	has_shot=*pb2;
+	has_shot = *pb2;
 
 	if (has_shot) {
 		shoot();
