@@ -70,12 +70,15 @@ void main()
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
 	
+	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Nathan
 
-	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
+	//char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
 
 	char IP_address_recv[NMAX_ADDRESS];
 
-	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
+	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
+
+	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
 	//Jeremy :2001:0:2877:7aa:3003:6f77:bd7c:618
 	//nathan:2001:0:2877:7aa:18df:6f77:7189:757d
@@ -144,6 +147,14 @@ void main()
 			*pd = player.theta;
 			p += sizeof(double);
 
+			pf = (float*)p;
+			*pf=player.facing_dir[0];
+			p += sizeof(float);
+
+			pf = (float*)p;
+			*pf=player.facing_dir[1];
+			p += sizeof(float);
+
 			pb = (bool*)p;
 			*pb = player.has_shot;
 
@@ -158,7 +169,7 @@ void main()
 				p += sizeof(Bullet);
 			}*/
 
-			size = (2 * sizeof(float)) + sizeof(double);//calculating buffer size
+			size = (4 * sizeof(float)) + sizeof(double)+sizeof(bool);//calculating buffer size
 
 			send6(buffer_out, size, IP_address_send, sock, port);
 		}
@@ -188,6 +199,10 @@ void main()
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
 			//BH.update_bullets(&player2, enemies, N_enemy);
+			for (int i = 0; i < N_enemy; i++)
+			{
+				BH.update_bullets(&player2, &enemies[i]); //update and check collisions of the player bullets
+			}
 		}
 
 
@@ -199,10 +214,12 @@ void main()
 			{
 				enemies[i].update(player, player2);
 				BH.update_bullets(&enemies[i], &player);
-			//	BH.update_bullets(&enemies[i], &player2);
+				if (multiplayer)
+				{
+					BH.update_bullets(&enemies[i], &player2);
+				}
 			}
 		}
-
 
 		if (round_timer > 0.0)
 		{
