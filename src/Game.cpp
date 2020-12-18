@@ -70,10 +70,7 @@ void main()
 	int i;
 
 	//Declaring buffer loading pointers
-	char* p_buffer_out, * p_buffer_in, * p;
-	float* pf;
-	double* pd;
-	bool* pb;
+	char* p_buffer_out, * p_buffer_in;
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
 	
@@ -147,31 +144,7 @@ void main()
 		if (multiplayer)
 		{
 			//____________________SENDING DATA____________________________//
-			p = p_buffer_out;//Setting p to buffer_out start
-
-			pf = (float*)p;//Loading player position in buffer
-			*pf = player.x_p;
-			p += sizeof(float);
-
-			pf = (float*)p;
-			*pf = player.y_p;
-			p += sizeof(float);
-
-			pd = (double*)p;
-			*pd = player.theta;
-			p += sizeof(double);
-
-			pf = (float*)p;
-
-			*pf = player.facing_dir[0];
-			p += sizeof(float);
-
-			pf = (float*)p;
-			*pf = player.facing_dir[1];
-			p += sizeof(float);
-
-			pb = (bool*)p;
-			*pb = player.has_shot;
+			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
 
 			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool);//calculating buffer size
 

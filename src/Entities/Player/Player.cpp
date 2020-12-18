@@ -129,3 +129,37 @@ void Player::update(char* p_buffer_in) //For player 2
 
 	draw();
 }
+
+void Player::load_buffer_out(char* p_buffer_out) {
+	char* p;
+	float* pf;
+	double* pd;
+	bool* pb;
+
+	p = p_buffer_out;
+
+	//Loading player x, y, theta and firing info in buffer_out
+	pf = (float*)p;
+	*pf = x_p;
+	p += sizeof(float);
+
+	pf = (float*)p;
+	*pf = y_p;
+	p += sizeof(float);
+
+	pd = (double*)p;
+	*pd = theta;
+	p += sizeof(double);
+
+	pf = (float*)p;
+
+	*pf = facing_dir[0];
+	p += sizeof(float);
+
+	pf = (float*)p;
+	*pf = facing_dir[1];
+	p += sizeof(float);
+
+	pb = (bool*)p;
+	*pb = has_shot;
+}
