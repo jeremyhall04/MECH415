@@ -1,64 +1,64 @@
 #include "BulletHandler.h"
 
-BulletHandler::BulletHandler(float ScreenWidth, float ScreenHeight)
+BulletHandler::BulletHandler(SceneHandler* SH)
 {
-	this->ScreenWidth = ScreenWidth;
-	this->ScreenHeight = ScreenHeight;
+	this->ScreenWidth = SH->get_WIDTH();
+	this->ScreenHeight = SH->get_HEIGHT();
 }
 
-void BulletHandler::update_player_bullets(Entity* shooter, Enemy* shootees, int N_enemies)
+void BulletHandler::update_player_bullets(Player* player, Enemy* enemies, int N_enemies)
 {
-	for (int i = 0; i < shooter->i_bullet; i++)
+	for (int i = 0; i < player->i_bullet; i++)
 	{
-		shooter->bullets[i]->update();
-		if (shooter->bullets[i]->x_p >= ScreenWidth || shooter->bullets[i]->x_p <= 0.0
-			|| shooter->bullets[i]->y_p >= ScreenHeight || shooter->bullets[i]->y_p <= 0.0)
+		player->bullets[i]->update();
+		if (player->bullets[i]->x_p >= ScreenWidth || player->bullets[i]->x_p <= 0.0
+			|| player->bullets[i]->y_p >= ScreenHeight || player->bullets[i]->y_p <= 0.0)
 		{
-			bullet_collided(shooter, i);
+			bullet_collided(player, i);
 		}
 	}
-	if (shooter->i_bullet > 0)
+	if (player->i_bullet > 0)
 	{
 		int j = 0;
 		while (j < N_enemies)
 		{
-			for (int i = 0; i < shooter->i_bullet; i++)
+			for (int i = 0; i < player->i_bullet; i++)
 			{
 				float distance;
-				distance = sqrt(pow((shootees->x_p - shooter->bullets[i]->x_p), 2) + pow((shootees->y_p - shooter->bullets[i]->y_p), 2));
-				if (distance <= shooter->bullets[i]->R + shootees->R)
+				distance = sqrt(pow((enemies->x_p - player->bullets[i]->x_p), 2) + pow((enemies->y_p - player->bullets[i]->y_p), 2));
+				if (distance <= player->bullets[i]->R + enemies->R)
 				{
-					shootees->damage(*shooter->bullets[i]);
-					bullet_collided(shooter, i);
+					enemies->damage(*player->bullets[i]);
+					bullet_collided(player, i);
 				}
 			}
-			shootees++;
+			enemies++;
 			j++;
 		}
 	}
 }
 
-void BulletHandler::update_enemy_bullets(Entity* shooter, Entity* shootee)
+void BulletHandler::update_enemy_bullets(Enemy* enemy, Player* player)
 {
-	for (int i = 0; i < shooter->i_bullet; i++)
+	for (int i = 0; i < enemy->i_bullet; i++)
 	{
-		shooter->bullets[i]->update();
-		if (shooter->bullets[i]->x_p >= ScreenWidth || shooter->bullets[i]->x_p <= 0.0
-			|| shooter->bullets[i]->y_p >= ScreenHeight || shooter->bullets[i]->y_p <= 0.0)
+		enemy->bullets[i]->update();
+		if (enemy->bullets[i]->x_p >= ScreenWidth || enemy->bullets[i]->x_p <= 0.0
+			|| enemy->bullets[i]->y_p >= ScreenHeight || enemy->bullets[i]->y_p <= 0.0)
 		{
-			bullet_collided(shooter, i);
+			bullet_collided(enemy, i);
 		}
 	}
-	if (shooter->i_bullet > 0)
+	if (enemy->i_bullet > 0 && player->is_alive)
 	{
-		for (int i = 0; i < shooter->i_bullet; i++)
+		for (int i = 0; i < enemy->i_bullet; i++)
 		{
 			float distance;
-			distance = sqrt(pow((shootee->x_p - shooter->bullets[i]->x_p), 2) + pow((shootee->y_p - shooter->bullets[i]->y_p), 2));
-			if (distance <= shooter->bullets[i]->R + shootee->R)
+			distance = sqrt(pow((player->x_p - enemy->bullets[i]->x_p), 2) + pow((player->y_p - enemy->bullets[i]->y_p), 2));
+			if (distance <= enemy->bullets[i]->R + player->R)
 			{
-				shootee->damage(*shooter->bullets[i]);
-				bullet_collided(shooter, i);
+				player->damage(*enemy->bullets[i]);
+				bullet_collided(enemy, i);
 			}
 		}
 	}

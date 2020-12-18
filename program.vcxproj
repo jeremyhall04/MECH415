@@ -143,8 +143,6 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Levels\Levels.cpp" />
-    <ClCompile Include="src\Map\Map.cpp" />
-    <ClCompile Include="src\Map\Tile.cpp" />
     <ClCompile Include="src\SceneHandler\SceneHandler.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="UDP_com.cpp" />
@@ -166,15 +164,12 @@
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Header.h" />
     <ClInclude Include="src\Levels\Levels.h" />
-    <ClInclude Include="src\Map\Map.h" />
-    <ClInclude Include="src\Map\Tile.h" />
     <ClInclude Include="src\SceneHandler\SceneHandler.h" />
     <ClInclude Include="UDP_com.h" />
     <ClInclude Include="UDP_com6.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\Levels\Level_1.txt" />
-    <Text Include="src\Map\map.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\Entities\Enemies\Turret\turret.jpg" />

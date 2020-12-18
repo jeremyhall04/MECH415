@@ -14,10 +14,13 @@ Turret::Turret(float x, float y, SceneHandler* SH) : Enemy(SH)
 		g[i] = 0.0;
 		b[i] = 0.0;
 	}
-	max_speed = 0;
+	//____Health____//
 	maxHealth = 150;
 	health = maxHealth;
-	fire_rate = 0.015;
-	bullet_damage = 30;
+	//____Movement____//
+	max_speed = 0;
+	//____Shoot/Aim____//
 	shoot_player = true;
+	fire_rate = 0.015f;
+	bullet_damage = 30;
 }

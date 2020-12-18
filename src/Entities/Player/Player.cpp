@@ -130,7 +130,8 @@ void Player::update(char* p_buffer_in) //For player 2
 	draw();
 }
 
-void Player::load_buffer_out(char* p_buffer_out) {
+void Player::load_buffer_out(char* p_buffer_out)
+{
 	char* p;
 	float* pf;
 	double* pd;

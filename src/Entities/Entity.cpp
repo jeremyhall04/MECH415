@@ -55,16 +55,16 @@ void Entity::shoot()
 		if (bullets[i_bullet] == NULL)
 		{
 			//initialize new bullet
-			bullets[i_bullet] = new Bullet(x_p + R * cos(theta),
-				y_p + R * sin(theta), facing_dir, bullet_speed, bullet_damage);
+			bullets[i_bullet] = new Bullet(x_p + R * (float)cos(theta),
+				y_p + R * (float)sin(theta), facing_dir, bullet_speed, bullet_damage);
 			i_bullet++;
 		}
 		else
 		{
 			//re-initialize bullet with new parameters
 			bullets[i_bullet]->is_alive = true;
-			bullets[i_bullet]->x_p = x_p + R * cos(theta);
-			bullets[i_bullet]->y_p = y_p + R * sin(theta);
+			bullets[i_bullet]->x_p = x_p + R * (float)cos(theta);
+			bullets[i_bullet]->y_p = y_p + R * (float)sin(theta);
 			bullets[i_bullet]->direction[0] = facing_dir[0];
 			bullets[i_bullet]->direction[1] = facing_dir[1];
 			bullets[i_bullet]->speed = bullet_speed;
@@ -105,7 +105,7 @@ void Entity::damage()
 
 void Entity::damage(Bullet b)
 {
-	health -= b.get_damage();
+	health -= (int)b.get_damage();
 	if (health <= 0)
 	{
 		is_alive = false;

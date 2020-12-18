@@ -14,14 +14,13 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(float x, float y, double w, double h, double r, double g, double b);
 	void draw();
 	void draw_healthbar();
 
-	int sprite_id, sprite_size;
+	int health;
+	float x_p, y_p, R; //R is the circular hitbox radius for the object
 	double theta;
-	float x_p, y_p, health, maxHealth, R; //R is the circular hitbox radius for the object
 protected:
-	double width, height;
-	double r[3], g[3], b[3];
+	int sprite_id, sprite_size, maxHealth;
+	double width, height, r[3], g[3], b[3];
 };

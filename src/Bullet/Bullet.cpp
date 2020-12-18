@@ -5,7 +5,7 @@ Bullet::Bullet()
 	is_alive = true;
 }
 
-Bullet::Bullet(float x, float y, float dir[2], double bulletSpeed, float bulletDamage) 
+Bullet::Bullet(float x, float y, float dir[2], float bulletSpeed, float bulletDamage) 
 {
 	x_p = x;
 	y_p = y;

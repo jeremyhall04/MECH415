@@ -14,15 +14,17 @@ void main()
 {
 	clock_t start;
 	double duration;
+
 	//_________________________________Game Init________________________________________//
-	BulletHandler BH(SH.get_WIDTH(), SH.get_HEIGHT());
+
+	BulletHandler BH(&SH);
 	bool is_running = true;
 	bool multiplayer = false;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
 	float c_x, c_y;
-	float round_timer = 10.0f, bullet_timer = 1.0, bullet_dt = 0.05, bullet_damage = 20;
+	float round_timer = 10.0f, bullet_timer = 1.0f, bullet_dt = 0.05f, bullet_damage = 20.0f;
 	int map_sprite_id;
 
 	//INITIALIZE GRAPHICS
@@ -32,17 +34,9 @@ void main()
 	//SPRITES
 	create_sprite("src/overrunroom.jpg", map_sprite_id);
 
-	//INITIALIZE MAP
-	Map* map = new Map(SH.get_WIDTH(), SH.get_HEIGHT()); //ALLOCATE DYNAMIC MEMORY TO MAP TO DECREASE LOCAL STACK
-
-		//GAME OBJECTS
+	//GAME OBJECTS
 	Player player(500, 200, &SH, 1);
 	Player player2(500, 200, &SH, 2);
-
-	Player* players;
-	players = new Player[2];
-	players[0] = player;
-	players[1] = player2;
 
 	if (!multiplayer)
 	{
@@ -52,6 +46,8 @@ void main()
 	Turret turret2(200.0f, 300.0f, &SH);
 	Smallboy smallboy(800.0f, 500.0f, &SH);
 	
+	//Will most likely need to be array of pointers so that the memory can be allocated to different
+	//enemies during different waves
 	Enemy* enemies;
 	int N_enemy = 2;
 	enemies = new Enemy[N_enemy];
@@ -89,7 +85,7 @@ void main()
 	port = 37000;//Socket 
 	activate_network();
 	activate_socket6(port, IP_address_local, sock);
-	strcpy(buffer_init, "Connecting....");
+	strcpy_s(buffer_init, "Connecting....");
 	size = 16;
 	bool connected = false;
 
@@ -139,14 +135,14 @@ void main()
 		player.update(c_x, c_y);
 		BH.update_player_bullets(&player, enemies, N_enemy);
 
-
 			//Player 2
 		if (multiplayer)
 		{
 			//____________________SENDING DATA____________________________//
+
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
 
-			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool);//calculating buffer size
+			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
 
 			send6(buffer_out, size, IP_address_send, sock, port);
 
@@ -185,26 +181,20 @@ void main()
 
 		if (round_timer > 0.0)
 		{
-			round_timer -= 0.05;
+			round_timer -= 0.05f;
 		}
 		if (round_timer <= 0.0)
 		{
-			round_timer = -1.0;
+			round_timer = -1.0f;
 		}
-
-		//(*map).drawMap();
 
 		update();
 
 		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 		//cout << "\nduration = " << duration;
 	}
-		//END OF GAME LOOP
-	if (map != NULL) 
-	{
-		delete map; //free the memory back up
-	}
-	else { cout << "*map is NULLPTR and could not be deleted"; }
+
+		//___________END OF GAME LOOP______________//
 
 	// close a UDP socket -- note the 6 at the end of the function
 	deactivate_socket6(sock);

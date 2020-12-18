@@ -41,7 +41,7 @@ void Enemy::move()
 
 void Enemy::facing(Player p)
 {
-	float diff_x, diff_y, len, aim_dir[2];
+	float diff_x, diff_y, len;
 	diff_x = p.x_p - x_p;
 	diff_y = p.y_p - y_p;
 	len = std::sqrt(std::pow(diff_x, 2) + std::pow(diff_y, 2));

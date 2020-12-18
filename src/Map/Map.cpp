@@ -9,7 +9,7 @@ Map::Map(double W, double H)
 	double t_width = t[0].get_w(), t_height = t[0].get_h();
 	int i, j = 0;
 
-	n_tiles = 2 * (H / t_height) + (2 * (W / t_width));
+	n_tiles = 2.0 * (H / t_height) + (2.0 * (W / t_width));
 	//Left wall
 	for (i = 0; i < H / t_height; i++) 
 	{
@@ -49,23 +49,6 @@ void Map::drawMap()
 		t[i].draw();
 		i++;
 	}
-}
-
-void Map::drawMap2()
-{
-	float tilesX = screenW / t[0].get_w(), tilesY = screenH / t[0].get_h();
-	for (int i = 0; i < size(map_t); i++) 
-	{
-		if (map_t[i] == "#") 
-		{
-
-		}
-		else if (map_t[i] == "*") 
-		{
-			
-		}
-	}
-
 }
 
 void Map::setMap()

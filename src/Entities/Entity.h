@@ -22,13 +22,11 @@ public:
 	void initialize(); //for resetting the levels
 
 	bool is_alive;
-	float max_speed, facing_dir[2], ScreenWidth, ScreenHeight;
-	int i_bullet; //number of active bullets
+	float facing_dir[2];
+	int i_bullet; //index @ number of active bullets
 	Bullet* bullets[N_MAX_BULLETS] = { NULL };
-	int bullet_damage, bullet_speed;
-
 protected:
 	SceneHandler* SH;
-	float default_x, default_y;
 	int default_health;
+	float default_x, default_y, max_speed, bullet_damage, bullet_speed, ScreenWidth, ScreenHeight;
 };

@@ -14,7 +14,7 @@ public:
 	void facing(Player p); // face player then call shoot()
 	bool can_shoot();
 	void update(Player p1, Player p2);
+protected:
 	bool shoot_player = false, is_moving = false;
-	float bullet_time = BULLET_TIMER, fire_rate, move_dir[2];
-	float path[5];
+	float bullet_time = BULLET_TIMER, fire_rate, move_dir[2], path[5];
 };
