@@ -54,6 +54,10 @@ void main()
 	enemies[1] = smallboy;
 	enemies[0] = turret2;
 
+	Enemy* p_enemies[2];
+	p_enemies[0] = new Turret(200.0f, 600.0f, &SH);
+	p_enemies[1] = new Smallboy(600.0f, 500.0f, &SH);
+
 	//____________________________________Network init____________________________________//
 
 	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
@@ -133,7 +137,8 @@ void main()
 
 			//Player 1
 		player.update(c_x, c_y);
-		BH.update_player_bullets(&player, enemies, N_enemy);
+		//BH.update_player_bullets(&player, enemies, N_enemy); //using pointer to array of enemies
+		BH.update_player_bullets_TEST(&player, p_enemies, N_enemy); //using enemy array of pointers
 
 			//Player 2
 		if (multiplayer)
@@ -160,21 +165,35 @@ void main()
 				Sleep(20); //TRY SLEEP HERE
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
-			BH.update_player_bullets(&player2, enemies, N_enemy);
+			//BH.update_player_bullets(&player2, enemies, N_enemy);
+			BH.update_player_bullets_TEST(&player2, p_enemies, N_enemy);
 		}
 
 
 		//Enemies
 
-		for (int i = 0; i < N_enemy; i++)
+		/*for (int i = 0; i < N_enemy; i++) //using pointer to array of enemies
 		{
 			if (enemies[i].is_alive)
 			{
 				enemies[i].update(player, player2);
-				BH.update_enemy_bullets(&enemies[i], &player);
+				//BH.update_enemy_bullets(&enemies[i], &player);
 				if (multiplayer)
 				{
 					BH.update_enemy_bullets(&enemies[i], &player2);
+				}
+			}
+		}*/
+
+		for (int i = 0; i < N_enemy; i++) //using array of pointer enemies
+		{
+			if (p_enemies[i]->is_alive)
+			{
+				(*p_enemies[i]).update(player, player2);
+				BH.update_enemy_bullets(p_enemies[i], &player);
+				if (multiplayer)
+				{
+					BH.update_enemy_bullets(p_enemies[i], &player2);
 				}
 			}
 		}

@@ -22,14 +22,52 @@ void BulletHandler::update_player_bullets(Player* player, Enemy* enemies, int N_
 		int j = 0;
 		while (j < N_enemies)
 		{
-			for (int i = 0; i < player->i_bullet; i++)
+			if (enemies->is_alive)
 			{
-				float distance;
-				distance = sqrt(pow((enemies->x_p - player->bullets[i]->x_p), 2) + pow((enemies->y_p - player->bullets[i]->y_p), 2));
-				if (distance <= player->bullets[i]->R + enemies->R)
+				for (int i = 0; i < player->i_bullet; i++)
 				{
-					enemies->damage(*player->bullets[i]);
-					bullet_collided(player, i);
+					float distance;
+					distance = sqrt(pow((enemies->x_p - player->bullets[i]->x_p), 2) + pow((enemies->y_p - player->bullets[i]->y_p), 2));
+					if (distance <= player->bullets[i]->R + enemies->R)
+					{
+						(*enemies).damage(*player->bullets[i]);
+						bullet_collided(player, i);
+					}
+				}
+			}
+			enemies++;
+			j++;
+		}
+	}
+}
+
+void BulletHandler::update_player_bullets_TEST(Player* player, Enemy** enemies, int N_enemies)
+{
+	for (int i = 0; i < player->i_bullet; i++)
+	{
+		player->bullets[i]->update();
+		if (player->bullets[i]->x_p >= ScreenWidth || player->bullets[i]->x_p <= 0.0
+			|| player->bullets[i]->y_p >= ScreenHeight || player->bullets[i]->y_p <= 0.0)
+		{
+			bullet_collided(player, i);
+		}
+	}
+	if (player->i_bullet > 0)
+	{
+		int j = 0;
+		while (j < N_enemies)
+		{
+			if ((*enemies)->is_alive)
+			{
+				for (int i = 0; i < player->i_bullet; i++)
+				{
+					float distance;
+					distance = sqrt(pow(((*enemies)->x_p - player->bullets[i]->x_p), 2) + pow(((*enemies)->y_p - player->bullets[i]->y_p), 2));
+					if (distance <= player->bullets[i]->R + (*enemies)->R)
+					{
+						(*enemies)->damage(*player->bullets[i]);
+						bullet_collided(player, i);
+					}
 				}
 			}
 			enemies++;

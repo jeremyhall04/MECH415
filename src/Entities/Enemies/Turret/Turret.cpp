@@ -15,7 +15,7 @@ Turret::Turret(float x, float y, SceneHandler* SH) : Enemy(SH)
 		b[i] = 0.0;
 	}
 	//____Health____//
-	maxHealth = 150;
+	maxHealth = 150.0f;
 	health = maxHealth;
 	//____Movement____//
 	max_speed = 0;

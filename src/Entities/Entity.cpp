@@ -12,24 +12,6 @@ Entity::Entity(SceneHandler* SH)
 	i_bullet = 0;
 }
 
-Entity::Entity(float x, float y)
-{
-	x_p = x;
-	y_p = y;
-	width = 60.0;
-	height = 100.0;
-	for (int i = 0; i < 3; i++) {
-		r[i] = 0.0;
-		g[i] = 0.0;
-		b[i] = 0.0;
-	}
-	max_speed = 0;
-	health = 200;
-	maxHealth = 200;
-	is_alive = true;
-	theta = 0;
-}
-
 void Entity::initialize()
 {
 	is_alive = true;

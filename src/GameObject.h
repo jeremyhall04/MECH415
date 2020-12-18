@@ -17,10 +17,10 @@ public:
 	void draw();
 	void draw_healthbar();
 
-	int health;
-	float x_p, y_p, R; //R is the circular hitbox radius for the object
+	float x_p, y_p, R, health; //R is the circular hitbox radius for the object
 	double theta;
 protected:
-	int sprite_id, sprite_size, maxHealth;
+	int sprite_id, sprite_size;
+	float maxHealth;
 	double width, height, r[3], g[3], b[3];
 };

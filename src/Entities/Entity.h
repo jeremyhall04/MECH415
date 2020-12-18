@@ -14,7 +14,6 @@ class Entity: public GameObject
 public:
 	Entity();
 	Entity(SceneHandler* SH);
-	Entity(float x, float y);
 	void shoot();
 	void bullet_collided(int index);
 	void damage();
@@ -27,6 +26,5 @@ public:
 	Bullet* bullets[N_MAX_BULLETS] = { NULL };
 protected:
 	SceneHandler* SH;
-	int default_health;
-	float default_x, default_y, max_speed, bullet_damage, bullet_speed, ScreenWidth, ScreenHeight;
+	float default_health, default_x, default_y, max_speed, bullet_damage, bullet_speed, ScreenWidth, ScreenHeight;
 };

@@ -14,7 +14,7 @@ Largeboy::Largeboy(float x, float y, SceneHandler* SH) : Enemy(SH)
 		b[i] = 0.5;
 	}
 	//____Health____//
-	maxHealth = 90;
+	maxHealth = 90.0f;
 	health = maxHealth;
 	//____Movement____//
 	is_moving = true;

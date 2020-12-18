@@ -15,7 +15,7 @@ Cannonboy::Cannonboy(float x, float y, SceneHandler* SH) : Enemy(SH)
 		b[i] = 0.5;
 	}
 	//____Health____//
-	maxHealth = 70;
+	maxHealth = 70.0f;
 	health = maxHealth;
 	//____Movement____//
 	is_moving = true;

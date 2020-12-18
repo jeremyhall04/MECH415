@@ -7,22 +7,6 @@ Enemy::Enemy()
 
 Enemy::Enemy(SceneHandler* SH) : Entity(SH) {}
 
-Enemy::Enemy(float x, float y)
-{
-	x_p = x;
-	y_p = y;
-	width = 60.0;
-	height = 100.0;
-	for (int i = 0; i < 3; i++) {
-		r[i] = 0.0;
-		g[i] = 0.0;
-		b[i] = 0.0;
-	}
-	max_speed = 0;
-	health = 200;
-	maxHealth = 200;
-}
-
 void Enemy::move()
 {
 	if (move_dir[0] != 0)
@@ -112,5 +96,13 @@ void Enemy::update(Player p1, Player p2)
 	if (can_shoot())
 	{
 		shoot();
+	}
+}
+
+void Enemy::validate_path(float path_min, float path_max)
+{
+	if (path_min < path[0])
+	{
+
 	}
 }

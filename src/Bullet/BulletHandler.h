@@ -15,6 +15,8 @@ public:
 	void update_enemy_bullets(Enemy* enemy, Player* player);
 	void bullet_collided(Entity* shooter, int index);
 
+	void update_player_bullets_TEST(Player* player, Enemy** enemies, int N_enemies);
+
 protected:
 	SceneHandler* SH;
 	float ScreenWidth, ScreenHeight;
