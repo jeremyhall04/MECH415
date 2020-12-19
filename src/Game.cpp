@@ -12,6 +12,9 @@ SceneHandler SH;
 
 void main()
 {
+	
+	SH.load_level(1);
+
 	clock_t start;
 	double duration;
 
@@ -45,16 +48,15 @@ void main()
 
 	Turret turret2(200.0f, 300.0f, &SH);
 	Smallboy smallboy(800.0f, 500.0f, &SH);
-	
-	//Will most likely need to be array of pointers so that the memory can be allocated to different
-	//enemies during different waves
-	Enemy* enemies;
+
 	int N_enemy = 2;
+	/*Enemy* enemies;
 	enemies = new Enemy[N_enemy];
 	enemies[1] = smallboy;
-	enemies[0] = turret2;
+	enemies[0] = turret2;*/
 
 	Enemy* p_enemies[2];
+
 	p_enemies[0] = new Turret(200.0f, 600.0f, &SH);
 	p_enemies[1] = new Smallboy(600.0f, 500.0f, &SH);
 

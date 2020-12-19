@@ -20,11 +20,14 @@ public:
 	void damage(Bullet b);
 	void initialize(); //for resetting the levels
 
+	void draw();
+	void draw_healthbar();
+
 	bool is_alive;
-	float facing_dir[2];
+	float facing_dir[2], health, R; //R is the circular hitbox radius for the object
 	int i_bullet; //index @ number of active bullets
 	Bullet* bullets[N_MAX_BULLETS] = { NULL };
 protected:
 	SceneHandler* SH;
-	float default_health, default_x, default_y, max_speed, bullet_damage, bullet_speed, ScreenWidth, ScreenHeight;
+	float default_health, maxHealth, default_x, default_y, max_speed, bullet_damage, bullet_speed, ScreenWidth, ScreenHeight;
 };

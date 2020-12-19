@@ -5,6 +5,7 @@
   Largeboy.cpp
   Smallboy.cpp
   Turret.cpp
+  Entity.cpp
   Player.cpp
   Game.cpp
   Generating Code...

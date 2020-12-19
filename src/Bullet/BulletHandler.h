@@ -1,11 +1,7 @@
 #pragma once
 #include "Bullet.h"
-#include "../Entities/Entity.h"
 #include "../Entities/Enemies/Enemy.h"
 #include "../SceneHandler/SceneHandler.h"
-class Bullet;
-class Entity;
-class Enemy;
 
 class BulletHandler
 {

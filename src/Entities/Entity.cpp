@@ -10,6 +10,7 @@ Entity::Entity(SceneHandler* SH)
 	bullet_speed = 20.0f;
 	bullet_damage = 20.0f;
 	i_bullet = 0;
+	R = 50.0f;
 }
 
 void Entity::initialize()
@@ -23,6 +24,42 @@ void Entity::initialize()
 		bullets[i]->is_alive = false;
 	}
 	i_bullet = 0;
+}
+
+void Entity::draw()
+{
+	draw_sprite(sprite_id, x_p, y_p, theta, sprite_size);
+	draw_healthbar();
+}
+
+void Entity::draw_healthbar()
+{
+	double x1[3];
+	double y1[3];
+	double length = 2.0 * (double)R;
+	//Healthbar
+		//Top triangle
+	x1[0] = x_p - (length / 2.0);
+	y1[0] = y_p + (double)R;
+	x1[1] = x1[0] + (length * (double)(health / maxHealth));
+	y1[1] = y1[0] + 5.0;
+	x1[2] = x1[0];
+	y1[2] = y1[1];
+	triangle(x1, y1, r, g, b);
+		//Bottom triangle
+	x1[0] = x_p - (length / 2.0);
+	y1[0] = y_p + (double)R;
+	x1[1] = x1[0] + (length * (double)(health / maxHealth));
+	y1[1] = y1[0] + 5.0;
+	x1[2] = x1[1];
+	y1[2] = y1[0];
+	triangle(x1, y1, r, g, b);
+
+	//Health display
+	std::string str = std::to_string((int)health);
+	char txt[11];
+	strcpy_s(txt, str.c_str());
+	text(txt, x_p - (width), y_p + (height / 2.0) + 40.0, 0.5);
 }
 
 void Entity::shoot()

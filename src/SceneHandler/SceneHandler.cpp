@@ -37,3 +37,29 @@ float SceneHandler::get_HEIGHT()
 {
 	return HEIGHT;
 }
+
+void SceneHandler::load_level(int level)
+{
+	std::ifstream fin;
+	fin.open("src/SceneHandler/Level1.txt");
+	if (!fin.is_open())
+	{
+		std::cout << "\nError in load_level; file open error";
+		return;
+	}
+	fin >> N_enemies;
+	std::cout << "\nN_enemies = " << N_enemies;
+	for (int i = 0; i < 2; i++)
+	{
+		fin >> x[i];
+		fin >> y[i];
+	}
+
+	fin.close();
+
+	for (int i = 0; i < 2; i++)
+	{
+		std::cout << "\n" << x[i] << ", " << y[i];
+	}
+
+}
