@@ -1,12 +1,2 @@
-﻿  Bullet.cpp
-  BulletHandler.cpp
-  Cannonboy.cpp
-  Enemy.cpp
-  Largeboy.cpp
-  Smallboy.cpp
-  Turret.cpp
-  Entity.cpp
-  Player.cpp
-  Game.cpp
-  Generating Code...
+﻿  Game.cpp
   program.vcxproj -> C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\.\Debug\program.exe

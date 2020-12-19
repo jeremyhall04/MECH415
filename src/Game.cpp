@@ -75,7 +75,7 @@ void main()
 	char* p_buffer_out, * p_buffer_in;
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
-	
+
 	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
 	//char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
@@ -88,16 +88,17 @@ void main()
 
 	//Jeremy :2001:0:2877:7aa:3003:6f77:bd7c:618
 	//nathan:2001:0:2877:7aa:18df:6f77:7189:757d
-	port = 37000;//Socket 
-	activate_network();
-	activate_socket6(port, IP_address_local, sock);
-	strcpy_s(buffer_init, "Connecting....");
-	size = 16;
-	bool connected = false;
 
 	if (multiplayer)
 	{
+		port = 37000;//Socket 
+		activate_network();
+		activate_socket6(port, IP_address_local, sock);
+		strcpy_s(buffer_init, "Connecting....");
+		size = 16;
+		bool connected = false;
 		is_running = false;
+
 		while (!connected)
 		{
 			send6(buffer_init, size, IP_address_send, sock, port);
