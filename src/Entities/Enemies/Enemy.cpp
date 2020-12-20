@@ -97,6 +97,12 @@ void Enemy::update(Player p1, Player p2)
 	{
 		shoot();
 	}
+
+	for (int i = 0; i < i_bullet; i++)
+	{
+		bullets[i]->update();
+	}
+
 }
 
 void Enemy::validate_path(float path_min, float path_max)

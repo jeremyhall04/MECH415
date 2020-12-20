@@ -7,6 +7,7 @@ Bullet::Bullet()
 
 Bullet::Bullet(float x, float y, float dir[2], float bulletSpeed, float bulletDamage) 
 {
+	hitbox = new Hitbox(x, y, width, height);
 	x_p = x;
 	y_p = y;
 	direction[0] = dir[0];
@@ -20,6 +21,7 @@ Bullet::Bullet(float x, float y, float dir[2], float bulletSpeed, float bulletDa
 void Bullet::update()
 {
 	move();
+	hitbox->update(x_p, y_p);
 	draw();
 }
 

@@ -13,14 +13,17 @@ SceneHandler SH;
 void main()
 {
 	
-	SH.load_level(1);
+	//SH.load_level(1);
+	Map map(&SH);
+	Tile t(500.0f, 300.0f, 50.0, 50.0);
+
 
 	clock_t start;
 	double duration;
 
 	//_________________________________Game Init________________________________________//
 
-	BulletHandler BH(&SH);
+	BulletHandler BH(&SH, &map);
 	bool is_running = true;
 	bool multiplayer = false;
 
@@ -50,15 +53,11 @@ void main()
 	Smallboy smallboy(800.0f, 500.0f, &SH);
 
 	int N_enemy = 2;
-	/*Enemy* enemies;
-	enemies = new Enemy[N_enemy];
-	enemies[1] = smallboy;
-	enemies[0] = turret2;*/
 
 	Enemy* p_enemies[2];
 
-	p_enemies[0] = new Turret(200.0f, 600.0f, &SH);
-	p_enemies[1] = new Smallboy(600.0f, 500.0f, &SH);
+	p_enemies[1] = new Turret(200.0f, 600.0f, &SH);
+	p_enemies[0] = new Smallboy(600.0f, 500.0f, &SH);
 
 	//____________________________________Network init____________________________________//
 
@@ -142,6 +141,7 @@ void main()
 		player.update(c_x, c_y);
 		//BH.update_player_bullets(&player, enemies, N_enemy); //using pointer to array of enemies
 		BH.update_player_bullets_TEST(&player, p_enemies, N_enemy); //using enemy array of pointers
+		BH.map_collision_check(&player);
 
 			//Player 2
 		if (multiplayer)
@@ -194,6 +194,7 @@ void main()
 			{
 				(*p_enemies[i]).update(player, player2);
 				BH.update_enemy_bullets(p_enemies[i], &player);
+				BH.map_collision_check(p_enemies[i]);
 				if (multiplayer)
 				{
 					BH.update_enemy_bullets(p_enemies[i], &player2);
@@ -209,6 +210,11 @@ void main()
 		{
 			round_timer = -1.0f;
 		}
+
+		//__MAP & COLLISIONS___//
+		t.draw();
+
+		map.drawMap();
 
 		update();
 

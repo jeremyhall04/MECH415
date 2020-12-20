@@ -20,7 +20,7 @@ public:
 	void damage(Bullet b);
 	void initialize(); //for resetting the levels
 
-	void draw();
+	void draw() override; //override indicates that draw() is the Entity function (not GameObject)
 	void draw_healthbar();
 
 	bool is_alive;

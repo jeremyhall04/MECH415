@@ -1,18 +1,15 @@
 #pragma once
+#include "../GameObject.h"
+#include "../Hitbox/Hitbox.h"
 
-class Tile 
+class Tile : public GameObject
 {
 public:
 	Tile();
-	Tile(double x, double y);
+	Tile(float x, float y, double width, double height);
 
-	void draw();
-	double get_w();
-	double get_h();
+	Hitbox* hitbox;
 
-	double x_p, y_p;
-
-private:
-	double width = 25, height = 25;
-	double r[3] = { 0 }, g[3] = { 0 }, b[3] = { 0 };
+protected:
+	bool is_halftile = false;
 };

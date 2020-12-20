@@ -81,6 +81,11 @@ void Player::update(float cursorX, float cursorY) //For player 1
 	facing(aim_dir);
 	draw();
 
+	for (int i = 0; i < i_bullet; i++)
+	{
+		bullets[i]->update();
+	}
+
 	if (bullet_timer != 1.0)
 		bullet_timer -= bullet_dt;
 	if (bullet_timer <= bullet_dt)
