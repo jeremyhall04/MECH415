@@ -55,33 +55,33 @@ void Map::drawMap()
 void Map::generate_map()
 {
 	string m[] = {
-		"**********************#***********#***************",
-		"**********************#***********#***************",
-		"**********************#***********#***************",
-		"**********************#############***************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"*****#####****************************************",
-		"*****#####****************************************",
-		"*****####*****************************************",
-		"*****###******************************************",
-		"*****##***************************#***############",
-		"*****#****************************#***************",
-		"**********************************#***************",
-		"**********************************#***************",
-		"**************************************************",
-		"**************************************************",
-		"#************************************************#",
-		"**************************************************",
-		"**************************************************"
+		"**********************#***********#******",
+		"**********************#***********#******",
+		"**********************#***********#******",
+		"**********************#############*****",
+		"****************************************",
+		"****************************************",
+		"****************************************",
+		"*****#####******************************",
+		"*****#####******************************",
+		"*****####*******************************",
+		"*****###********************************",
+		"*****##***************************#***##",
+		"*****#****************************#*****",
+		"**********************************#*****",
+		"**********************************#*****",
+		"****************************************",
+		"****************************************",
+		"****************************************",
+		"****************************************",
+		"****************************************",
 	};					
 	
 	//set tile dx and dy (tile spacing)
 	int count = 0;
-	const int rows = 20, cols = 50; //20 rows and 50 columns
+	const int rows = 20, cols = 40; //20 rows and 50 columns
 	bool btiles[rows][cols] = { 0 };
-	double dx, dy;
+	float dx, dy;
 	dx = SH->get_WIDTH() / (cols - 1); //cols - 1 so that the last column is drawn directly on the edge of the screen
 	dy = SH->get_HEIGHT() / rows;
 	float x, y;
@@ -144,7 +144,7 @@ void Map::generate_map()
 			}
 			else if (count > 0)
 			{
-				vWidth = dx * (float)count;
+				vWidth = dx * count;
 				vHeight = dy;
 				x = (j * dx) - (vWidth / 2.0f);
 				y = SH->get_HEIGHT() - (0.5f * dy) - (i * dy);
@@ -172,104 +172,55 @@ void Map::collision_check(Player* player)
 	for (int i = 0; i < n_tiles; i++)
 	{
 		Hitbox* tile_hitbox = tiles[i]->hitbox;
-
-		float player_bound_Right, player_bound_Left, player_bound_Up, player_bound_Down;
-		player_bound_Right = player->x_p + player->R;
-		player_bound_Left = player->x_p - player->R;
-		player_bound_Up = player->y_p + player->R;
-		player_bound_Down = player->y_p + player->R;
-			
-
 		float distance, diff_x, diff_y;
 		diff_x = tiles[i]->x_p - player->x_p;
 		diff_y = tiles[i]->y_p - player->y_p;
 		distance = sqrt(pow(diff_x, 2) + pow(diff_y, 2));
-			
 		float intersect_x, intersect_y;
-		if (diff_x >= 0)
+		if (diff_x >= 0)	 // then the intersect point is on the right side of the hitbox
 		{
 			intersect_x = player->x_p + (player->R * cos(diff_x / distance));
 		}
-		else
+		else				// intersect point on the left
 		{
 			intersect_x = player->x_p - (player->R * cos(diff_x / distance));
 		}
-		if (diff_y >= 0)
+		if (diff_y >= 0)	// intersect point is on the top side of the hitbox
 		{
 			intersect_y = player->y_p + (player->R * sin(diff_y / distance));
 		}
-		else
+		else				// intersect point on the bottom
 		{
 			intersect_y = player->y_p - (player->R * sin(diff_y / distance));
 		}
+
+		// if the (x,y) intersects the tile hitbox, find the side of the player that collided
+
 		if (intersect_x >= tile_hitbox->get_left() && intersect_x <= tile_hitbox->get_right()
 			&& intersect_y >= tile_hitbox->get_bottom() && intersect_y <= tile_hitbox->get_top())
 		{
-			if (diff_x >= 0)				
+			if (abs(diff_x / distance) >= abs(diff_y / distance))
 			{
-				collided_right = true;
-			}
-			else
-			{
-				collided_left = true;
-			}
-			if (diff_y >= 0)
-			{
-				collided_up = true;
-			}
-			else
-			{
-				collided_down = true;
-			}
-			/*if (intersect_x >= tile_hitbox->get_left() && intersect_x <= tile_hitbox->get_right()
-				&& intersect_y >= tile_hitbox->get_bottom() && intersect_y <= tile_hitbox->get_top())
-			{
-				std::cout << "\nPlayer Collided";
 				if (diff_x >= 0)
 				{
-					players[j]->map_collided_right = true;
+					collided_right = true;
 				}
 				else
 				{
-					players[j]->map_collided_left = true;
-				}
-				if (diff_y >= 0)
-				{
-					players[j]->map_collided_up = true;
-				}
-				else
-				{
-					players[j]->map_collided_down = true;
+					collided_left = true;
 				}
 			}
 			else
 			{
-				players[j]->map_collided_right = false;
-				players[j]->map_collided_left = false;
-				players[j]->map_collided_up = false;
-				players[j]->map_collided_down = false;
-			}*/
-
-			/*if (player_bound_Right >= tile_hitbox->get_left() && player_bound_Right <= tile_hitbox->get_right()
-				&& player_bound_Right >= tile_hitbox->get_bottom() && player_bound_Right <= tile_hitbox->get_top())
-			{
-				players[j]->map_collided_right = true;
+				if (diff_y >= 0)
+				{
+					collided_up = true;
+				}
+				else
+				{
+					collided_down = true;
+				}
 			}
-			if (player_bound_Left >= tile_hitbox->get_left() && player_bound_Left <= tile_hitbox->get_right()
-				&& player_bound_Left >= tile_hitbox->get_bottom() && player_bound_Left <= tile_hitbox->get_top())
-			{
-				players[j]->map_collided_left = true;
-			}
-			if (player_bound_Up >= tile_hitbox->get_left() && player_bound_Up <= tile_hitbox->get_right()
-				&& player_bound_Up >= tile_hitbox->get_bottom() && player_bound_Up <= tile_hitbox->get_top())
-			{
-				players[j]->map_collided_up = true;
-			}
-			if (player_bound_Down >= tile_hitbox->get_left() && player_bound_Down <= tile_hitbox->get_right()
-				&& player_bound_Down >= tile_hitbox->get_bottom() && player_bound_Down <= tile_hitbox->get_top())
-			{
-				players[j]->map_collided_down = true;
-			}*/
 		}
 		(*player).map_collided_right = collided_right;
 		(*player).map_collided_left = collided_left;

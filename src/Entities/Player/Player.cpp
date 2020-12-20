@@ -12,7 +12,7 @@ Player::Player(float x, float y, SceneHandler* SH, int playerID) : Entity(SH)
 	y_p = default_y = y;
 	maxHealth = 100.0f;
 	health = default_health = maxHealth;
-	max_speed = 8;
+	max_speed = 6;
 	R = 50.0f;
 
 	width = 25.0;

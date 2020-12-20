@@ -3,6 +3,7 @@
 #include "../SceneHandler/SceneHandler.h"
 
 #define N_MAX_TILES 500
+#define PI 3.1415
 //the worst case for the max number of voxels is when each voxel is one apart
 //and therefore there are 1/2 * the max number of tiles (50 * 20 = 1000, 1000 / 2 = 500)	
 

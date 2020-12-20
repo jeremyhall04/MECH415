@@ -16,20 +16,20 @@ void Hitbox::update(float x, float y)
 
 float Hitbox::get_left()
 {
-	return x - ((float)width / 2.0);
+	return x - (float)(width / 2.0);
 }
 
 float Hitbox::get_right()
 {
-	return x + ((float)width / 2.0);
+	return x + (float)(width / 2.0);
 }
 
 float Hitbox::get_bottom()
 {
-	return y - ((float)height / 2.0);
+	return y - (float)(height / 2.0);
 }
 
 float Hitbox::get_top()
 {
-	return y + ((float)height / 2.0);
+	return y + (float)(height / 2.0);
 }
