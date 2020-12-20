@@ -12,3 +12,13 @@ Tile::Tile(float x, float y, double width, double height)
 	x_p = x;
 	y_p = y;
 }
+
+double Tile::get_width()
+{
+	return width;
+}
+
+double Tile::get_height()
+{
+	return height;
+}

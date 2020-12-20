@@ -61,10 +61,10 @@ void Player::update(float cursorX, float cursorY) //For player 1
 		has_shot = false;
 	}
 
-	if (KEY('D') && x_p + R < ScreenWidth) x_p += max_speed;
-	if (KEY('A') && x_p - R > 0) x_p -= max_speed;
-	if (KEY('W') && y_p + R < ScreenHeight) y_p += max_speed;
-	if (KEY('S') && y_p - R > 0) y_p -= max_speed;
+	if (KEY('D') && x_p + R < ScreenWidth && !map_collided_right) x_p += max_speed;
+	if (KEY('A') && x_p - R > 0 && !map_collided_left) x_p -= max_speed;
+	if (KEY('W') && y_p + R < ScreenHeight && !map_collided_up) y_p += max_speed;
+	if (KEY('S') && y_p - R > 0 && !map_collided_down) y_p -= max_speed;
 	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0 && bullet_timer == 1.0f)
 	{
 		shoot();

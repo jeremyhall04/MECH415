@@ -1,2 +1,10 @@
-﻿  Game.cpp
+﻿  Map.cpp
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(147,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(148,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(149,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(150,40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(158,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(159,14): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(160,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\src\Map\Map.cpp(161,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   program.vcxproj -> C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\.\Debug\program.exe

@@ -14,8 +14,7 @@ void main()
 {
 	
 	//SH.load_level(1);
-	Map map(&SH);
-	Tile t(500.0f, 300.0f, 50.0, 50.0);
+	Map* map = new Map(&SH);
 
 
 	clock_t start;
@@ -23,7 +22,7 @@ void main()
 
 	//_________________________________Game Init________________________________________//
 
-	BulletHandler BH(&SH, &map);
+	BulletHandler BH(&SH, map);
 	bool is_running = true;
 	bool multiplayer = false;
 
@@ -137,15 +136,16 @@ void main()
 		
 		//___________________________UPDATE() & RENDER____________________________________________//
 
+		map->collision_check(&player);
+
 			//Player 1
 		player.update(c_x, c_y);
-		//BH.update_player_bullets(&player, enemies, N_enemy); //using pointer to array of enemies
-		BH.update_player_bullets_TEST(&player, p_enemies, N_enemy); //using enemy array of pointers
-		BH.map_collision_check(&player);
+		BH.update_player_bullets(&player, p_enemies, N_enemy);
 
 			//Player 2
 		if (multiplayer)
 		{
+			map->collision_check(&player2);
 			//____________________SENDING DATA____________________________//
 
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
@@ -169,32 +169,18 @@ void main()
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
 			//BH.update_player_bullets(&player2, enemies, N_enemy);
-			BH.update_player_bullets_TEST(&player2, p_enemies, N_enemy);
+			BH.update_player_bullets(&player2, p_enemies, N_enemy);
 		}
 
 
-		//Enemies
-
-		/*for (int i = 0; i < N_enemy; i++) //using pointer to array of enemies
-		{
-			if (enemies[i].is_alive)
-			{
-				enemies[i].update(player, player2);
-				//BH.update_enemy_bullets(&enemies[i], &player);
-				if (multiplayer)
-				{
-					BH.update_enemy_bullets(&enemies[i], &player2);
-				}
-			}
-		}*/
+			//Enemies
 
 		for (int i = 0; i < N_enemy; i++) //using array of pointer enemies
 		{
 			if (p_enemies[i]->is_alive)
 			{
-				(*p_enemies[i]).update(player, player2);
+				//(*p_enemies[i]).update(player, player2);
 				BH.update_enemy_bullets(p_enemies[i], &player);
-				BH.map_collision_check(p_enemies[i]);
 				if (multiplayer)
 				{
 					BH.update_enemy_bullets(p_enemies[i], &player2);
@@ -212,9 +198,9 @@ void main()
 		}
 
 		//__MAP & COLLISIONS___//
-		t.draw();
 
-		map.drawMap();
+		map->drawMap();
+
 
 		update();
 

@@ -166,6 +166,114 @@ void Map::generate_map()
 	}
 }
 
-void Map::collision_check()
+void Map::collision_check(Player* player)
 {
+	bool collided_right = false, collided_left = false, collided_up = false, collided_down = false;
+	for (int i = 0; i < n_tiles; i++)
+	{
+		Hitbox* tile_hitbox = tiles[i]->hitbox;
+
+		float player_bound_Right, player_bound_Left, player_bound_Up, player_bound_Down;
+		player_bound_Right = player->x_p + player->R;
+		player_bound_Left = player->x_p - player->R;
+		player_bound_Up = player->y_p + player->R;
+		player_bound_Down = player->y_p + player->R;
+			
+
+		float distance, diff_x, diff_y;
+		diff_x = tiles[i]->x_p - player->x_p;
+		diff_y = tiles[i]->y_p - player->y_p;
+		distance = sqrt(pow(diff_x, 2) + pow(diff_y, 2));
+			
+		float intersect_x, intersect_y;
+		if (diff_x >= 0)
+		{
+			intersect_x = player->x_p + (player->R * cos(diff_x / distance));
+		}
+		else
+		{
+			intersect_x = player->x_p - (player->R * cos(diff_x / distance));
+		}
+		if (diff_y >= 0)
+		{
+			intersect_y = player->y_p + (player->R * sin(diff_y / distance));
+		}
+		else
+		{
+			intersect_y = player->y_p - (player->R * sin(diff_y / distance));
+		}
+		if (intersect_x >= tile_hitbox->get_left() && intersect_x <= tile_hitbox->get_right()
+			&& intersect_y >= tile_hitbox->get_bottom() && intersect_y <= tile_hitbox->get_top())
+		{
+			if (diff_x >= 0)				
+			{
+				collided_right = true;
+			}
+			else
+			{
+				collided_left = true;
+			}
+			if (diff_y >= 0)
+			{
+				collided_up = true;
+			}
+			else
+			{
+				collided_down = true;
+			}
+			/*if (intersect_x >= tile_hitbox->get_left() && intersect_x <= tile_hitbox->get_right()
+				&& intersect_y >= tile_hitbox->get_bottom() && intersect_y <= tile_hitbox->get_top())
+			{
+				std::cout << "\nPlayer Collided";
+				if (diff_x >= 0)
+				{
+					players[j]->map_collided_right = true;
+				}
+				else
+				{
+					players[j]->map_collided_left = true;
+				}
+				if (diff_y >= 0)
+				{
+					players[j]->map_collided_up = true;
+				}
+				else
+				{
+					players[j]->map_collided_down = true;
+				}
+			}
+			else
+			{
+				players[j]->map_collided_right = false;
+				players[j]->map_collided_left = false;
+				players[j]->map_collided_up = false;
+				players[j]->map_collided_down = false;
+			}*/
+
+			/*if (player_bound_Right >= tile_hitbox->get_left() && player_bound_Right <= tile_hitbox->get_right()
+				&& player_bound_Right >= tile_hitbox->get_bottom() && player_bound_Right <= tile_hitbox->get_top())
+			{
+				players[j]->map_collided_right = true;
+			}
+			if (player_bound_Left >= tile_hitbox->get_left() && player_bound_Left <= tile_hitbox->get_right()
+				&& player_bound_Left >= tile_hitbox->get_bottom() && player_bound_Left <= tile_hitbox->get_top())
+			{
+				players[j]->map_collided_left = true;
+			}
+			if (player_bound_Up >= tile_hitbox->get_left() && player_bound_Up <= tile_hitbox->get_right()
+				&& player_bound_Up >= tile_hitbox->get_bottom() && player_bound_Up <= tile_hitbox->get_top())
+			{
+				players[j]->map_collided_up = true;
+			}
+			if (player_bound_Down >= tile_hitbox->get_left() && player_bound_Down <= tile_hitbox->get_right()
+				&& player_bound_Down >= tile_hitbox->get_bottom() && player_bound_Down <= tile_hitbox->get_top())
+			{
+				players[j]->map_collided_down = true;
+			}*/
+		}
+		(*player).map_collided_right = collided_right;
+		(*player).map_collided_left = collided_left;
+		(*player).map_collided_up = collided_up;
+		(*player).map_collided_down = collided_down;
+	}
 }
