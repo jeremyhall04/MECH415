@@ -5,14 +5,11 @@
 #include <ctime>
 
 #include "Bullet/BulletHandler.h"
-
 using namespace std;
-
 SceneHandler SH;
 
 void main()
 {
-	
 	//SH.load_level(1);
 	Map map(&SH);
 	Tile t(500.0f, 300.0f, 50.0, 50.0);
@@ -59,6 +56,9 @@ void main()
 	p_enemies[1] = new Turret(200.0f, 600.0f, &SH);
 	p_enemies[0] = new Smallboy(600.0f, 500.0f, &SH);
 
+	SH.load_play_audio("laser.wav");
+
+
 	//____________________________________Network init____________________________________//
 
 	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
@@ -97,6 +97,7 @@ void main()
 		size = 16;
 		bool connected = false;
 		is_running = false;
+		size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
 
 		while (!connected)
 		{
@@ -150,24 +151,20 @@ void main()
 
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
 
-			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
-
 			send6(buffer_out, size, IP_address_send, sock, port);
 
 			//Sleep(15);
 
 			//______________________________RECEIVE DATA__________________________________________//
-			for (i = 0; i < 3; i++)
+			for (i = 0; i < 3; i++) // Retry 3 times
 			{
-				if (recv6(buffer_in, size, IP_address_recv, sock) > 0)
+				while (recv6(buffer_in, size, IP_address_recv, sock) > 0)//This prevents packet build up, to reduce lag buildup as the program runs
 				{
 					p_buffer_in = buffer_in;
 					cout << "\nrecv6 successful";
-					break;
 				}
-				Sleep(20); //TRY SLEEP HERE
 			}
-			player2.update(p_buffer_in); //Passing in the buffer with received data
+			player2.unpack_player_data(p_buffer_in); //Passing in the buffer with received data
 			//BH.update_player_bullets(&player2, enemies, N_enemy);
 			BH.update_player_bullets_TEST(&player2, p_enemies, N_enemy);
 		}

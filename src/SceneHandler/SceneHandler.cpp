@@ -3,6 +3,15 @@
 #include <fstream>
 #include <string>
 
+#include <Windows.h>
+#include <MMSystem.h>
+#include <cmath>
+#include <cstring>
+#include <cstdlib>
+#pragma comment(lib,"winmm.lib")
+
+
+
 SceneHandler::SceneHandler()
 {
 	std::ifstream file;
@@ -61,5 +70,41 @@ void SceneHandler::load_level(int level)
 	{
 		std::cout << "\n" << x[i] << ", " << y[i];
 	}
+}
 
+
+void SceneHandler::load_play_audio(char file_name[]){
+	//load and start game audio loop
+	int n;
+	char* audio_buffer;
+
+	std::ifstream fin;
+
+	fin.open(file_name, std::ios::binary);
+
+	if (!fin) {
+		std::cout << "\nError loading audio file";
+		return;
+	}
+
+	fin.seekg(0, std::ios::end);
+
+	n = fin.tellg();
+
+	fin.seekg(0, std::ios::beg);
+
+	audio_buffer = new char[n];
+
+	if (audio_buffer == NULL) {
+		std::cout << "\ndynamic memory allocation error in load_audio";
+		return;
+	}
+
+	fin.read(audio_buffer, n);
+
+	fin.close();
+
+	PlaySoundA(audio_buffer, NULL, SND_ASYNC | SND_LOOP);
+
+	
 }

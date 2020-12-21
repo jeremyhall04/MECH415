@@ -92,7 +92,7 @@ void Player::update(float cursorX, float cursorY) //For player 1
 		bullet_timer = 1.0;
 }
 
-void Player::update(char* p_buffer_in) //For player 2
+void Player::unpack_player_data(char* p_buffer_in) //For player 2
 {
 	if (!is_alive)
 	{
