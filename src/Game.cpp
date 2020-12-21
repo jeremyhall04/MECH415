@@ -179,7 +179,7 @@ void main()
 		{
 			if (p_enemies[i]->is_alive)
 			{
-				//(*p_enemies[i]).update(player, player2);
+				(*p_enemies[i]).update(player, player2);
 				BH.update_enemy_bullets(p_enemies[i], &player);
 				if (multiplayer)
 				{
