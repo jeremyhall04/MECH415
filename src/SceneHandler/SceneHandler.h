@@ -11,8 +11,6 @@ public:
 	float get_round_timer();
 	void play_background_loop(char file_name[]);
 
-	int N_enemies;
-	float x[2], y[2];
 protected:
 	float round_timer = COUNTDOWN_TIMER_START;
 private:
