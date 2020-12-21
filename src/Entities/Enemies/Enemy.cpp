@@ -5,7 +5,10 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(SceneHandler* SH) : Entity(SH) {}
+Enemy::Enemy(Map* map) : Entity(map) 
+{
+	bullet_speed = 15.0f;
+}
 
 void Enemy::move()
 {

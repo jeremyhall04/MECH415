@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Map::Map(SceneHandler* SH)
+Map::Map()
 {
 	/*screenW = W;
 	screenH = H;
@@ -37,9 +37,44 @@ Map::Map(SceneHandler* SH)
 		t[i + j].x_p = W - (i + 1.0) * t_width;
 		t[i + j].y_p = -0.1;
 	}*/
-	this->SH = SH;
+	get_screen_size();
 	n_tiles = 0;
 	generate_map();
+}
+
+void Map::get_screen_size()
+{
+	std::ifstream file;
+	std::string str[6];
+	size_t sz;
+	int i = 0;
+
+	file.open("DirectX_window/window_size.txt");
+	if (!file.is_open())
+	{
+		std::cout << "\nError - get_screen_size(): could not open file";
+		return;
+	}
+	while (i < 6)
+	{
+		getline(file, str[i]);
+		i++;
+	}
+
+	file.close();
+
+	screenWidth = std::stof(str[1], &sz); //initialize the Scene variables WIDTH & HEIGHT
+	screenHeight = std::stof(str[3], &sz);
+}
+
+float Map::get_screen_width()
+{
+	return screenWidth;
+}
+
+float Map::get_screen_height()
+{
+	return screenHeight;
 }
 
 void Map::drawMap()
@@ -55,35 +90,45 @@ void Map::drawMap()
 void Map::generate_map()
 {
 	string m[] = {
-		"**********************#***********#******",
-		"**********************#***********#******",
-		"**********************#***********#******",
-		"**********************#############*****",
-		"****************************************",
-		"****************************************",
-		"****************************************",
-		"*****#####******************************",
-		"*****#####******************************",
-		"*****####*******************************",
-		"*****###********************************",
-		"*****##***************************#***##",
-		"*****#****************************#*****",
-		"**********************************#*****",
-		"**********************************#*****",
-		"****************************************",
-		"****************************************",
-		"****************************************",
-		"****************************************",
-		"****************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"***********############***************************",
+		"******######################**********************",
+		"****************************************####****##",
+		"***************************************###********",
+		"**************************************###*********",
+		"**************************************##**********",
+		"**************************************##**********",
+		"**************************************##**********",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		/*"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************",
+		"**************************************************"*/
 	};					
 	
 	//set tile dx and dy (tile spacing)
 	int count = 0;
-	const int rows = 20, cols = 40; //20 rows and 50 columns
+	const int rows = 20, cols = 50; //20 rows and 50 columns
 	bool btiles[rows][cols] = { 0 };
 	float dx, dy;
-	dx = SH->get_WIDTH() / (cols - 1); //cols - 1 so that the last column is drawn directly on the edge of the screen
-	dy = SH->get_HEIGHT() / rows;
+	dx = screenWidth / (cols - 1); //cols - 1 so that the last column is drawn directly on the edge of the screen
+	dy = screenHeight / rows;
 	float x, y;
 
 	/*
@@ -131,8 +176,6 @@ void Map::generate_map()
 		std::cout << "\n";
 	} // print bool array
 
-
-	float vWidth, vHeight;
 	for (int i = 0; i < rows; i++)
 	{
 		count = 0;
@@ -140,28 +183,11 @@ void Map::generate_map()
 		{
 			if (btiles[i][j] == 1)
 			{
-				count++;
-			}
-			else if (count > 0)
-			{
-				vWidth = dx * count;
-				vHeight = dy;
-				x = (j * dx) - (vWidth / 2.0f);
-				y = SH->get_HEIGHT() - (0.5f * dy) - (i * dy);
-				tiles[n_tiles] = new Tile(x, y, (double)vWidth, (double)vHeight);
+				x = (j * dx) - (dx / 2.0f);
+				y = screenHeight - (0.5f * dy) - (i * dy);
+				tiles[n_tiles] = new Tile(x, y, (double)dx, (double)dy);
 				n_tiles++;
-				count = 0;
 			}
-		}
-		if (count > 0)
-		{
-			vWidth = dx * (float)count;
-			vHeight = dy;
-			x = ((cols - 1) * dx) - (vWidth / 2.0f);
-			y = SH->get_HEIGHT() - (0.5f * dy) - (i * dy);
-			tiles[n_tiles] = new Tile(x, y, (double)vWidth, (double)vHeight);
-			n_tiles++;
-			count = 0;
 		}
 	}
 }
@@ -179,19 +205,19 @@ void Map::collision_check(Player* player)
 		float intersect_x, intersect_y;
 		if (diff_x >= 0)	 // then the intersect point is on the right side of the hitbox
 		{
-			intersect_x = player->x_p + (player->R * cos(diff_x / distance));
+			intersect_x = player->x_p + (player->R * cos(abs(diff_x) / distance));
 		}
 		else				// intersect point on the left
 		{
-			intersect_x = player->x_p - (player->R * cos(diff_x / distance));
+			intersect_x = player->x_p - (player->R * cos(abs(diff_x) / distance));
 		}
 		if (diff_y >= 0)	// intersect point is on the top side of the hitbox
 		{
-			intersect_y = player->y_p + (player->R * sin(diff_y / distance));
+			intersect_y = player->y_p + (player->R * sin(abs(diff_y) / distance));
 		}
 		else				// intersect point on the bottom
 		{
-			intersect_y = player->y_p - (player->R * sin(diff_y / distance));
+			intersect_y = player->y_p - (player->R * sin(abs(diff_y) / distance));
 		}
 
 		// if the (x,y) intersects the tile hitbox, find the side of the player that collided
@@ -199,7 +225,7 @@ void Map::collision_check(Player* player)
 		if (intersect_x >= tile_hitbox->get_left() && intersect_x <= tile_hitbox->get_right()
 			&& intersect_y >= tile_hitbox->get_bottom() && intersect_y <= tile_hitbox->get_top())
 		{
-			if (abs(diff_x / distance) >= abs(diff_y / distance))
+			if (abs(diff_x) >= abs(diff_y))
 			{
 				if (diff_x >= 0)
 				{
@@ -209,7 +235,7 @@ void Map::collision_check(Player* player)
 				{
 					collided_left = true;
 				}
-			}
+ 			}
 			else
 			{
 				if (diff_y >= 0)

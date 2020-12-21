@@ -2,18 +2,19 @@
 #include "Tile.h"
 #include "../SceneHandler/SceneHandler.h"
 
-#define N_MAX_TILES 500
+#define N_MAX_TILES 1000
 #define PI 3.1415
-//the worst case for the max number of voxels is when each voxel is one apart
-//and therefore there are 1/2 * the max number of tiles (50 * 20 = 1000, 1000 / 2 = 500)	
-
+	
 class Player;
 
 class Map 
 {
 
 public:
-	Map(SceneHandler* SH);
+	Map();
+
+	float get_screen_width();
+	float get_screen_height();
 
 	void drawMap();
 	void generate_map();
@@ -23,7 +24,7 @@ public:
 	Tile* tiles[N_MAX_TILES] = { NULL };
 
 protected:
-	SceneHandler* SH;
+	float screenWidth, screenHeight;
 private: 
-	std::string map_t[20];
+	void get_screen_size();
 };

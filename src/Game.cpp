@@ -12,17 +12,12 @@ SceneHandler SH;
 
 void main()
 {
-	
-	//SH.load_level(1);
-	Map* map = new Map(&SH);
-
-
 	clock_t start;
 	double duration;
 
 	//_________________________________Game Init________________________________________//
-
-	BulletHandler BH(&SH, map);
+	Map* map = new Map();
+	BulletHandler BH(map);
 	bool is_running = true;
 	bool multiplayer = false;
 
@@ -40,25 +35,21 @@ void main()
 	create_sprite("src/overrunroom.jpg", map_sprite_id);
 
 	//GAME OBJECTS
-	Player player(500, 200, &SH, 1);
-	Player player2(500, 200, &SH, 2);
+	Player player(600.0f, 300.0f, map, 1);
+	Player player2(500.0f, 200.0f, map, 2);
 
 	if (!multiplayer)
 	{
 		player2.is_alive = false;
 	}
 
-	Turret turret2(200.0f, 300.0f, &SH);
-	Smallboy smallboy(800.0f, 500.0f, &SH);
+	const int N_enemies = 3;
+	Enemy* p_enemies[N_enemies];
+	p_enemies[0] = new Smallboy(700.0f, 500.0f, map);
+	p_enemies[1] = new Turret(200.0f, 600.0f, map);
+	p_enemies[2] = new Turret(200.0f, 250.0f, map);
 
-	int N_enemy = 2;
-
-	Enemy* p_enemies[2];
-
-	p_enemies[1] = new Turret(200.0f, 600.0f, &SH);
-	p_enemies[0] = new Smallboy(600.0f, 500.0f, &SH);
-
-	//____________________________________Network init____________________________________//
+	//_______________________________Network init____________________________________//
 
 	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
 	char buffer_out[NMAX_UDP_BUFFER];//Buffer for outgoing data
@@ -130,17 +121,15 @@ void main()
 		GetCursorPos(&pt);
 		ScreenToClient(hwnd, &pt);
 		c_x = static_cast<float>(pt.x);
-		c_y = SH.get_HEIGHT() - static_cast<float>(pt.y);
+		c_y = map->get_screen_height() - static_cast<float>(pt.y);
 
 		if (KEY('Q')) break;
 		
-		//___________________________UPDATE() & RENDER____________________________________________//
-
-		map->collision_check(&player);
+		//___________________________UPDATE() & RENDER_______________________________________//
 
 			//Player 1
 		player.update(c_x, c_y);
-		BH.update_player_bullets(&player, p_enemies, N_enemy);
+		BH.update_player_bullets(&player, p_enemies, N_enemies);
 
 			//Player 2
 		if (multiplayer)
@@ -169,13 +158,13 @@ void main()
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
 			//BH.update_player_bullets(&player2, enemies, N_enemy);
-			BH.update_player_bullets(&player2, p_enemies, N_enemy);
+			BH.update_player_bullets(&player2, p_enemies, N_enemies);
 		}
 
 
 			//Enemies
 
-		for (int i = 0; i < N_enemy; i++) //using array of pointer enemies
+		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
 			if (p_enemies[i]->is_alive)
 			{
@@ -198,9 +187,8 @@ void main()
 		}
 
 		//__MAP & COLLISIONS___//
-
 		map->drawMap();
-
+		map->collision_check(&player);
 
 		update();
 

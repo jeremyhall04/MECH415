@@ -134,9 +134,7 @@
   <ItemGroup>
     <ClCompile Include="src\Bullet\Bullet.cpp" />
     <ClCompile Include="src\Bullet\BulletHandler.cpp" />
-    <ClCompile Include="src\Entities\Enemies\Cannonboy\Cannonboy.cpp" />
     <ClCompile Include="src\Entities\Enemies\Enemy.cpp" />
-    <ClCompile Include="src\Entities\Enemies\Largeboy\Largeboy.cpp" />
     <ClCompile Include="src\Entities\Enemies\Smallboy\Smallboy.cpp" />
     <ClCompile Include="src\Entities\Enemies\Turret\Turret.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
@@ -158,9 +156,7 @@
   <ItemGroup>
     <ClInclude Include="src\Bullet\Bullet.h" />
     <ClInclude Include="src\Bullet\BulletHandler.h" />
-    <ClInclude Include="src\Entities\Enemies\Cannonboy\Cannonboy.h" />
     <ClInclude Include="src\Entities\Enemies\Enemy.h" />
-    <ClInclude Include="src\Entities\Enemies\Largeboy\Largeboy.h" />
     <ClInclude Include="src\Entities\Enemies\Smallboy\Smallboy.h" />
     <ClInclude Include="src\Entities\Enemies\Turret\Turret.h" />
     <ClInclude Include="src\Entities\Entity.h" />

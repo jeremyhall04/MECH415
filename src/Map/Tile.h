@@ -11,7 +11,6 @@ public:
 	double get_height();
 
 	Hitbox* hitbox;
-
 protected:
 	bool is_halftile = false;
 };

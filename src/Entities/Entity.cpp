@@ -2,9 +2,9 @@
 
 Entity::Entity() {}
 
-Entity::Entity(SceneHandler* SH)
+Entity::Entity(Map* map)
 {
-	this->SH = SH;
+	this->map = map;
 	is_alive = true;
 	theta = 0;
 	bullet_speed = 20.0f;
@@ -74,16 +74,16 @@ void Entity::shoot()
 		if (bullets[i_bullet] == NULL)
 		{
 			//initialize new bullet
-			bullets[i_bullet] = new Bullet(x_p + R * (float)cos(theta),
-				y_p + R * (float)sin(theta), facing_dir, bullet_speed, bullet_damage);
+			bullets[i_bullet] = new Bullet(x_p,
+				y_p, facing_dir, bullet_speed, bullet_damage);
 			i_bullet++;
 		}
 		else
 		{
 			//re-initialize bullet with new parameters
 			bullets[i_bullet]->is_alive = true;
-			bullets[i_bullet]->x_p = x_p + R * (float)cos(theta);
-			bullets[i_bullet]->y_p = y_p + R * (float)sin(theta);
+			bullets[i_bullet]->x_p = x_p;
+			bullets[i_bullet]->y_p = y_p;
 			bullets[i_bullet]->direction[0] = facing_dir[0];
 			bullets[i_bullet]->direction[1] = facing_dir[1];
 			bullets[i_bullet]->speed = bullet_speed;

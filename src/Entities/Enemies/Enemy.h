@@ -8,7 +8,7 @@ class Enemy: public Entity
 {
 public:
 	Enemy();
-	Enemy(SceneHandler* SH);
+	Enemy(Map* map);
 	void move();
 	void facing(Player p); // face player then call shoot()
 	bool can_shoot();

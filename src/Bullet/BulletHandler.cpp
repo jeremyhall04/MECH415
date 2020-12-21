@@ -1,11 +1,10 @@
 #include "BulletHandler.h"
 
-BulletHandler::BulletHandler(SceneHandler* SH, Map* map)
+BulletHandler::BulletHandler(Map* map)
 {
-	this->SH = SH;
-	this->ScreenWidth = this->SH->get_WIDTH();
-	this->ScreenHeight = this->SH->get_HEIGHT();
 	this->map = map;
+	ScreenWidth = this->map->get_screen_width();
+	ScreenHeight = this->map->get_screen_height();
 }
 
 void BulletHandler::update_player_bullets(Player* player, Enemy** enemies, int N_enemies)
@@ -15,13 +14,16 @@ void BulletHandler::update_player_bullets(Player* player, Enemy** enemies, int N
 		bool is_collided = false;
 		for (int j = 0; j < N_enemies; j++) 		//Checking collision against enemies
 		{
-			float distance;
-			distance = sqrt(pow((enemies[j]->x_p - player->bullets[i]->x_p), 2) + pow((enemies[j]->y_p - player->bullets[i]->y_p), 2));
-			if (distance <= player->bullets[i]->R + enemies[j]->R)
+			if (enemies[j]->is_alive)
 			{
-				enemies[j]->damage(*player->bullets[i]);
-				bullet_collided(player, i);
-				break;
+				float distance;
+				distance = sqrt(pow((enemies[j]->x_p - player->bullets[i]->x_p), 2) + pow((enemies[j]->y_p - player->bullets[i]->y_p), 2));
+				if (distance <= player->bullets[i]->R + enemies[j]->R)
+				{
+					enemies[j]->damage(*player->bullets[i]);
+					bullet_collided(player, i);
+					break;
+				}
 			}
 		}
 	}
@@ -133,4 +135,8 @@ void BulletHandler::bullet_collided(Entity* shooter, int index)
 			shooter->bullets[shooter->i_bullet] = tmp;
 		}
 	}
+}
+
+void BulletHandler::check_bullet_collision_environemnt(Bullet* b)
+{
 }

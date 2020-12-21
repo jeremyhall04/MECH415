@@ -2,19 +2,18 @@
 
 Player::Player() {}
 
-Player::Player(float x, float y, SceneHandler* SH, int playerID) : Entity(SH)
+Player::Player(float x, float y, Map* map, int playerID) : Entity(map)
 {
-	this->ScreenWidth = SH->get_WIDTH();
-	this->ScreenHeight = SH->get_HEIGHT();
+	this->ScreenWidth = map->get_screen_width();
+	this->ScreenHeight = map->get_screen_height();
 	create_sprite("src/Entities/Player/Player1.png", sprite_id);
 	this->playerID = playerID;
-	x_p = default_x = x;
+	x_p = default_x = x; //starting coordinates
 	y_p = default_y = y;
+	//____Health____//
 	maxHealth = 100.0f;
 	health = default_health = maxHealth;
-	max_speed = 6;
-	R = 50.0f;
-
+	R = 50.0f; // Player Hitbox Radius
 	width = 25.0;
 	height = 25.0;
 	for (int i = 0; i < 3; i++) {
@@ -22,9 +21,10 @@ Player::Player(float x, float y, SceneHandler* SH, int playerID) : Entity(SH)
 		g[i] = 1.0;
 		b[i] = 1.0;
 	}
-
-	bullet_speed = 50.0f;
+	//____Movement____//
+	max_speed = 6.0f;
 	bullet_damage = 25.0f;
+	bullet_speed = 50.0f;
 }
 
 void Player::facing(float direction[2])
