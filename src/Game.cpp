@@ -70,7 +70,7 @@ void main()
 
 	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
-	//char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
+	//char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
 
 	char IP_address_recv[NMAX_ADDRESS];
 
@@ -153,26 +153,22 @@ void main()
 					p_buffer_in = buffer_in;
 					cout << "\nrecv6 successful";
 				}
+				player2.update(p_buffer_in); //Passing in the buffer with received data
+				BH.update_player_bullets(&player2, p_enemies, N_enemies);
 			}
-			player2.update(p_buffer_in); //Passing in the buffer with received data
-			BH.update_player_bullets(&player2, p_enemies, N_enemies);
 		}
-
 
 			//Enemies
 
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
-			if (p_enemies[i]->is_alive)
+			(*p_enemies[i]).update(player, player2);
+			if (SH.get_round_timer() < 0)
 			{
-				(*p_enemies[i]).update(player, player2);
-				if (SH.get_round_timer() < 0)
+				BH.update_enemy_bullets(p_enemies[i], &player);
+				if (multiplayer)
 				{
-					BH.update_enemy_bullets(p_enemies[i], &player);
-					if (multiplayer)
-					{
-						BH.update_enemy_bullets(p_enemies[i], &player2);
-					}
+					BH.update_enemy_bullets(p_enemies[i], &player2);
 				}
 			}
 		}
