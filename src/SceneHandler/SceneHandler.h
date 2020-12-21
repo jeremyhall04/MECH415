@@ -13,6 +13,4 @@ public:
 
 protected:
 	float round_timer = COUNTDOWN_TIMER_START;
-private:
-	float WIDTH, HEIGHT;
 };
