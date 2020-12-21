@@ -131,30 +131,6 @@ void Map::generate_map()
 	dy = screenHeight / rows;
 	float x, y;
 
-	/*
-	* Parse through the string array and determine the size of the voxels. 
-	* Also, count the number of voxels (voxel_count)
-	* 
-	* 
-	* Before creating voxel, we have to calculate the x and y (center) of the voxel,
-	* so that it can be drawn at its center.
-	* We can use equation:
-	* x_p = count_x * dx / 2.0f;
-	* y_p = count_y * dy / 2.0f;
-	*
-	* 
-	* Getting the width and height of one voxel will be:
-	* vWidth = dx * (count_x + 1);
-	* vHeight = dy * (count_y + 1);
-	*	we need to add 1 since dx and dy are the distances between the CENTERS of the tiles
-	* 
-	* Then create and add voxel to array
-	* 
-	*	Tile temp(x_p, y_p, vWidth, vHeight);
-	*	voxel[voxel_count] = temp;
-	*	voxel_count++;
-	*/
-
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)

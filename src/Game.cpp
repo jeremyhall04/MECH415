@@ -19,12 +19,11 @@ void main()
 	Map* map = new Map();
 	BulletHandler BH(map);
 	bool is_running = true;
-	bool multiplayer = false;
+	bool multiplayer = true;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
 	float c_x, c_y;
-	float round_timer = 10.0f, bullet_timer = 1.0f, bullet_dt = 0.05f, bullet_damage = 20.0f;
 	int map_sprite_id;
 
 	//INITIALIZE GRAPHICS
@@ -51,7 +50,7 @@ void main()
 
 	//_______________________________Audio init____________________
 
-	SH.play_background_loop("Led_Zeppelin.wav");
+	//SH.play_background_loop("Led_Zeppelin.wav");
 
 	//_______________________________Network init____________________________________//
 
@@ -75,12 +74,12 @@ void main()
 
 	char IP_address_recv[NMAX_ADDRESS];
 
-	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:18df:6f77:7189:757d"; //Nathan
+	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
 
 	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
-	//Jeremy :2001:0:2877:7aa:3003:6f77:bd7c:618
-	//nathan:2001:0:2877:7aa:18df:6f77:7189:757d
+	//Jeremy: 2001:0:2877:7aa:3003:6f77:bd7c:618
+	//Nathan: 2001:0:2877:7aa:2cd4:6f77:476d:fceb
 
 	if (multiplayer)
 	{
@@ -138,7 +137,6 @@ void main()
 			//Player 2
 		if (multiplayer)
 		{
-			map->collision_check(&player2);
 			//____________________SENDING DATA____________________________//
 
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
@@ -157,7 +155,6 @@ void main()
 				}
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
-			//BH.update_player_bullets(&player2, enemies, N_enemy);
 			BH.update_player_bullets(&player2, p_enemies, N_enemies);
 		}
 
@@ -169,7 +166,7 @@ void main()
 			if (p_enemies[i]->is_alive)
 			{
 				(*p_enemies[i]).update(player, player2);
-				if (round_timer < 0)
+				if (SH.get_round_timer() < 0)
 				{
 					BH.update_enemy_bullets(p_enemies[i], &player);
 					if (multiplayer)
@@ -183,8 +180,8 @@ void main()
 		SH.round_timer_count();
 
 		//__MAP & COLLISIONS___//
-		map->drawMap();
 		map->collision_check(&player);
+		map->drawMap();
 
 		update();
 

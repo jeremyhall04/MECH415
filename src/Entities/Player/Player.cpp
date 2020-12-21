@@ -47,6 +47,11 @@ void Player::facing(float direction[2])
 
 void Player::update(float cursorX, float cursorY) //For player 1
 {
+	if (has_shot)
+	{
+		has_shot = false;
+	}
+
 	if (!is_alive)
 	{
 		death_timer -= death_dt;
@@ -78,10 +83,10 @@ void Player::update(float cursorX, float cursorY) //For player 1
 	facing(aim_dir);
 	draw();
 
-	for (int i = 0; i < i_bullet; i++)
+	/*for (int i = 0; i < i_bullet; i++)
 	{
 		bullets[i]->update();
-	}
+	}*/
 
 	if (bullet_timer != 1.0)
 		bullet_timer -= bullet_dt;
@@ -91,10 +96,22 @@ void Player::update(float cursorX, float cursorY) //For player 1
 
 void Player::update(char* p_buffer_in) //For player 2
 {
+	if (has_shot)
+	{
+		has_shot = false;
+	}
+
 	if (!is_alive)
 	{
+		death_timer -= death_dt;
+		if (death_timer <= 0.0f)
+		{
+			death_timer = 5.0f; //reset timer
+			initialize();
+		}
 		return;
 	}
+
 	char* p2;
 	float* pf2;
 	double* pd2;

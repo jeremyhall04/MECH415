@@ -11,6 +11,7 @@ void BulletHandler::update_player_bullets(Player* player, Enemy** enemies, int N
 {
 	for (int i = 0; i < player->i_bullet; i++)
 	{
+		player->bullets[i]->update();
 		bool is_collided = false;
 		for (int j = 0; j < N_enemies; j++) 		//Checking collision against enemies
 		{
