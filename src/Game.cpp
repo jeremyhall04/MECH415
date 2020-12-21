@@ -49,6 +49,10 @@ void main()
 	p_enemies[1] = new Turret(200.0f, 600.0f, map);
 	p_enemies[2] = new Turret(200.0f, 250.0f, map);
 
+	//_______________________________Audio init____________________
+
+	SH.play_background_loop("Led_Zeppelin.wav");
+
 	//_______________________________Network init____________________________________//
 
 	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
@@ -143,18 +147,14 @@ void main()
 
 			send6(buffer_out, size, IP_address_send, sock, port);
 
-			//Sleep(15);
-
 			//______________________________RECEIVE DATA__________________________________________//
 			for (i = 0; i < 3; i++)
 			{
-				if (recv6(buffer_in, size, IP_address_recv, sock) > 0)
+				while (recv6(buffer_in, size, IP_address_recv, sock) > 0)
 				{
 					p_buffer_in = buffer_in;
 					cout << "\nrecv6 successful";
-					break;
 				}
-				Sleep(20); //TRY SLEEP HERE
 			}
 			player2.update(p_buffer_in); //Passing in the buffer with received data
 			//BH.update_player_bullets(&player2, enemies, N_enemy);
@@ -197,11 +197,8 @@ void main()
 	}
 
 		//___________END OF GAME LOOP______________//
-
-	// close a UDP socket -- note the 6 at the end of the function
 	deactivate_socket6(sock);
 
 	// shutdown the socket API
-	// -- this will shutdown both IPv4 and IPv6
 	deactivate_network();
 }
