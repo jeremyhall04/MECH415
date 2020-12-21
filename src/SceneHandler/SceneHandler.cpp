@@ -2,7 +2,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include <Windows.h>
+#include <MMSystem.h>
+#pragma comment(lib,"winmm.lib")
 SceneHandler::SceneHandler()
 {
 	std::ifstream file;
@@ -79,4 +81,15 @@ void SceneHandler::round_timer_count()
 float SceneHandler::get_round_timer()
 {
 	return round_timer;
+}
+
+void SceneHandler::play_background_loop(char file_name[]) {
+
+	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);
+}
+
+void SceneHandler::play_shot_sound(char file_name[]) {
+
+	PlaySoundA(file_name, NULL, SND_ASYNC);
+	//This will be for player/enemy shots
 }
