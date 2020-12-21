@@ -2,12 +2,11 @@
 
 Entity::Entity() {}
 
-Entity::Entity(Map* map)
+Entity::Entity(Map* map, SceneHandler* SH)
 {
 	this->map = map;
 	is_alive = true;
 	theta = 0;
-	bullet_speed = 20.0f;
 	bullet_damage = 20.0f;
 	i_bullet = 0;
 	R = 50.0f;

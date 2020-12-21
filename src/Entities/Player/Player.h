@@ -10,7 +10,7 @@ class Player: public Entity
 {
 public: 
 	Player();
-	Player(float x, float y, Map* map, int playerID);
+	Player(float x, float y, Map* map, SceneHandler* SH, int playerID);
 
 	void facing(float direction[2]);
 	void update(float cursorX, float cursorY);

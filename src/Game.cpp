@@ -35,8 +35,8 @@ void main()
 	create_sprite("src/overrunroom.jpg", map_sprite_id);
 
 	//GAME OBJECTS
-	Player player(600.0f, 300.0f, map, 1);
-	Player player2(500.0f, 200.0f, map, 2);
+	Player player(600.0f, 300.0f, map, &SH, 1);
+	Player player2(500.0f, 200.0f, map, &SH, 2);
 
 	if (!multiplayer)
 	{
@@ -45,9 +45,9 @@ void main()
 
 	const int N_enemies = 3;
 	Enemy* p_enemies[N_enemies];
-	p_enemies[0] = new Smallboy(700.0f, 500.0f, map);
-	p_enemies[1] = new Turret(200.0f, 600.0f, map);
-	p_enemies[2] = new Turret(200.0f, 250.0f, map);
+	p_enemies[0] = new Smallboy(700.0f, 500.0f, map, &SH);
+	p_enemies[1] = new Turret(200.0f, 600.0f, map, &SH);
+	p_enemies[2] = new Turret(200.0f, 250.0f, map, &SH);
 
 	//_______________________________Network init____________________________________//
 
@@ -169,14 +169,18 @@ void main()
 			if (p_enemies[i]->is_alive)
 			{
 				(*p_enemies[i]).update(player, player2);
-				BH.update_enemy_bullets(p_enemies[i], &player);
-				if (multiplayer)
+				if (round_timer < 0)
 				{
-					BH.update_enemy_bullets(p_enemies[i], &player2);
+					BH.update_enemy_bullets(p_enemies[i], &player);
+					if (multiplayer)
+					{
+						BH.update_enemy_bullets(p_enemies[i], &player2);
+					}
 				}
 			}
 		}
 
+		SH.round_timer_count();
 		if (round_timer > 0.0)
 		{
 			round_timer -= 0.05f;

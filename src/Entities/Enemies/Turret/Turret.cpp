@@ -1,10 +1,11 @@
 #include "Turret.h"
 
-Turret::Turret(float x, float y, Map* map) : Enemy(map)
+Turret::Turret(float x, float y, Map* map, SceneHandler* SH) : Enemy(map, SH)
 {
 	this->map = map;
 	ScreenWidth = this->map->get_screen_width();
 	ScreenHeight = this->map->get_screen_height();
+	this->SH = SH;
 	create_sprite("src/Entities/Enemies/Turret/Turret.png", sprite_id);
 	x_p = x;
 	y_p = y;

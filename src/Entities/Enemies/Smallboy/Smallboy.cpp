@@ -1,10 +1,11 @@
 #include "Smallboy.h"
 
-Smallboy::Smallboy(float x, float y, Map* map) : Enemy(map)
+Smallboy::Smallboy(float x, float y, Map* map, SceneHandler* SH) : Enemy(map, SH)
 {
 	this->map = map;
 	ScreenWidth = this->map->get_screen_width();
 	ScreenHeight = this->map->get_screen_height();
+	this->SH = SH;
 	create_sprite("src/Entities/Enemies/Smallboy/smallboy.png", sprite_id);
 	sprite_size = 2;
 	x_p = x;

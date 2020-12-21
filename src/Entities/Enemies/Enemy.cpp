@@ -5,9 +5,9 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(Map* map) : Entity(map) 
+Enemy::Enemy(Map* map, SceneHandler* SH) : Entity(map, SH) 
 {
-	bullet_speed = 15.0f;
+	bullet_speed = ENEMY_BULLET_SPEED;
 }
 
 void Enemy::move()
@@ -90,21 +90,25 @@ void Enemy::update(Player p1, Player p2)
 			facing(p1);
 		}
 	}
-	if (is_moving)
+
+	if (SH->get_round_timer() < 0)
 	{
-		move();
+		if (is_moving)
+		{
+			move();
+		}
+		if (can_shoot())
+		{
+			shoot();
+		}
 	}
+
 	draw();
 
-	if (can_shoot())
-	{
-		shoot();
-	}
-
-	for (int i = 0; i < i_bullet; i++)
-	{
-		bullets[i]->update();
-	}
+	//for (int i = 0; i < i_bullet; i++)
+	//{
+	//	bullets[i]->update();
+	//}
 
 }
 

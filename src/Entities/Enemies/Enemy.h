@@ -1,6 +1,7 @@
 #pragma once
 #include "../Entity.h"
 #include "../Player/Player.h"
+#define ENEMY_BULLET_SPEED 20.0f
 
 class Player;
 
@@ -8,7 +9,7 @@ class Enemy: public Entity
 {
 public:
 	Enemy();
-	Enemy(Map* map);
+	Enemy(Map* map, SceneHandler* SH);
 	void move();
 	void facing(Player p); // face player then call shoot()
 	bool can_shoot();

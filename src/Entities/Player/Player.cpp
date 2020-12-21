@@ -2,10 +2,12 @@
 
 Player::Player() {}
 
-Player::Player(float x, float y, Map* map, int playerID) : Entity(map)
+Player::Player(float x, float y, Map* map, SceneHandler* SH, int playerID) : Entity(map, SH)
 {
+	this->map = map;
 	this->ScreenWidth = map->get_screen_width();
 	this->ScreenHeight = map->get_screen_height();
+	this->SH = SH;
 	create_sprite("src/Entities/Player/Player1.png", sprite_id);
 	this->playerID = playerID;
 	x_p = default_x = x; //starting coordinates
@@ -56,22 +58,17 @@ void Player::update(float cursorX, float cursorY) //For player 1
 		return;
 	}
 
-	if (has_shot)
-	{
-		has_shot = false;
-	}
-
 	if (KEY('D') && x_p + R < ScreenWidth && !map_collided_right) x_p += max_speed;
 	if (KEY('A') && x_p - R > 0 && !map_collided_left) x_p -= max_speed;
 	if (KEY('W') && y_p + R < ScreenHeight && !map_collided_up) y_p += max_speed;
 	if (KEY('S') && y_p - R > 0 && !map_collided_down) y_p -= max_speed;
-	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0 && bullet_timer == 1.0f)
+	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0 && bullet_timer == 1.0f && SH->get_round_timer() < 0)
 	{
 		shoot();
 		has_shot = true;
 		bullet_timer -= bullet_dt;
 	}
-
+	
 	float diff_x, diff_y, len, aim_dir[2];
 	diff_x = cursorX - x_p;
 	diff_y = cursorY - y_p;

@@ -63,3 +63,20 @@ void SceneHandler::load_level(int level)
 	}
 
 }
+
+void SceneHandler::round_timer_count()
+{
+	if (round_timer > 0.0)
+	{
+		round_timer -= COUNTDOWN_TIMER_DT;
+	}
+	if (round_timer <= 0.0)
+	{
+		round_timer = COUNTDOWN_TIMER_END;
+	}
+}
+
+float SceneHandler::get_round_timer()
+{
+	return round_timer;
+}
