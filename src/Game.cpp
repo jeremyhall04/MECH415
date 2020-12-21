@@ -181,14 +181,6 @@ void main()
 		}
 
 		SH.round_timer_count();
-		if (round_timer > 0.0)
-		{
-			round_timer -= 0.05f;
-		}
-		if (round_timer <= 0.0)
-		{
-			round_timer = -1.0f;
-		}
 
 		//__MAP & COLLISIONS___//
 		map->drawMap();
