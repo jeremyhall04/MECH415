@@ -50,11 +50,6 @@ void Player::facing(float direction[2])
 
 void Player::update(float cursorX, float cursorY) //For player 1
 {
-	if (has_shot)
-	{
-		has_shot = false;
-	}
-
 	if (!is_alive)
 	{
 		death_timer -= death_dt;
@@ -64,6 +59,11 @@ void Player::update(float cursorX, float cursorY) //For player 1
 			initialize();
 		}
 		return;
+	}
+
+	if (has_shot)
+	{
+		has_shot = false;
 	}
 
 	if (KEY('D') && x_p + R < ScreenWidth && !map_collided_right) x_p += max_speed;
@@ -84,6 +84,7 @@ void Player::update(float cursorX, float cursorY) //For player 1
 	aim_dir[0] = diff_x / len;
 	aim_dir[1] = diff_y / len;
 	facing(aim_dir);
+
 	draw();
 
 	if (bullet_timer != 1.0)
@@ -92,7 +93,7 @@ void Player::update(float cursorX, float cursorY) //For player 1
 		bullet_timer = 1.0;
 }
 
-void Player::update(char* p_buffer_in) //For player 2
+void Player::update()
 {
 	if (!is_alive)
 	{
@@ -105,6 +106,16 @@ void Player::update(char* p_buffer_in) //For player 2
 		return;
 	}
 
+	if (has_shot)
+	{
+		shoot();
+	}
+
+	draw();
+}
+
+void Player::read_buffer_in(char* p_buffer_in) //For player 2
+{
 	char* p2;
 	float* pf2;
 	double* pd2;
@@ -134,12 +145,6 @@ void Player::update(char* p_buffer_in) //For player 2
 
 	pb2 = (bool*)p2;
 	has_shot = *pb2;
-
-	if (has_shot) {
-		shoot();
-	}
-
-	draw();
 }
 
 void Player::load_buffer_out(char* p_buffer_out)

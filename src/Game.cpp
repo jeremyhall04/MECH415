@@ -1,7 +1,5 @@
 #include "Header.h"
-#include <time.h>
 #include <ctime>
-
 #include "../UDP_com.h"
 #include "../UDP_com6.h"
 #include "../2D_graphics.h"
@@ -155,7 +153,8 @@ void main()
 					p_buffer_in = buffer_in;
 					cout << "\nrecv6 successful";
 				}
-				player2.update(p_buffer_in); //Passing in the buffer with received data
+				player2.read_buffer_in(p_buffer_in); //Passing in the buffer with received data
+				player2.update();
 				BH.update_player_bullets(&player2, p_enemies, N_enemies);
 			}
 		}
