@@ -9,6 +9,7 @@ Entity::Entity() {}
 Entity::Entity(Map* map, SceneHandler* SH)
 {
 	this->map = map;
+	this->SH = SH;
 	is_alive = true;
 	theta = 0;
 	bullet_damage = 20.0f;
@@ -63,6 +64,16 @@ void Entity::draw_healthbar()
 	char txt[11];
 	strcpy_s(txt, str.c_str());
 	text(txt, x_p - width, y_p + (1.75 * height), 0.5);
+}
+
+float Entity::get_screen_width()
+{
+	return map->get_screen_width();
+}
+
+float Entity::get_screen_height()
+{
+	return map->get_screen_height();
 }
 
 void Entity::shoot()

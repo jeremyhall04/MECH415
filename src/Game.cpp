@@ -8,14 +8,13 @@
 
 using namespace std;
 
-SceneHandler SH;
-
 void main()
 {
 	clock_t start;
 	double duration;
 
 	//_________________________________Game Init________________________________________//
+	SceneHandler SH;
 	Map* map = new Map();
 	BulletHandler BH(map);
 	bool is_running = true;
@@ -36,8 +35,8 @@ void main()
 	//GAME OBJECTS
 	const int N_players = 2;
 	Player* players[N_players];
-	Player player(600.0f, 300.0f, map, &SH, 1);
-	Player player2(500.0f, 200.0f, map, &SH, 2);
+	Player player(600.0f, 300.0f, map, &SH);
+	Player player2(500.0f, 200.0f, map, &SH);
 	players[0] = &player;
 	players[1] = &player2;
 
@@ -148,18 +147,23 @@ void main()
 			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
 
 			send6(buffer_out, size, IP_address_send, sock, port);
-
+			bool is_recv = false;
 			//______________________________RECEIVE DATA__________________________________________//
 			for (i = 0; i < 3; i++)
 			{
 				while (recv6(buffer_in, size, IP_address_recv, sock) > 0)
 				{
 					p_buffer_in = buffer_in;
-					cout << "\nrecv6 successful";
+					//cout << "\nrecv6 successful";
+					is_recv = true;
 				}
-				player2.read_buffer_in(p_buffer_in); //Passing in the buffer with received data
-				player2.update();
-				BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
+				if (is_recv)
+				{
+					//player2.read_buffer_in(p_buffer_in); //Passing in the buffer with received data
+					player2.update(p_buffer_in);
+					BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
+					break;
+				}
 			}
 		}
 
@@ -169,11 +173,7 @@ void main()
 		{
 			Enemy* curEnemy = p_enemies[i];
 			curEnemy->update(player, player2);
-
-			if (SH.get_round_timer() < 0)
-			{
-				BH.update_entity_bullets((Entity*)curEnemy, (Entity**)players, N_players);
-			}
+			BH.update_entity_bullets((Entity*)curEnemy, (Entity**)players, N_players);
 		}
 
 		map->drawMap();

@@ -11,5 +11,5 @@ public:
 	float get_round_timer();
 	void play_background_loop(char file_name[]);
 protected:
-	float round_timer = COUNTDOWN_TIMER_START;
+	float round_timer;
 };

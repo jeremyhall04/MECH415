@@ -7,7 +7,7 @@
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib") // links a windows library
 
-SceneHandler::SceneHandler() {}
+SceneHandler::SceneHandler() { round_timer = COUNTDOWN_TIMER_START; }
 
 void SceneHandler::round_timer_count()
 {
