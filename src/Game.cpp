@@ -34,8 +34,12 @@ void main()
 	create_sprite("src/overrunroom.jpg", map_sprite_id);
 
 	//GAME OBJECTS
+	const int N_players = 2;
+	Player* players[N_players];
 	Player player(600.0f, 300.0f, map, &SH, 1);
 	Player player2(500.0f, 200.0f, map, &SH, 2);
+	players[0] = &player;
+	players[1] = &player2;
 
 	if (!multiplayer)
 	{
@@ -132,7 +136,7 @@ void main()
 
 			//Player 1
 		player.update(c_x, c_y);
-		BH.update_player_bullets(&player, p_enemies, N_enemies);
+		BH.update_entity_bullets((Entity*)&player, (Entity**)p_enemies, N_enemies);
 
 			//Player 2
 		if (multiplayer)
@@ -155,7 +159,7 @@ void main()
 				}
 				player2.read_buffer_in(p_buffer_in); //Passing in the buffer with received data
 				player2.update();
-				BH.update_player_bullets(&player2, p_enemies, N_enemies);
+				BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
 			}
 		}
 
@@ -163,23 +167,20 @@ void main()
 
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
-			(*p_enemies[i]).update(player, player2);
+			Enemy* curEnemy = p_enemies[i];
+			curEnemy->update(player, player2);
+
 			if (SH.get_round_timer() < 0)
 			{
-				BH.update_enemy_bullets(p_enemies[i], &player);
-				if (multiplayer)
-				{
-					BH.update_enemy_bullets(p_enemies[i], &player2);
-				}
+				BH.update_entity_bullets((Entity*)curEnemy, (Entity**)players, N_players);
 			}
 		}
 
-		SH.round_timer_count();
-
-		//__MAP & COLLISIONS___//
 		map->drawMap();
 
-		update();
+		SH.round_timer_count(); //round coundown timer
+
+		update(); //update 2D graphics
 
 		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 		//cout << "\nduration = " << duration;

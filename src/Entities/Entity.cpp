@@ -39,21 +39,21 @@ void Entity::draw_healthbar()
 {
 	double x1[3];
 	double y1[3];
-	double length = 2.0 * (double)R;
+	double length = 2.0 * width, healthbar_height = 5.0;
 	//Healthbar
 		//Top triangle
 	x1[0] = x_p - (length / 2.0);
-	y1[0] = y_p + (double)R;
+	y1[0] = y_p + height;
 	x1[1] = x1[0] + (length * (double)(health / maxHealth));
-	y1[1] = y1[0] + 5.0;
+	y1[1] = y1[0] + healthbar_height;
 	x1[2] = x1[0];
 	y1[2] = y1[1];
 	triangle(x1, y1, r, g, b);
 		//Bottom triangle
 	x1[0] = x_p - (length / 2.0);
-	y1[0] = y_p + (double)R;
+	y1[0] = y_p + height;
 	x1[1] = x1[0] + (length * (double)(health / maxHealth));
-	y1[1] = y1[0] + 5.0;
+	y1[1] = y1[0] + healthbar_height;
 	x1[2] = x1[1];
 	y1[2] = y1[0];
 	triangle(x1, y1, r, g, b);
@@ -62,7 +62,7 @@ void Entity::draw_healthbar()
 	std::string str = std::to_string((int)health);
 	char txt[11];
 	strcpy_s(txt, str.c_str());
-	text(txt, x_p - (width), y_p + (height / 2.0) + 40.0, 0.5);
+	text(txt, x_p - width, y_p + (1.75 * height), 0.5);
 }
 
 void Entity::shoot()

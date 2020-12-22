@@ -13,8 +13,8 @@ Turret::Turret(float x, float y, Map* map, SceneHandler* SH) : Enemy(map, SH)
 	//____Health____//
 	maxHealth = 150.0f;
 	health = maxHealth;
-	width = 60.0;
-	height = 100.0;
+	R = 60.0f;
+	width = height = R;
 	for (int i = 0; i < 3; i++) {
 		r[i] = 0.0;
 		g[i] = 0.0;

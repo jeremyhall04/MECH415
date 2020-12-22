@@ -19,8 +19,7 @@ Player::Player(float x, float y, Map* map, SceneHandler* SH, int playerID) : Ent
 	maxHealth = 100.0f;
 	health = default_health = maxHealth;
 	R = 40.0f; // Player Hitbox Radius
-	width = 25.0;
-	height = 25.0;
+	width = height = R;
 	for (int i = 0; i < 3; i++) {
 		r[i] = 1.0;
 		g[i] = 1.0;
@@ -192,33 +191,6 @@ void Player::read_buffer_in(char* p_buffer_in) //For player 2
 	has_shot = *pb2;
 }
 
-// test the proposed position for collision with all the map's current list of tiles
-bool Player::tile_collision_test(float x, float y)
-{
-	bool collision = false;
-	// bounds test to the window extent
-	if (y + R > ScreenHeight || y - R < 0 ||
-		x + R > ScreenWidth || x - R < 0)
-	{
-		//printf("Map bounds collision\n");
-		collision = true;
-	}
-
-	if (!collision)
-	{
-		for (int i = 0; i < map->n_tiles; i++)
-		{
-			collision = map->tiles[i]->collision_test(x, y, R);
-			if (collision)
-			{
-				//printf("Map tile collision\n");
-				break;
-			}
-		}
-	}
-	return collision;
-}
-
 void Player::load_buffer_out(char* p_buffer_out)
 {
 	char* p;
@@ -252,4 +224,31 @@ void Player::load_buffer_out(char* p_buffer_out)
 
 	pb = (bool*)p;
 	*pb = has_shot;
+}
+
+// test the proposed position for collision with all the map's current list of tiles
+bool Player::tile_collision_test(float x, float y)
+{
+	bool collision = false;
+	// bounds test to the window extent
+	if (y + R > ScreenHeight || y - R < 0 ||
+		x + R > ScreenWidth || x - R < 0)
+	{
+		//printf("Map bounds collision\n");
+		collision = true;
+	}
+
+	if (!collision)
+	{
+		for (int i = 0; i < map->n_tiles; i++)
+		{
+			collision = map->tiles[i]->collision_test(x, y, R);
+			if (collision)
+			{
+				//printf("Map tile collision\n");
+				break;
+			}
+		}
+	}
+	return collision;
 }

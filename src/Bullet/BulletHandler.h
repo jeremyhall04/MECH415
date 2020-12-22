@@ -6,8 +6,7 @@ class BulletHandler
 {
 public:
 	BulletHandler(Map* map);
-	void update_player_bullets(Player* player, Enemy** enemies, int N_enemies);
-	void update_enemy_bullets(Enemy* enemy, Player* player);
+	void update_entity_bullets(Entity* shooter, Entity** targets, int N_targets);
 	void map_collision_check(Entity* shooter);
 	void bullet_collided(Entity* shooter, int index);
 

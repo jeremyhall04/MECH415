@@ -1,7 +1,7 @@
 #pragma once
 #include "../Entity.h"
 #include "../Player/Player.h"
-#define ENEMY_BULLET_SPEED 20.0f
+#define ENEMY_BULLET_SPEED 30.0f
 
 class Player;
 

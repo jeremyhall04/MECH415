@@ -9,59 +9,35 @@ BulletHandler::BulletHandler(Map* map)
 	ScreenHeight = this->map->get_screen_height();
 }
 
-void BulletHandler::update_player_bullets(Player* player, Enemy** enemies, int N_enemies)
+void BulletHandler::update_entity_bullets(Entity* shooter, Entity** targets, int N_targets)
 {
-	for (int i = 0; i < player->i_bullet; i++)
+	for (int i = 0; i < shooter->i_bullet; i++)
 	{
-		player->bullets[i]->update();
-		bool is_collided = false;
-		for (int j = 0; j < N_enemies; j++) 		//Checking collision against enemies
+		Bullet* curBullet = shooter->bullets[i];
+		curBullet->update();
+		if (curBullet->x_p >= ScreenWidth || curBullet->x_p <= 0.0
+			|| curBullet->y_p >= ScreenHeight || curBullet->y_p <= 0.0)	//checking collision against edges of screen
 		{
-			if (!enemies[j]->is_alive)
+			bullet_collided(shooter, i);
+			continue;
+		}
+
+		for (int j = 0; j < N_targets; j++) 							//Checking collision against enemies
+		{
+			Entity* curTarget = targets[j];
+			if (!curTarget->is_alive)
 				continue;
-			float distance;
-			distance = sqrt(pow((enemies[j]->x_p - player->bullets[i]->x_p), 2) + pow((enemies[j]->y_p - player->bullets[i]->y_p), 2));
-			if (distance <= player->bullets[i]->R + enemies[j]->R)
+
+			if (curTarget->collision_test(curBullet->x_p, curBullet->y_p, curBullet->R))
 			{
-				enemies[j]->damage(*player->bullets[i]);
-				bullet_collided(player, i);
+				curTarget->damage(*curBullet);
+				bullet_collided(shooter, i);
 				break;
 			}
 		}
-	}
 
-	/*for (int i = 0; i < player->i_bullet; i++)
-	{
-		player->bullets[i]->update();
-		if (player->bullets[i]->x_p >= ScreenWidth || player->bullets[i]->x_p <= 0.0
-			|| player->bullets[i]->y_p >= ScreenHeight || player->bullets[i]->y_p <= 0.0)
-		{
-			bullet_collided(player, i);
-		}
+		map_collision_check(shooter);									//finally check bullet collision agains map 
 	}
-	if (player->i_bullet > 0)
-	{
-		int j = 0;
-		while (j < N_enemies)
-		{
-			if ((*enemies)->is_alive)
-			{
-				for (int i = 0; i < player->i_bullet; i++)
-				{
-					float distance;
-					distance = sqrt(pow(((*enemies)->x_p - player->bullets[i]->x_p), 2) + pow(((*enemies)->y_p - player->bullets[i]->y_p), 2));
-					if (distance <= player->bullets[i]->R + (*enemies)->R)
-					{
-						(*enemies)->damage(*player->bullets[i]);
-						bullet_collided(player, i);
-					}
-				}
-			}
-			enemies++;
-			j++;
-		}
-	}*/
-	map_collision_check(player);
 }
 
 void BulletHandler::map_collision_check(Entity* shooter)
@@ -101,33 +77,6 @@ void BulletHandler::map_collision_check(Entity* shooter)
 		}
 	}
 }
-void BulletHandler::update_enemy_bullets(Enemy* enemy, Player* player)
-{
-	for (int i = 0; i < enemy->i_bullet; i++)
-	{
-		enemy->bullets[i]->update();
-		if (enemy->bullets[i]->x_p >= ScreenWidth || enemy->bullets[i]->x_p <= 0.0
-			|| enemy->bullets[i]->y_p >= ScreenHeight || enemy->bullets[i]->y_p <= 0.0)
-		{
-			bullet_collided(enemy, i);
-		}
-	}
-	if (enemy->i_bullet > 0 && player->is_alive)
-	{
-		for (int i = 0; i < enemy->i_bullet; i++)
-		{
-			float distance;
-			distance = sqrt(pow((player->x_p - enemy->bullets[i]->x_p), 2) + pow((player->y_p - enemy->bullets[i]->y_p), 2));
-			if (distance <= enemy->bullets[i]->R + player->R)
-			{
-				player->damage(*enemy->bullets[i]);
-				bullet_collided(enemy, i);
-			}
-		}
-	}
-	map_collision_check(enemy);
-}
-
 
 void BulletHandler::bullet_collided(Entity* shooter, int index)
 {
