@@ -223,7 +223,6 @@ bool Player::tile_collision_test(float x, float y) // test the proposed position
 			collision = map->tiles[i]->collision_test(x, y, R);
 			if (collision)
 			{
-				//printf("Map tile collision\n");
 				break;
 			}
 		}

@@ -14,30 +14,24 @@ void BulletHandler::update_entity_bullets(Entity* shooter, Entity** targets, int
 	for (int i = 0; i < shooter->i_bullet; i++)
 	{
 		Bullet* curBullet = shooter->bullets[i];
-		curBullet->update();
-		if (curBullet->x_p >= ScreenWidth || curBullet->x_p <= 0.0
-			|| curBullet->y_p >= ScreenHeight || curBullet->y_p <= 0.0)	//checking collision against edges of screen
-		{
-			bullet_collided(shooter, i);
-			continue;
-		}
 
-		for (int j = 0; j < N_targets; j++) 							//Checking collision against enemies
+		curBullet->update();
+
+		for (int j = 0; j < N_targets; j++) 	//Checking collision against enemies
 		{
 			Entity* curTarget = targets[j];
 			if (!curTarget->is_alive)
 				continue;
 
-			if (curTarget->collision_test(curBullet->x_p, curBullet->y_p, curBullet->R))
+			if (curTarget->collision_test(curBullet->x_p, curBullet->y_p, curBullet->R) == true)
 			{
 				curTarget->damage(*curBullet);
 				bullet_collided(shooter, i);
 				break;
 			}
 		}
-
-		map_collision_check(shooter);									//finally check bullet collision agains map 
 	}
+	map_collision_check(shooter);	//Check bullet collision against map 
 }
 
 void BulletHandler::map_collision_check(Entity* shooter)
@@ -46,7 +40,7 @@ void BulletHandler::map_collision_check(Entity* shooter)
 	{
 		bool is_collided = false;
 		Hitbox* bullet_hb = (Hitbox*)shooter->bullets[i];
-		for (int j = 0; j < map->n_tiles; j++) 		//Checking collision against tiles
+		/*for (int j = 0; j < map->n_tiles; j++) 		//Checking collision against tiles
 		{
 			Hitbox* tile_hb = (Hitbox*)map->tiles[j];
 			float hb_left = tile_hb->get_left();
@@ -65,6 +59,19 @@ void BulletHandler::map_collision_check(Entity* shooter)
 				bullet_collided(shooter, i);
 				is_collided = true;
 				break;
+			}
+		}*/
+		for (int j = 0; j < map->n_tiles; j++)
+		{
+			if (map->tiles[j] != NULL)
+			{
+				Hitbox* tile_hb = (Hitbox*)map->tiles[j];
+				if (tile_hb->collision_test(bullet_hb))
+				{
+					is_collided = true;
+					bullet_collided(shooter, i);
+					break;
+				}
 			}
 		}
 		if (is_collided == false)		//Checking collisions against boundaries

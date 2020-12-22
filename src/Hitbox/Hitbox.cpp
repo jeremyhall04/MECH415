@@ -1,4 +1,5 @@
 #include "Hitbox.h"
+#include <cmath>
 
 Hitbox::Hitbox()
 {
@@ -42,11 +43,30 @@ float Hitbox::get_top()
 
 bool Hitbox::collision_test(float x, float y, float radius)
 {
-	bool p_collide = false;
+	bool will_collide = false;
+	bool coll1 = false;
+	bool coll2 = false;
+	bool coll3 = false;
+	bool coll4 = false;
 	if (x + radius >= get_left() &&
 		x - radius <= get_right() &&
 		y + radius >= get_bottom() &&
-		y - radius <= get_top() )
-		p_collide = true;
-	return p_collide;
+		y - radius <= get_top())
+	{
+		will_collide = true;
+	}
+	return will_collide;
+}
+
+bool Hitbox::collision_test(Hitbox* hb)
+{
+	bool will_collide = false;
+	if (hb->get_right() >= get_left() &&
+		hb->get_left() <= get_right() &&
+		hb->get_top() >= get_bottom() &&
+		hb->get_bottom() <= get_top())
+	{
+		will_collide = true;
+	}
+	return will_collide;
 }

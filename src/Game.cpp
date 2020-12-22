@@ -168,7 +168,7 @@ void main()
 		}
 
 			//Enemies
-
+		float round_timer = SH.get_round_timer();
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
 			Enemy* curEnemy = p_enemies[i];
