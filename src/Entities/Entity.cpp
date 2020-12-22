@@ -1,4 +1,8 @@
+#include <iostream>
+#include <cmath>
+#include <string>
 #include "Entity.h"
+#include "../../2D_graphics.h"
 
 Entity::Entity() {}
 

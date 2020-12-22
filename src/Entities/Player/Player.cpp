@@ -1,4 +1,7 @@
+#include <Windows.h>
+#include <cmath>
 #include "Player.h"
+#include "../../../2D_graphics.h"
 
 Player::Player() {}
 

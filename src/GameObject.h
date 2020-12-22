@@ -1,14 +1,5 @@
 #pragma once
 #include "Bullet/Bullet.h"
-#include <iostream>
-#include <fstream>
-#include <cstdio>
-#include <cmath>
-#include <Windows.h>
-#include <vector>
-#include <string>
-#include "../2D_graphics.h"
-#include "../timer.h"
 
 class GameObject 
 {

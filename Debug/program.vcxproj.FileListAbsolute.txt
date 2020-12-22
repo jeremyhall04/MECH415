@@ -1,6 +1,6 @@
 C:\Users\Nathan Egener\Documents\University\MECH 415\MECH415-master\Debug\program.exe
 C:\Users\Nathan Egener\Documents\University\MECH 415\MECH415-master\Debug\program.pdb
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\Debug\program.exe
-C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\Debug\program.pdb
 C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\Debug\program.exe
 C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\Debug\program.pdb
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\Debug\program.exe
+C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\Debug\program.pdb

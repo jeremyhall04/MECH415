@@ -1,4 +1,5 @@
 #include "Turret.h"
+#include "../../../../2D_graphics.h"
 
 Turret::Turret(float x, float y, Map* map, SceneHandler* SH) : Enemy(map, SH)
 {

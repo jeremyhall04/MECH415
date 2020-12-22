@@ -1,8 +1,10 @@
 #include "Header.h"
 #include <time.h>
+#include <ctime>
+
 #include "../UDP_com.h"
 #include "../UDP_com6.h"
-#include <ctime>
+#include "../2D_graphics.h"
 
 #include "Bullet/BulletHandler.h"
 
@@ -19,7 +21,7 @@ void main()
 	Map* map = new Map();
 	BulletHandler BH(map);
 	bool is_running = true;
-	bool multiplayer = true;
+	bool multiplayer = false;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position

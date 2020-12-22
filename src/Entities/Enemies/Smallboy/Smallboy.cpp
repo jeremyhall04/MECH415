@@ -1,4 +1,6 @@
 #include "Smallboy.h"
+#include "../../../../2D_graphics.h"
+#include <cmath>
 
 Smallboy::Smallboy(float x, float y, Map* map, SceneHandler* SH) : Enemy(map, SH)
 {

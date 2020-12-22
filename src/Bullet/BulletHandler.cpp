@@ -1,4 +1,6 @@
 #include "BulletHandler.h"
+#include <cmath>
+#include <iostream>
 
 BulletHandler::BulletHandler(Map* map)
 {

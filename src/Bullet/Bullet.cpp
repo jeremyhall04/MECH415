@@ -1,4 +1,5 @@
 #include "../Header.h"
+#include "../../2D_graphics.h"
 
 Bullet::Bullet()
 {

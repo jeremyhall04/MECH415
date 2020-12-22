@@ -8,9 +8,7 @@
 #include <string>
 
 #include "Map/Map.h"
-#include "Map/Tile.h"
 
-#include "GameObject.h"
 #include "SceneHandler/SceneHandler.h"
 #include "Bullet/Bullet.h"
 

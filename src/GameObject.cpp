@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include "../2D_graphics.h"
+#include "../timer.h"
 
 GameObject::GameObject()
 {

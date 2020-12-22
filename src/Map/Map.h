@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "Tile.h"
 #include "../SceneHandler/SceneHandler.h"
 
