@@ -50,7 +50,7 @@ void main()
 
 	//_______________________________Audio init____________________
 
-	//SH.play_background_loop("Led_Zeppelin.wav");
+//	SH.play_background_loop("Led_Zeppelin.wav");
 
 	//_______________________________Network init____________________________________//
 
@@ -177,7 +177,6 @@ void main()
 		SH.round_timer_count();
 
 		//__MAP & COLLISIONS___//
-		map->collision_check(&player);
 		map->drawMap();
 
 		update();

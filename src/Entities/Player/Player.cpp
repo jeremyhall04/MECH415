@@ -18,7 +18,7 @@ Player::Player(float x, float y, Map* map, SceneHandler* SH, int playerID) : Ent
 	//____Health____//
 	maxHealth = 100.0f;
 	health = default_health = maxHealth;
-	R = 50.0f; // Player Hitbox Radius
+	R = 40.0f; // Player Hitbox Radius
 	width = 25.0;
 	height = 25.0;
 	for (int i = 0; i < 3; i++) {
@@ -66,10 +66,55 @@ void Player::update(float cursorX, float cursorY) //For player 1
 		has_shot = false;
 	}
 
-	if (KEY('D') && x_p + R < ScreenWidth && !map_collided_right) x_p += max_speed;
-	if (KEY('A') && x_p - R > 0 && !map_collided_left) x_p -= max_speed;
-	if (KEY('W') && y_p + R < ScreenHeight && !map_collided_up) y_p += max_speed;
-	if (KEY('S') && y_p - R > 0 && !map_collided_down) y_p -= max_speed;
+	// test desired new position for collitions with other map objects
+	float new_x_p = x_p;
+	float new_y_p = y_p;
+
+	if (KEY('A')) 
+		new_x_p -= max_speed;
+	if (!tile_collision_test(new_x_p, new_y_p)) // can we move left?
+	{
+		x_p = new_x_p;
+	}else
+	{
+		new_x_p = x_p;
+	}
+
+	if (KEY('D'))
+		new_x_p += max_speed;
+	if (!tile_collision_test(new_x_p, new_y_p))	// can we move right?
+	{
+		x_p = new_x_p;
+	}
+	else
+	{
+		new_x_p = x_p;
+	}
+
+	if (KEY('W'))
+		new_y_p += max_speed;
+	if (!tile_collision_test(new_x_p, new_y_p))	// can we move up?
+	{
+		y_p = new_y_p;
+	}
+	else
+	{
+		new_y_p = y_p;
+	}
+
+	if (KEY('S'))
+		new_y_p -= max_speed;
+	if (!tile_collision_test(new_x_p, new_y_p))	// can we move down?
+	{
+		y_p = new_y_p;
+	}
+	else
+	{
+		new_y_p = y_p;
+	}
+
+	//printf("A=%d \tD=%d \tW=%d \tS=%d \n", KEY('A') < 0, KEY('D') < 0, KEY('W') < 0, KEY('S') < 0);
+
 	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0 && bullet_timer == 1.0f && SH->get_round_timer() < 0)
 	{
 		shoot();
@@ -145,6 +190,33 @@ void Player::read_buffer_in(char* p_buffer_in) //For player 2
 
 	pb2 = (bool*)p2;
 	has_shot = *pb2;
+}
+
+// test the proposed position for collision with all the map's current list of tiles
+bool Player::tile_collision_test(float x, float y)
+{
+	bool collision = false;
+	// bounds test to the window extent
+	if (y + R > ScreenHeight || y - R < 0 ||
+		x + R > ScreenWidth || x - R < 0)
+	{
+		//printf("Map bounds collision\n");
+		collision = true;
+	}
+
+	if (!collision)
+	{
+		for (int i = 0; i < map->n_tiles; i++)
+		{
+			collision = map->tiles[i]->collision_test(x, y, R);
+			if (collision)
+			{
+				//printf("Map tile collision\n");
+				break;
+			}
+		}
+	}
+	return collision;
 }
 
 void Player::load_buffer_out(char* p_buffer_out)

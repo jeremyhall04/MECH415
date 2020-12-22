@@ -77,51 +77,16 @@ void Entity::shoot()
 		if (bullets[i_bullet] == NULL)
 		{
 			//initialize new bullet
-			bullets[i_bullet] = new Bullet(x_p,
-				y_p, facing_dir, bullet_speed, bullet_damage);
+			bullets[i_bullet] = new Bullet(x_p + R * (float)cos(theta),
+				y_p + R * (float)sin(theta), facing_dir, bullet_speed, bullet_damage);
 			i_bullet++;
 		}
 		else
 		{
 			//re-initialize bullet with new parameters
-			bullets[i_bullet]->is_alive = true;
-			bullets[i_bullet]->x_p = x_p;
-			bullets[i_bullet]->y_p = y_p;
-			bullets[i_bullet]->direction[0] = facing_dir[0];
-			bullets[i_bullet]->direction[1] = facing_dir[1];
-			bullets[i_bullet]->speed = bullet_speed;
-			bullets[i_bullet]->damage = bullet_damage;
+			bullets[i_bullet]->initialize(x_p, y_p, facing_dir, bullet_speed, bullet_damage);
 			i_bullet++;
 		}
-	}
-}
-
-void Entity::bullet_collided(int index)
-{
-	if (bullets[index] == NULL)
-	{
-		std::cout << "\nERROR in bullet_collided; nullptr";
-		return;
-	}
-	else
-	{
-		i_bullet--; //decrement first so that bullets[i_bullets] is the last allocated bullet
-		bullets[index]->is_alive = false;
-		Bullet* tmp = bullets[index];
-		if (i_bullet != 0)
-		{
-			bullets[index] = bullets[i_bullet];
-			bullets[i_bullet] = tmp;
-		}
-	}
-}
-
-void Entity::damage()
-{
-	health -= 20;
-	if (health <= 0)
-	{
-		is_alive = false;
 	}
 }
 

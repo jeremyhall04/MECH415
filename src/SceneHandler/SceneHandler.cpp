@@ -2,9 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+
 #include <Windows.h>
-#include <MMSystem.h>
-#pragma comment(lib,"winmm.lib")
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib") // links a windows library
 
 SceneHandler::SceneHandler() {}
 
@@ -25,7 +26,8 @@ float SceneHandler::get_round_timer()
 	return round_timer;
 }
 
-void SceneHandler::play_background_loop(char file_name[]) {
+void SceneHandler::play_background_loop(char file_name[]) 
+{
 
 	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);
 }

@@ -19,4 +19,5 @@ public:
 private:
 	int playerID;
 	float bullet_timer = BULLET_TIMER, bullet_dt = PLAYER_BULLET_TIMER_DT, death_timer = RESPAWN_DELAY, death_dt = RESPAWN_DT;
+	bool tile_collision_test(float x, float y);
 };

@@ -15,8 +15,6 @@ public:
 	Entity();
 	Entity(Map* map, SceneHandler* SH);
 	void shoot();
-	void bullet_collided(int index);
-	void damage();
 	void damage(Bullet b);
 	void initialize(); //for resetting the levels
 

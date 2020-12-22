@@ -1,14 +1,13 @@
 #pragma once
-#include "Bullet/Bullet.h"
+#include "Hitbox/Hitbox.h"
 
-class GameObject 
+class GameObject : public Hitbox
 {
 public:
 	GameObject();
 	virtual void draw();
-	float x_p, y_p;
 	double theta;
 protected:
 	int sprite_id, sprite_size;
-	double width, height, r[3], g[3], b[3];
+	double r[3], g[3], b[3];
 };

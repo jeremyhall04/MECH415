@@ -1,5 +1,6 @@
-#include "../Header.h"
 #include "../../2D_graphics.h"
+#include "Bullet.h"
+#include <iostream>
 
 Bullet::Bullet()
 {
@@ -8,7 +9,6 @@ Bullet::Bullet()
 
 Bullet::Bullet(float x, float y, float dir[2], float bulletSpeed, float bulletDamage) 
 {
-	hitbox = new Hitbox(x, y, width, height);
 	x_p = x;
 	y_p = y;
 	direction[0] = dir[0];
@@ -17,12 +17,24 @@ Bullet::Bullet(float x, float y, float dir[2], float bulletSpeed, float bulletDa
 	damage = bulletDamage;
 	is_alive = true;
 	R = 10.0f;
+	r[0] = r[1] = r[2] = 1.0;
+	width = height = 15.0;
+}
+
+void Bullet::initialize(float x, float y, float dir[2], float bulletSpeed, float bulletDamage)
+{
+	is_alive = true;
+	x_p = x;
+	y_p = y;
+	direction[0] = dir[0];
+	direction[1] = dir[1];
+	speed = bulletSpeed;
+	damage = bulletDamage;
 }
 
 void Bullet::update()
 {
 	move();
-	hitbox->update(x_p, y_p);
 	draw();
 }
 
