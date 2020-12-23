@@ -7,7 +7,7 @@ class Player: public Entity
 {
 public: 
 	Player();
-	Player(float x, float y, Map* map, SceneHandler* SH);
+	Player(float x, float y, Map* map, SceneHandler* SH, int player_id);
 	~Player();
 	void update(float cursorX, float cursorY);
 	void update(char* buffer_in);

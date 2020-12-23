@@ -4,14 +4,14 @@
 
 Smallboy::Smallboy(float x, float y, Map* map, SceneHandler* SH) : Enemy(map, SH)
 {
-	create_sprite("src/Entities/Enemies/Smallboy/smallboy.png", sprite_id);
-	sprite_size = 2;
+	create_sprite("src/Entities/Enemies/Enemy.png", sprite_id);
+	sprite_size = 1;
 	x_p = x;
 	y_p = y;
 	//____Health____//
 	maxHealth = 70.0f;
 	health = maxHealth;
-	R = 50.0f;
+	R = 60.0f;
 	width = height = R;
 	for (int i = 0; i < 3; i++) {
 		r[i] = 1.0;

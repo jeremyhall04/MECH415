@@ -23,20 +23,20 @@ void main()
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
 	float c_x, c_y;
-	int map_sprite_id;
 
 	//INITIALIZE GRAPHICS
 	initialize_graphics();
 	clear();
 
 	//SPRITES
-	create_sprite("src/overrunroom.jpg", map_sprite_id);
+	int map_sprite_id;
+	create_sprite("src/Map/background.jpg", map_sprite_id);
 
 	//GAME OBJECTS
 	const int N_players = 2;
 	Player* players[N_players];
-	Player player(600.0f, 300.0f, map, &SH);
-	Player player2(500.0f, 200.0f, map, &SH);
+	Player player(600.0f, 300.0f, map, &SH, 1);
+	Player player2(500.0f, 200.0f, map, &SH, 2);
 	players[0] = &player;
 	players[1] = &player2;
 
@@ -48,7 +48,7 @@ void main()
 	const int N_enemies = 3;
 	Enemy* p_enemies[N_enemies];
 	p_enemies[0] = new Smallboy(700.0f, 500.0f, map, &SH);
-	p_enemies[1] = new Turret(200.0f, 600.0f, map, &SH);
+	p_enemies[1] = new Turret(300.0f, 500.0f, map, &SH);
 	p_enemies[2] = new Turret(200.0f, 250.0f, map, &SH);
 
 	//_______________________________Audio init____________________
@@ -168,8 +168,6 @@ void main()
 			curEnemy->update(&player, &player2);
 			BH.update_entity_bullets((Entity*)curEnemy, (Entity**)players, N_players);
 		}
-
-		map->drawMap();
 
 		SH.round_timer_count(); //round coundown timer
 
