@@ -1,12 +1,18 @@
 #include "Hitbox.h"
 #include <cmath>
 
+// Default constructor for Hitbox
 Hitbox::Hitbox()
 {
 	x_p = y_p = 0.0;
 	width = height = 0.0;
 }
 
+/// <summary>
+/// Hitbox constructor.
+/// 
+/// Uses parameters to assign the coordinates of the object as well as the width and height.
+/// </summary>
 Hitbox::Hitbox(float x, float y, double width, double height)
 {
 	this->x_p = x;
@@ -15,32 +21,36 @@ Hitbox::Hitbox(float x, float y, double width, double height)
 	this->height = height;
 }
 
-void Hitbox::update(float x, float y)
-{
-	this->x_p = x;
-	this->y_p = y;
-}
-
+/// Returns the coordinate of the left side of the Hitbox
 float Hitbox::get_left()
 {
 	return x_p - (float)(width / 2.0);
 }
 
+/// Returns the coordinate of the right side of the Hitbox
 float Hitbox::get_right()
 {
 	return x_p + (float)(width / 2.0);
 }
 
+/// Returns the coordinate of the bottom side of the Hitbox
 float Hitbox::get_bottom()
 {
 	return y_p - (float)(height / 2.0);
 }
 
+/// Returns the coordinate of the top side of the Hitbox
 float Hitbox::get_top()
 {
 	return y_p + (float)(height / 2.0);
 }
 
+/// <summary>
+/// Takes a point (x,y) and verifies if it is within the Hitbox boundaries.
+/// </summary>
+/// <param name="x">x coordinate of point</param>
+/// <param name="y">y coordinate of point</param>
+/// <returns>Whether the point is interfering with the hitbox</returns>
 bool Hitbox::collision_test(float x, float y)
 {
 	bool will_collide = false;
@@ -54,6 +64,11 @@ bool Hitbox::collision_test(float x, float y)
 	return will_collide;
 }
 
+/// <summary>
+/// Takes a Hitbox reference and tests if any of its four corners are interfering with the Object's Hitbox
+/// </summary>
+/// <param name="hb">Hitbox reference to test</param>
+/// <returns>Whether the Hitbox reference is interfering</returns>
 bool Hitbox::collision_test(Hitbox* hb)
 {
 	bool collided = false;

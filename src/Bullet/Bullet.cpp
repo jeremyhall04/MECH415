@@ -21,6 +21,9 @@ Bullet::Bullet(float x, float y, float dir[2], float bulletSpeed, float bulletDa
 	width = height = 15.0;
 }
 
+Bullet::~Bullet(){}
+
+// Used for re-initialization of Bullets in Entity.bullets[].
 void Bullet::initialize(float x, float y, float dir[2], float bulletSpeed, float bulletDamage)
 {
 	is_alive = true;
@@ -38,6 +41,7 @@ void Bullet::update()
 	draw();
 }
 
+//Draws the Bullet (square)
 void Bullet::draw() 
 {
 	double x1[3];
@@ -60,6 +64,7 @@ void Bullet::draw()
 	triangle(x1, y1, r, g, b);
 }
 
+// Move the Bullet by its speed in the direction that the Entity is facing 
 void Bullet::move() 
 {
 	if (direction[0] != 0)
@@ -72,6 +77,7 @@ void Bullet::move()
 	}
 }
 
+// Return the damage caused by the Entity's Bullet
 float Bullet::get_damage()
 {
 	return damage;

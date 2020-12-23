@@ -5,6 +5,14 @@
 
 Player::Player() {}
 
+/// <summary>
+/// Intitializes a Player object.
+/// </summary>
+/// <param name="x">The initial x coordinate</param>
+/// <param name="y">The initial y coordinate</param>
+/// <param name="map">Reference to the Map object</param>
+/// <param name="SH">Reference to the SceneHandler object</param>
+/// <param name="player_id">Either 1 or 2, determines which sprite to assign the Player Object</param>
 Player::Player(float x, float y, Map* map, SceneHandler* SH, int player_id) : Entity(map, SH)
 {
 	if (player_id == 1)
@@ -22,11 +30,6 @@ Player::Player(float x, float y, Map* map, SceneHandler* SH, int player_id) : En
 	health = default_health = maxHealth;
 	R = 45.0f; // Player Hitbox Radius
 	width = height = (double)R;
-	for (int i = 0; i < 3; i++) {
-		r[i] = 1.0;
-		g[i] = 1.0;
-		b[i] = 1.0;
-	}
 	//____Movement____//
 	max_speed = 6.0f;
 	bullet_damage = 25.0f;

@@ -6,6 +6,14 @@
 
 Entity::Entity() {}
 
+/// <summary>
+/// Base constructor for all Entity-deriving classes (Player, Enemies, etc.).
+/// 
+/// Linked constructor that takes the derived class's parameteres for Map and SceneHandler 
+/// and assigns them to the Entity member variables
+/// </summary>
+/// <param name="map">Map object reference (member variable)</param>
+/// <param name="SH">SceneHandler object reference (member variable)</param>
 Entity::Entity(Map* map, SceneHandler* SH)
 {
 	this->map = map;
@@ -81,6 +89,7 @@ void Entity::draw_healthbar()
 	text(txt, x_p - width, y_p + (1.75 * height), 0.5);
 }
 
+/// Use map object's get_screen_width and get_screen_height functions
 float Entity::get_screen_width()
 {
 	return map->get_screen_width();

@@ -21,9 +21,7 @@ Map::~Map()
 	}
 }
 
-/// <summary>
 /// Reads the screen width and height from the DirectX window text file.
-/// </summary>
 void Map::get_screen_size()
 {
 	std::ifstream file;
@@ -75,7 +73,6 @@ void Map::drawTiles()
 /// Reads through string array representing the map, where '#' character indicates a tile.
 /// 
 /// For each row, create tiles corresponding to number of consecutive '#' characters, 
-/// 
 /// </summary>
 void Map::generate_map()
 {

@@ -18,7 +18,7 @@ public:
 	float get_screen_width();
 	float get_screen_height();
 
-	int n_tiles; // number of active tiles
+	int n_tiles; // Number of active tiles
 	Tile* tiles[N_MAX_TILES] = { NULL };
 protected:
 	int map_sprite_id;

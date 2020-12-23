@@ -23,7 +23,7 @@ public:
 
 	bool is_alive;
 	float facing_dir[2], health, R; //R is the circular hitbox radius for the object
-	int i_bullet; //index of number of active bullets in bullets[]
+	int i_bullet; //Index at number of active bullets in bullets[]
 	Bullet* bullets[N_MAX_BULLETS] = { NULL };
 protected:
 	float get_screen_width();
