@@ -10,6 +10,7 @@ class Enemy: public Entity
 public:
 	Enemy();
 	Enemy(Map* map, SceneHandler* SH);
+	~Enemy();
 	void move();
 	void facing(Player* p);
 	bool can_shoot();

@@ -7,9 +7,10 @@ class SceneHandler
 {
 public:
 	SceneHandler();
+	~SceneHandler();
 	void round_timer_count();
 	float get_round_timer();
-	void play_background_loop(char file_name[]);
+	void play_audio_loop(char file_name[]);
 protected:
 	float round_timer;
 };

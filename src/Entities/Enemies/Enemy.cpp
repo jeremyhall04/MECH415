@@ -8,6 +8,8 @@ Enemy::Enemy(Map* map, SceneHandler* SH) : Entity(map, SH)
 	bullet_speed = ENEMY_BULLET_SPEED;
 }
 
+Enemy::~Enemy() {}
+
 // Calculates the movement of the Enemy using the path and movement direction information.
 void Enemy::move()
 {

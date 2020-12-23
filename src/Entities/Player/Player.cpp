@@ -79,12 +79,19 @@ void Player::update(float cursorX, float cursorY)
 		bullet_timer = 1.0;
 }
 
-// Used for updating player2 (after read_buffer_in)
+/// <summary>
+/// 
+/// Unpacks received buffer for player 2
+/// 
+/// If player 2 has died starts timer before respawning player 2
+///
+///  </summary>
+/// <param name="buffer_in"> This is a reference pointer to the first address for received buffers</param>
 void Player::update(char* buffer_in)
 {
-	read_buffer_in(buffer_in);
+	read_buffer_in(buffer_in);//Unpacking player data
 
-	if (!is_alive)
+	if (!is_alive)//If player has died starts respawn timer
 	{
 		respawn_timer -= respawn_dt;
 		if (respawn_timer <= 0.0f)
@@ -95,12 +102,12 @@ void Player::update(char* buffer_in)
 		return;
 	}
 
-	if (has_shot)
+	if (has_shot)//Checks if player has shot this tick
 	{
 		shoot();
 	}
 
-	draw();
+	draw();//updates drawn player position
 }
 
 // Gets keyboard inputs and tests if collision will occur
@@ -167,7 +174,13 @@ void Player::facing(float cursorX, float cursorY)
 	}
 }
 
-// Reads buffer_in and updates player2 state
+/// <summary>
+/// Gets passed the reference pointer to start of received buffer
+/// 
+/// unpacks player 2 data in same order it was loaded into buffer
+/// 
+/// </summary>
+/// <param name="p_buffer_in">This is a reference pointer to the first address for received buffers</param>
 void Player::read_buffer_in(char* p_buffer_in)
 {
 	char* p2;
@@ -175,11 +188,11 @@ void Player::read_buffer_in(char* p_buffer_in)
 	double* pd2;
 	bool* pb2;
 
-	p2 = p_buffer_in;
+	p2 = p_buffer_in;//Setting pointer p to the reference pointer at start of buffer
 
-	pf2 = (float*)p2;
-	x_p = *pf2;
-	p2 += sizeof(float);
+	pf2 = (float*)p2; //Casting current location in buffer as expected variable
+	x_p = *pf2; //reading received player data
+	p2 += sizeof(float);//Move to next  buffer address
 
 	pf2 = (float*)p2;
 	y_p = *pf2;
@@ -201,7 +214,18 @@ void Player::read_buffer_in(char* p_buffer_in)
 	has_shot = *pb2;
 }
 
-// Loads player state into buffer_out to send to network
+/// <summary>
+/// Declares pointers to be used to pack outgoing buffer
+/// sets p to start of buffer using passed reference pointer
+/// 
+/// casts loading pointer to variable type at address p
+///Sets value at address to player state variable
+/// moves by size of loaded variable forward in buffer
+/// 
+/// repeats this for player x cord, y cord, theta and firing information
+/// 
+/// </summary>
+/// <param name="p_buffer_out">Reference pointer to start of outgoing buffer</param>
 void Player::load_buffer_out(char* p_buffer_out)
 {
 	char* p;
@@ -209,11 +233,11 @@ void Player::load_buffer_out(char* p_buffer_out)
 	double* pd;
 	bool* pb;
 
-	p = p_buffer_out;
+	p = p_buffer_out;//Setting pointer p to the reference pointer at start of buffer
 
-	pf = (float*)p;
+	pf = (float*)p; //Casting current location in buffer as variable
 	*pf = x_p;
-	p += sizeof(float);
+	p += sizeof(float);//Move to next free buffer address 
 
 	pf = (float*)p;
 	*pf = y_p;
