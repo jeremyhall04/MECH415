@@ -1,4 +1,5 @@
-﻿  Bullet.cpp
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets(5156,5): warning MSB3061: Unable to delete file "C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\Debug\program.pdb". The process cannot access the file 'C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\Debug\program.pdb' because it is being used by another process.
+  Bullet.cpp
   BulletHandler.cpp
   Enemy.cpp
   Smallboy.cpp

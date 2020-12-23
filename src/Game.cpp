@@ -64,23 +64,22 @@ void main()
 	int sock; // UDP socket ID number
 	int port; // socket port number 
 	int size; // size of sent/received message
-	int i;
+	int i; //Declaring i to be used in for loops with game loop
 
 	//Declaring network buffer start reference pointers
 	char* p_buffer_out, * p_buffer_in;
-	p_buffer_out = buffer_out;
-	p_buffer_in = buffer_in;
+	p_buffer_out = buffer_out;//setting reference pointer for start of outgoing buffer
+	p_buffer_in = buffer_in;//setting reference pointer for start of incoming buffer
 
+	//Enter local IP address here
 	char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
-
 	//char IP_address_local[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
 
 	char IP_address_recv[NMAX_ADDRESS];
 
+	//Enter other players IP address here
 	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
-
 	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
-
 
 	if (multiplayer)
 	{
@@ -104,7 +103,9 @@ void main()
 			}
 			Sleep(100);
 		}
-		if (connected)//Sends message once connected to ensure both players are connected
+		if (connected)
+			//Sends message once connected to ensure other player also receives a message 
+			//to move beyond the connecting stage
 		{
 			strcpy_s(buffer_init, "Connected!");//loading message to buffer after connection secured
 			size = 11;//Size of strcp_s message to be sent in buffer after connection secured
@@ -112,10 +113,11 @@ void main()
 			cout << "\n\nConnected";
 			is_running = true;//starts game loop
 		}
+		size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size for game loop
+
 	}
 
-
-	//____________________________________GAME LOOP____________________________________//
+	//____________________________________GAME LOOP_________________________________________//
 
 	while (is_running)
 	{
@@ -131,24 +133,21 @@ void main()
 
 		if (KEY('Q')) break;
 		
-		//___________________________UPDATE() & RENDER_______________________________________//
+		//___________________________UPDATE() & RENDER_________________________________________//
 
 			//Player 1
 		player.update(c_x, c_y);
 		BH.update_entity_bullets((Entity*)&player, (Entity**)p_enemies, N_enemies);
 
 			//Player 2
-		if (multiplayer)
+		if (multiplayer)//Check if game is in multiplayer mode before running network functions
 		{
-			//____________________SENDING DATA____________________________//
+			//________________________SENDING DATA______________________________________________//
 
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
-
-			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
-
 			send6(buffer_out, size, IP_address_send, sock, port);//Sending player data
 
-			//______________________________RECEIVE DATA__________________________________________//
+			//________________________RECEIVE DATA______________________________________________//
 
 			for (i = 0; i < 3; i++)//Loop to increase chance of package being received and read
 			{
@@ -161,7 +160,7 @@ void main()
 			BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
 		}
 
-			//Enemies
+			//Running update for all enemy entities and bullet collision
 
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
@@ -204,7 +203,7 @@ void main()
 		map = NULL;
 	}
 
-	if (multiplayer)
+	if (multiplayer)//check if multiplayer is active before network deinitializion is carried out
 	{
 		deactivate_socket6(sock);//deactivates socket used for network
 		deactivate_network();//deactivates network

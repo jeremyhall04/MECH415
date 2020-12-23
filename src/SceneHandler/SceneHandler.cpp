@@ -7,8 +7,14 @@
 #include <mmsystem.h> // For audio functions
 #pragma comment(lib, "winmm.lib") // links a windows library
 
+/// <summary>
+/// Constructor initializes round_timer
+/// </summary>
 SceneHandler::SceneHandler() { round_timer = COUNTDOWN_TIMER_START; }
 
+/// <summary>
+/// Deconstructor for SceneHandler class
+/// </summary>
 SceneHandler::~SceneHandler(){}
 
 /// <summary>
