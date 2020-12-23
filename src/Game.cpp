@@ -191,7 +191,7 @@ void main()
 	{
 		if (p_enemies[i] == NULL)
 		{
-			cout << "\nError Deleting enemies[" << i << "]";
+			cout << "\nError deleting enemies[" << i << "]";
 			return;
 		}
 		else
@@ -199,6 +199,16 @@ void main()
 			delete p_enemies[i];
 			p_enemies[i] = NULL;
 		}
+	}
+
+	if (map == NULL)
+	{
+		cout << "\nError deleting map";
+		return;
+	}
+	else
+	{
+		delete map;
 	}
 
 		//___________END OF GAME LOOP______________//
