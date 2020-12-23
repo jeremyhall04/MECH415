@@ -35,8 +35,8 @@ void main()
 	//GAME OBJECTS
 	const int N_players = 2;
 	Player* players[N_players];
-	Player player(600.0f, 300.0f, map, &SH);
-	Player player2(500.0f, 200.0f, map, &SH);
+	Player player(600.0f, 300.0f, map, &SH, 1);
+	Player player2(500.0f, 200.0f, map, &SH, 2);
 	players[0] = &player;
 	players[1] = &player2;
 

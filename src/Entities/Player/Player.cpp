@@ -5,9 +5,16 @@
 
 Player::Player() {}
 
-Player::Player(float x, float y, Map* map, SceneHandler* SH) : Entity(map, SH)
+Player::Player(float x, float y, Map* map, SceneHandler* SH, int player_id) : Entity(map, SH)
 {
-	create_sprite("src/Entities/Player/Player1.png", sprite_id);
+	if (player_id == 1)
+	{
+		create_sprite("src/Entities/Player/Player1.png", sprite_id);
+	}
+	if (player_id == 2)
+	{
+		create_sprite("src/Entities/Player/Player2.png", sprite_id);
+	}
 	x_p = default_x = x; //starting coordinates
 	y_p = default_y = y;
 	//____Health____//
