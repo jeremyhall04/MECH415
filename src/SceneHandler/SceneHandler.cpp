@@ -25,7 +25,17 @@ float SceneHandler::get_round_timer()
 	return round_timer;
 }
 
-void SceneHandler::play_background_loop(char file_name[]) {
+void SceneHandler::play_background_multiplayer_loop(char file_name[]) {
+
+	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);
+}
+
+void SceneHandler::play_background_singleplayer_loop(char file_name[]) {
+
+	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);
+}
+
+void SceneHandler::play_background_menu_loop(char file_name[]) {
 
 	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);
 }

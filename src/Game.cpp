@@ -50,7 +50,8 @@ void main()
 
 	//_______________________________Audio init____________________
 
-	//SH.play_background_loop("Led_Zeppelin.wav");
+	if (multiplayer) { SH.play_background_multiplayer_loop("Led_Zeppelin.wav"); }
+	else { SH.play_background_singleplayer_loop("17 - Allied Combat 2.Wav"); }
 
 	//_______________________________Network init____________________________________//
 
@@ -87,7 +88,7 @@ void main()
 		activate_network();
 		activate_socket6(port, IP_address_local, sock);
 		strcpy_s(buffer_init, "Connecting....");
-		size = 16;
+		size = (4 + N_enemies ) * sizeof(float) + sizeof(double) + sizeof(bool); //calculating buffer size
 		bool connected = false;
 		is_running = false;
 
@@ -140,9 +141,10 @@ void main()
 			//____________________SENDING DATA____________________________//
 
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
-
-			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
-
+			for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
+			{
+				(*p_enemies[i]).Load_health_status_buffer(p_buffer_out, i);
+			}
 			send6(buffer_out, size, IP_address_send, sock, port);
 
 			//______________________________RECEIVE DATA__________________________________________//
@@ -163,7 +165,7 @@ void main()
 
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
-			(*p_enemies[i]).update(player, player2);
+			(*p_enemies[i]).update(player, player2, p_buffer_in, i, multiplayer);
 			if (SH.get_round_timer() < 0)
 			{
 				BH.update_enemy_bullets(p_enemies[i], &player);

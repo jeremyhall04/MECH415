@@ -145,6 +145,9 @@ void Player::read_buffer_in(char* p_buffer_in) //For player 2
 
 	pb2 = (bool*)p2;
 	has_shot = *pb2;
+	p2 += sizeof(bool);
+	//1+4*4+8 
+
 }
 
 void Player::load_buffer_out(char* p_buffer_out)
