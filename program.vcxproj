@@ -180,8 +180,8 @@
     <Image Include="src\Entities\Enemies\Turret\turret.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="..\..\..\..\..\Music\17 - Allied Combat 2.Wav" />
     <Media Include="..\..\..\..\..\Music\Led_Zeppelin.Wav" />
-    <Media Include="..\..\Week 8 L1\audio_examples\audio_example1_playsound\laser.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

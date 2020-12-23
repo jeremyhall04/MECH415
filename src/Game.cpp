@@ -52,9 +52,9 @@ void main()
 	p_enemies[2] = new Turret(200.0f, 250.0f, map, &SH);
 
 	//_______________________________Audio init____________________
-
-//	SH.play_background_loop("Led_Zeppelin.wav");
-
+	//Playing background audio, with different tracks for single and multiplayer
+	if (multiplayer) SH.play_audio_loop("Led_Zeppelin.wav");
+	else SH.play_audio_loop("17 - Allied Combat 2.wav");
 	//_______________________________Network init____________________________________//
 
 	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
@@ -66,7 +66,7 @@ void main()
 	int size; // size of sent/received message
 	int i;
 
-	//Declaring buffer loading pointers
+	//Declaring network buffer start reference pointers
 	char* p_buffer_out, * p_buffer_in;
 	p_buffer_out = buffer_out;
 	p_buffer_in = buffer_in;
@@ -81,37 +81,36 @@ void main()
 
 	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
-	//Jeremy: 2001:0:2877:7aa:3003:6f77:bd7c:618
-	//Nathan: 2001:0:2877:7aa:2cd4:6f77:476d:fceb
 
 	if (multiplayer)
 	{
-		port = 37000;//Socket 
+		//Activating network, socket for UDP6 com, and loading the initialization buffer to be sent while connecting players
+		port = 37000;//Setting port for networking
 		activate_network();
 		activate_socket6(port, IP_address_local, sock);
 		strcpy_s(buffer_init, "Connecting....");
-		size = 16;
+		size = 16;//Setting size for initial buffer while trying to connect
 		bool connected = false;
 		is_running = false;
 
-		while (!connected)
+		while (!connected)//Will continue to send messages until a message is received
 		{
-			send6(buffer_init, size, IP_address_send, sock, port);
+			send6(buffer_init, size, IP_address_send, sock, port);//sends init buffer
 			cout << "\n\nConnecting ...";
-			if (recv6(buffer_init, size, IP_address_recv, sock) > 0)
+			if (recv6(buffer_init, size, IP_address_recv, sock) > 0)//checks if any messages have been received
 			{
-				cout << "\nConnection secured from: " << IP_address_recv;
+				cout << "\nConnection secured from: " << IP_address_recv;//prints IPV6 of other player
 				connected = true;
 			}
 			Sleep(100);
 		}
-		if (connected)
+		if (connected)//Sends message once connected to ensure both players are connected
 		{
-			strcpy_s(buffer_init, "Connected!");
-			size = 11;
+			strcpy_s(buffer_init, "Connected!");//loading message to buffer after connection secured
+			size = 11;//Size of strcp_s message to be sent in buffer after connection secured
 			send6(buffer_init, size, IP_address_send, sock, port);
 			cout << "\n\nConnected";
-			is_running = true;
+			is_running = true;//starts game loop
 		}
 	}
 
@@ -121,6 +120,7 @@ void main()
 	while (is_running)
 	{
 		start = clock();
+
 
 		clear();
 		draw_sprite(map_sprite_id, 200, 200, 0, -1);
@@ -146,18 +146,18 @@ void main()
 
 			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
 
-			send6(buffer_out, size, IP_address_send, sock, port);
+			send6(buffer_out, size, IP_address_send, sock, port);//Sending player data
 
 			//______________________________RECEIVE DATA__________________________________________//
 
-			for (i = 0; i < 3; i++)
+			for (i = 0; i < 3; i++)//Loop to increase chance of package being received and read
 			{
-				while (recv6(buffer_in, size, IP_address_recv, sock) > 0)
+				while (recv6(buffer_in, size, IP_address_recv, sock) > 0)//REading all messages in port to ensure the last packet received is unpacked
 				{
-					p_buffer_in = buffer_in;
+					p_buffer_in = buffer_in;//setting reference pointer to start of buffer
 				}
 			}
-			player2.update(p_buffer_in);
+			player2.update(p_buffer_in);// Unpacking received player packet
 			BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
 		}
 
@@ -206,7 +206,7 @@ void main()
 
 	if (multiplayer)
 	{
-		deactivate_socket6(sock);
-		deactivate_network();
+		deactivate_socket6(sock);//deactivates socket used for network
+		deactivate_network();//deactivates network
 	}
 }

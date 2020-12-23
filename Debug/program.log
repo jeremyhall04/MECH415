@@ -1,2 +1,25 @@
-﻿  Map.cpp
-  program.vcxproj -> C:\Users\Jeremy\Desktop\Coding\00_0GAME - Current\.\Debug\program.exe
+﻿  Bullet.cpp
+  BulletHandler.cpp
+  Enemy.cpp
+  Smallboy.cpp
+  Turret.cpp
+  Entity.cpp
+  Player.cpp
+  Game.cpp
+  GameObject.cpp
+  Hitbox.cpp
+  Levels.cpp
+  Map.cpp
+  Tile.cpp
+  SceneHandler.cpp
+  timer.cpp
+  UDP_com.cpp
+C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\UDP_com.cpp(77,35): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\UDP_com.cpp(131,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\UDP_com.cpp(149,30): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  UDP_com6.cpp
+  Generating Code...
+Bullet.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+2D_graphics_ver1.lib(2D_graphics.obj) : warning LNK4099: PDB 'program.pdb' was not found with '2D_graphics_ver1.lib(2D_graphics.obj)' or at 'C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\Debug\program.pdb'; linking object as if no debug info
+2D_graphics_ver1.lib(shared_memory.obj) : warning LNK4099: PDB 'program.pdb' was not found with '2D_graphics_ver1.lib(shared_memory.obj)' or at 'C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\Debug\program.pdb'; linking object as if no debug info
+  program.vcxproj -> C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\.\Debug\program.exe
