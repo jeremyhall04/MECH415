@@ -77,7 +77,7 @@ void main()
 
 	char IP_address_recv[NMAX_ADDRESS];
 
-	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
+	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:1473:6f77:bd7d:a656"; //Nathan
 
 	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
@@ -168,7 +168,7 @@ void main()
 		}
 
 			//Enemies
-		float round_timer = SH.get_round_timer();
+
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
 			Enemy* curEnemy = p_enemies[i];
@@ -184,6 +184,21 @@ void main()
 
 		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 		//cout << "\nduration = " << duration;
+	}
+
+	//__________Clearing Memory_____________//
+	for (int i = 0; i < N_enemies; i++)
+	{
+		if (p_enemies[i] == NULL)
+		{
+			cout << "\nError Deleting enemies[" << i << "]";
+			return;
+		}
+		else
+		{
+			delete p_enemies[i];
+			p_enemies[i] = NULL;
+		}
 	}
 
 		//___________END OF GAME LOOP______________//

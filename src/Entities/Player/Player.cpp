@@ -13,7 +13,7 @@ Player::Player(float x, float y, Map* map, SceneHandler* SH) : Entity(map, SH)
 	//____Health____//
 	maxHealth = 100.0f;
 	health = default_health = maxHealth;
-	R = 40.0f; // Player Hitbox Radius
+	R = 45.0f; // Player Hitbox Radius
 	width = height = (double)R;
 	for (int i = 0; i < 3; i++) {
 		r[i] = 1.0;
@@ -59,6 +59,7 @@ void Player::update(float cursorX, float cursorY) // Updates player1 state
 void Player::update(char* buffer_in) // Used for updating player2 (after read_buffer_in)
 {
 	read_buffer_in(buffer_in);
+
 	if (!is_alive)
 	{
 		death_timer -= death_dt;
@@ -212,20 +213,36 @@ bool Player::tile_collision_test(float x, float y) // test the proposed position
 	if (y + R > get_screen_height() || y - R < 0 ||
 		x + R > get_screen_width() || x - R < 0)			//checking collision with window size
 	{
-		//printf("Map bounds collision\n");
 		collision = true;
 	}
-
+	//if (!collision)
+	//{
+	//	for (int i = 0; i < map->n_tiles; i++)		//checking collision with tiles
+	//	{
+	//		collision = map->tiles[i]->collision_test(x, y, R);
+	//		if (collision)
+	//		{
+	//			break;
+	//		}
+	//	}
+	//}
 	if (!collision)
 	{
-		for (int i = 0; i < map->n_tiles; i++)		//checking collision with tiles
+		Hitbox* player_hb = new Hitbox(x, y, this->width, this->height);
+		if (player_hb == NULL)
 		{
-			collision = map->tiles[i]->collision_test(x, y, R);
-			if (collision)
+			printf("\nError in tile_collision test, nullptr\n");
+			return false;
+		}
+		for (int i = 0; i < map->n_tiles; i++)
+		{
+			Hitbox* tile_hb = (Hitbox*)map->tiles[i];
+			if (tile_hb->collision_test(player_hb)) 
 			{
-				break;
+				collision = true;
 			}
 		}
+		delete player_hb;
 	}
 	return collision;
 }

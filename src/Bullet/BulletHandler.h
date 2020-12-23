@@ -7,8 +7,9 @@ class BulletHandler
 public:
 	BulletHandler(Map* map);
 	void update_entity_bullets(Entity* shooter, Entity** targets, int N_targets);
-	void map_collision_check(Entity* shooter);
+	bool map_collision_check(Hitbox* bullet_hb);
 	void bullet_collided(Entity* shooter, int index);
+
 protected:
 	Map* map;
 	float ScreenWidth, ScreenHeight;

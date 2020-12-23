@@ -11,7 +11,7 @@ Smallboy::Smallboy(float x, float y, Map* map, SceneHandler* SH) : Enemy(map, SH
 	//____Health____//
 	maxHealth = 70.0f;
 	health = maxHealth;
-	R = 40.0f;
+	R = 50.0f;
 	width = height = R;
 	for (int i = 0; i < 3; i++) {
 		r[i] = 1.0;

@@ -41,17 +41,13 @@ float Hitbox::get_top()
 	return y_p + (float)(height / 2.0);
 }
 
-bool Hitbox::collision_test(float x, float y, float radius)
+bool Hitbox::collision_test(float x, float y)
 {
 	bool will_collide = false;
-	bool coll1 = false;
-	bool coll2 = false;
-	bool coll3 = false;
-	bool coll4 = false;
-	if (x + radius >= get_left() &&
-		x - radius <= get_right() &&
-		y + radius >= get_bottom() &&
-		y - radius <= get_top())
+	if (x >= get_left() &&
+		x <= get_right() &&
+		y >= get_bottom() &&
+		y <= get_top())
 	{
 		will_collide = true;
 	}
@@ -60,13 +56,13 @@ bool Hitbox::collision_test(float x, float y, float radius)
 
 bool Hitbox::collision_test(Hitbox* hb)
 {
-	bool will_collide = false;
-	if (hb->get_right() >= get_left() &&
-		hb->get_left() <= get_right() &&
-		hb->get_top() >= get_bottom() &&
-		hb->get_bottom() <= get_top())
+	bool collided = false;
+	if (collision_test(hb->get_left(), hb->get_top()) ||
+		collision_test(hb->get_left(), hb->get_bottom()) || 
+		collision_test(hb->get_right(), hb->get_top()) || 
+		collision_test(hb->get_right(), hb->get_bottom()))	// Checking if corners of hb is within this.hb
 	{
-		will_collide = true;
+		collided = true;
 	}
-	return will_collide;
+	return collided;
 }
