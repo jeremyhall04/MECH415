@@ -1,8 +1,6 @@
 ﻿  Bullet.cpp
   BulletHandler.cpp
   Enemy.cpp
-C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Entities\Enemies\Enemy.cpp(75,6): warning C4101: 'i': unreferenced local variable
-C:\Users\Nathan Egener\Documents\University\MECH 415\00_current game files (for real)\MECH415\src\Entities\Enemies\Enemy.cpp(141,6): warning C4101: 'i': unreferenced local variable
   Smallboy.cpp
   Turret.cpp
   Entity.cpp

@@ -72,12 +72,11 @@ void Enemy::update(Player p1, Player p2, char* p_buffer_in, int enemy, bool mult
 	if (multiplayer) {
 	char* p4;
 	float *pf4;
-	int i;
 	p4 = p_buffer_in;
 
 	p4 += (4 + enemy) * sizeof(float) + sizeof(double) + sizeof(bool);//move to enemy section of buffer
 	
-	pf4 = (float*)p4;
+	pf4 = (float*) p4;
 		
 		if (*pf4 < health){
 		health = *pf4;
@@ -138,12 +137,10 @@ void Enemy::validate_path(float path_min, float path_max)
 void Enemy::Load_health_status_buffer(char * p_buffer_out, int enemy) {
 	char* p3;
 	float* pf3;
-	int i;
 	
 	p3 = p_buffer_out;
 	p3 += (4 + enemy) * sizeof(float) + sizeof(double) + sizeof(bool);
 	
 	pf3 = (float*)p3;
 	*pf3 = health;
-		
 }
