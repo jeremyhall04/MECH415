@@ -14,20 +14,21 @@ class Entity: public GameObject
 public:
 	Entity();
 	Entity(Map* map, SceneHandler* SH);
+	~Entity();
+	void initialize();
+	void draw() override;
+	void draw_healthbar();
 	void shoot();
 	void damage(Bullet b);
-	void initialize(); // This function is used to re-initialize the player after he dies
-	void draw() override; // "override" indicates that draw() is the Entity function (not GameObject)
-	void draw_healthbar();
 
 	bool is_alive;
 	float facing_dir[2], health, R; //R is the circular hitbox radius for the object
-	int i_bullet; //index @ number of active bullets in bullets[]
+	int i_bullet; //index of number of active bullets in bullets[]
 	Bullet* bullets[N_MAX_BULLETS] = { NULL };
 protected:
+	float get_screen_width();
+	float get_screen_height();
 	SceneHandler* SH;
 	Map* map;
 	float default_health, maxHealth, default_x, default_y, max_speed, bullet_damage, bullet_speed;
-	float get_screen_width();
-	float get_screen_height();
 };

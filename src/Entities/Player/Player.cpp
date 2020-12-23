@@ -26,27 +26,43 @@ Player::Player(float x, float y, Map* map, SceneHandler* SH) : Entity(map, SH)
 	bullet_speed = 50.0f;
 }
 
-void Player::update(float cursorX, float cursorY) // Updates player1 state
+Player::~Player(){}
+
+/// <summary>
+/// Update player1 state.
+/// 
+/// Calculate when to "respawn" the player with respawn_timer.
+/// 
+/// Takes x,y coordinates of the cursor position and calculates the direction vector
+/// that the player sprite should aim towards to face the cursor.
+/// 
+/// Get inputs from keyboard to update player position, and draws the player sprite.
+/// 
+/// Determine the fire rate with bullet_timer.
+/// </summary>
+/// <param name="cursorX"></param>
+/// <param name="cursorY"></param>
+void Player::update(float cursorX, float cursorY)
 {
 	if (!is_alive)
 	{
-		death_timer -= death_dt;
-		if (death_timer <= 0.0f)
+		respawn_timer -= respawn_dt;
+		if (respawn_timer <= 0.0f)
 		{
-			death_timer = 5.0f; //reset timer
-			initialize();
+			respawn_timer = RESPAWN_DELAY; //reset respawn timer
+			initialize(); 
 		}
 		return;
 	}
 
 	if (has_shot)
 	{
-		has_shot = false;
+		has_shot = false; // is passed through network to tell other client that player has shot
 	}
 
-	check_player_inputs();	// Test new position (after keyboard input) for collisions with map tiles
+	check_player_inputs();
 
-	facing(cursorX, cursorY);
+	facing(cursorX, cursorY);	
 
 	draw();
 
@@ -56,16 +72,17 @@ void Player::update(float cursorX, float cursorY) // Updates player1 state
 		bullet_timer = 1.0;
 }
 
-void Player::update(char* buffer_in) // Used for updating player2 (after read_buffer_in)
+// Used for updating player2 (after read_buffer_in)
+void Player::update(char* buffer_in)
 {
 	read_buffer_in(buffer_in);
 
 	if (!is_alive)
 	{
-		death_timer -= death_dt;
-		if (death_timer <= 0.0f)
+		respawn_timer -= respawn_dt;
+		if (respawn_timer <= 0.0f)
 		{
-			death_timer = 5.0f; //reset timer
+			respawn_timer = 5.0f; //reset timer
 			initialize();
 		}
 		return;
@@ -79,7 +96,8 @@ void Player::update(char* buffer_in) // Used for updating player2 (after read_bu
 	draw();
 }
 
-void Player::check_player_inputs() // Gets keyboard inputs and tests if collision will occur
+// Gets keyboard inputs and tests if collision will occur
+void Player::check_player_inputs()
 {
 	float new_x_p = x_p;
 	float new_y_p = y_p;
@@ -120,7 +138,9 @@ void Player::check_player_inputs() // Gets keyboard inputs and tests if collisio
 	}
 }
 
-void Player::facing(float cursorX, float cursorY)	// Calculates the sprite angle (theta) //Calculates the unit vector between the cursor and the player 
+// Calculates the unit vector between the cursor and the player (facing_dir) and then assigns
+// the sprite angle theta to match.
+void Player::facing(float cursorX, float cursorY)
 {
 	float diff_x, diff_y, len;
 	diff_x = cursorX - x_p;
@@ -140,7 +160,8 @@ void Player::facing(float cursorX, float cursorY)	// Calculates the sprite angle
 	}
 }
 
-void Player::read_buffer_in(char* p_buffer_in) //Reads buffer_in and updates player2 state
+// Reads buffer_in and updates player2 state
+void Player::read_buffer_in(char* p_buffer_in)
 {
 	char* p2;
 	float* pf2;
@@ -173,7 +194,8 @@ void Player::read_buffer_in(char* p_buffer_in) //Reads buffer_in and updates pla
 	has_shot = *pb2;
 }
 
-void Player::load_buffer_out(char* p_buffer_out) //Loads player state into buffer_out to send to network
+// Loads player state into buffer_out to send to network
+void Player::load_buffer_out(char* p_buffer_out)
 {
 	char* p;
 	float* pf;
@@ -207,25 +229,24 @@ void Player::load_buffer_out(char* p_buffer_out) //Loads player state into buffe
 	*pb = has_shot;
 }
 
-bool Player::tile_collision_test(float x, float y) // test the proposed position for collision with all the map's current list of tiles
+/// <summary>
+/// Test the provisional player position for collision with the edges of the screen
+/// and the map's current list of tiles.
+/// 
+/// If function returns false, then the provisional player position is validated and the player
+/// can move in that direction. Otherwise a collision occurs.
+/// </summary>
+/// <param name="x"> provisional player x </param>
+/// <param name="y"> provisional player y </param>
+/// <returns> if the player will collide </returns>
+bool Player::tile_collision_test(float x, float y)
 {
 	bool collision = false;
 	if (y + R > get_screen_height() || y - R < 0 ||
-		x + R > get_screen_width() || x - R < 0)			//checking collision with window size
+		x + R > get_screen_width() || x - R < 0)	// Checking for collision against window size
 	{
 		collision = true;
 	}
-	//if (!collision)
-	//{
-	//	for (int i = 0; i < map->n_tiles; i++)		//checking collision with tiles
-	//	{
-	//		collision = map->tiles[i]->collision_test(x, y, R);
-	//		if (collision)
-	//		{
-	//			break;
-	//		}
-	//	}
-	//}
 	if (!collision)
 	{
 		Hitbox* player_hb = new Hitbox(x, y, this->width, this->height);
@@ -237,7 +258,7 @@ bool Player::tile_collision_test(float x, float y) // test the proposed position
 		for (int i = 0; i < map->n_tiles; i++)
 		{
 			Hitbox* tile_hb = (Hitbox*)map->tiles[i];
-			if (tile_hb->collision_test(player_hb)) 
+			if (tile_hb->collision_test(player_hb))		// Checking for collision against tiles
 			{
 				collision = true;
 			}

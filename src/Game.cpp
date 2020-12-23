@@ -77,7 +77,7 @@ void main()
 
 	char IP_address_recv[NMAX_ADDRESS];
 
-	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:1473:6f77:bd7d:a656"; //Nathan
+	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
 
 	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
@@ -147,24 +147,18 @@ void main()
 			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size
 
 			send6(buffer_out, size, IP_address_send, sock, port);
-			bool is_recv = false;
+
 			//______________________________RECEIVE DATA__________________________________________//
+
 			for (i = 0; i < 3; i++)
 			{
 				while (recv6(buffer_in, size, IP_address_recv, sock) > 0)
 				{
 					p_buffer_in = buffer_in;
-					//cout << "\nrecv6 successful";
-					is_recv = true;
-				}
-				if (is_recv)
-				{
-					//player2.read_buffer_in(p_buffer_in); //Passing in the buffer with received data
-					player2.update(p_buffer_in);
-					BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
-					break;
 				}
 			}
+			player2.update(p_buffer_in);
+			BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
 		}
 
 			//Enemies
@@ -172,7 +166,7 @@ void main()
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
 			Enemy* curEnemy = p_enemies[i];
-			curEnemy->update(player, player2);
+			curEnemy->update(&player, &player2);
 			BH.update_entity_bullets((Entity*)curEnemy, (Entity**)players, N_players);
 		}
 
@@ -186,15 +180,13 @@ void main()
 		//cout << "\nduration = " << duration;
 	}
 
+	//_______________________________END OF GAME LOOP__________________________________//
+
 	//__________Clearing Memory_____________//
+
 	for (int i = 0; i < N_enemies; i++)
 	{
-		if (p_enemies[i] == NULL)
-		{
-			cout << "\nError deleting enemies[" << i << "]";
-			return;
-		}
-		else
+		if (p_enemies[i] != NULL)
 		{
 			delete p_enemies[i];
 			p_enemies[i] = NULL;
@@ -209,11 +201,12 @@ void main()
 	else
 	{
 		delete map;
+		map = NULL;
 	}
 
-		//___________END OF GAME LOOP______________//
-	deactivate_socket6(sock);
-
-	// shutdown the socket API
-	deactivate_network();
+	if (multiplayer)
+	{
+		deactivate_socket6(sock);
+		deactivate_network();
+	}
 }

@@ -6,11 +6,24 @@ Map::Map()
 {
 	get_screen_size();
 	n_tiles = 0;
-	tile_cols = TILES_X;
-	tile_rows = TILES_Y;
 	generate_map();
 }
 
+Map::~Map()
+{
+	for (int i = 0; i < N_MAX_TILES; i++)
+	{
+		if (tiles[i] != NULL)
+		{
+			delete tiles[i];
+			tiles[i] = NULL;
+		}
+	}
+}
+
+/// <summary>
+/// Reads the screen width and height from the DirectX window text file.
+/// </summary>
 void Map::get_screen_size()
 {
 	std::ifstream file;
@@ -56,6 +69,14 @@ void Map::drawMap()
 	}
 }
 
+/// <summary>
+/// Generates the tiles to be displayed in the map.
+/// 
+/// Reads through string array representing the map, where '#' character indicates a tile.
+/// 
+/// For each row, create tiles corresponding to number of consecutive '#' characters, 
+/// 
+/// </summary>
 void Map::generate_map()
 {
 	string m[] = {
@@ -79,27 +100,16 @@ void Map::generate_map()
 		"**************************************************",
 		"**************************************************",
 		"**************************************************",
-		/*"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"**************************************************"*/
 	};					
-	
-	//set tile dx and dy (tile spacing)
 	int count = 0;
 	const int rows = TILES_X, cols = TILES_Y;
 	bool btiles[rows][cols] = { 0 };
-	float dx, dy;
-	dx = screenWidth / (cols - 1); //cols - 1 so that the last column is drawn directly on the edge of the screen
-	dy = screenHeight / rows;
-	float x, y;
+	float dx, dy, x, y; 
+	// dx and dy are the tile resolution in the x and y direction.
+	// x and y are the coordinates of the center of the tile
 
+	dx = screenWidth / (cols - 1); // (cols - 1) so that the last column is drawn directly on the edge of the screen
+	dy = screenHeight / rows;
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
@@ -110,19 +120,7 @@ void Map::generate_map()
 			}
 		}
 	}
-
-	//now we have a 2D array of booleans with 1 or 0 representing where tiles should go
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			std::cout << btiles[i][j] << " ";
-		}
-		std::cout << "\n";
-	} // print bool array
-
-
-	float vWidth, vHeight;
+	float tWidth, tHeight; // Tile width and height
 	for (int i = 0; i < rows; i++)
 	{
 		count = 0;
@@ -134,44 +132,24 @@ void Map::generate_map()
 			}
 			else if (count > 0)
 			{
-				vWidth = dx * (float)count;
-				vHeight = dy;
-				x = (j * dx) - (vWidth / 2.0f);
-				y = screenHeight - (0.5f * dy) - (i * dy);
-				tiles[n_tiles] = new Tile(x, y, (double)vWidth, (double)vHeight);
+				tWidth = dx * (float)count;					// Tile width is the lenght of consecutive '#' characters (creating one tile)
+				tHeight = dy;								// Tile height is the resolution of the tile in the y
+				x = (j * dx) - (tWidth / 2.0f);				// x coordinate is the width of the tile divided by two
+				y = screenHeight - (0.5f * dy) - (i * dy);	// y coordinate is the current row from the top (minus half a tile resolution) 
+				tiles[n_tiles] = new Tile(x, y, (double)tWidth, (double)tHeight);
 				n_tiles++;
 				count = 0;
 			}
 		}
-		if (count > 0)
+		if (count > 0)		// Accounting for the last column of tiles (j = cols)
 		{
-			vWidth = dx * (float)count;
-			vHeight = dy;
-			x = ((cols - 1) * dx) - (vWidth / 2.0f);
+			tWidth = dx * (float)count;
+			tHeight = dy;
+			x = ((cols - 1) * dx) - (tWidth / 2.0f);
 			y = screenHeight - (0.5f * dy) - (i * dy);
-			tiles[n_tiles] = new Tile(x, y, (double)vWidth, (double)vHeight);
+			tiles[n_tiles] = new Tile(x, y, (double)tWidth, (double)tHeight);
 			n_tiles++;
 			count = 0;
 		}
 	}
-}
-
-int Map::win_height()
-{
-	return(int) screenHeight;
-}
-
-int Map::win_width()
-{
-	return (int) screenWidth;
-}
-
-int Map::tile_res_y()
-{
-	return tile_rows;
-}
-
-int Map::tile_res_x()
-{
-	return tile_cols;
 }

@@ -17,25 +17,40 @@ Entity::Entity(Map* map, SceneHandler* SH)
 	R = 50.0f;
 }
 
+Entity::~Entity()
+{
+	for (int i = 0; i < N_MAX_BULLETS; i++)
+	{
+		if (bullets[i] != NULL)
+		{
+			delete bullets[i];
+			bullets[i] = NULL;
+		}
+	}
+}
+
+/// Reset all properties to default (for respawning purposes).
 void Entity::initialize()
 {
 	is_alive = true;
 	health = default_health;
 	x_p = default_x;
 	y_p = default_y;
-	for (int i = 0; i < i_bullet; i++) //i_bullet is the number of active bullets
+	for (int i = 0; i < i_bullet; i++)
 	{
 		bullets[i]->is_alive = false;
 	}
 	i_bullet = 0;
 }
 
+/// Overload of the GameObject.draw() method.
 void Entity::draw()
 {
 	draw_sprite(sprite_id, x_p, y_p, theta, sprite_size);
 	draw_healthbar();
 }
 
+/// Visual display of player health.
 void Entity::draw_healthbar()
 {
 	double x1[3];
@@ -76,6 +91,10 @@ float Entity::get_screen_height()
 	return map->get_screen_height();
 }
 
+/// <summary>
+/// Create a new instance of bullet at index i_bullet if there is not one already initialized at index,
+/// but reuse (re-initialize) if memory is already allocated.
+/// </summary>
 void Entity::shoot()
 {
 	if (i_bullet >= N_MAX_BULLETS)
@@ -101,6 +120,10 @@ void Entity::shoot()
 	}
 }
 
+/// <summary>
+/// Damage entity by an amount determined by the bullet b.
+/// </summary>
+/// <param name="b"></param>
 void Entity::damage(Bullet b)
 {
 	health -= (int)b.get_damage();
