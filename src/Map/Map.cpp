@@ -59,7 +59,7 @@ float Map::get_screen_height()
 	return screenHeight;
 }
 
-void Map::drawMap()
+void Map::drawTiles()
 {
 	int i = 0;
 	while (i < n_tiles) 
@@ -83,20 +83,20 @@ void Map::generate_map()
 		"**************************************************",
 		"**************************************************",
 		"**************************************************",
+		"*******#************#*****************************",
+		"*******#************#*****************************",
+		"*******#************#*****************************",
+		"*******#************#*****************************",
+		"*******#************#################*******######",
 		"**************************************************",
 		"**************************************************",
 		"**************************************************",
 		"**************************************************",
-		"**************************************************",
-		"**************************************************",
-		"***********############***************************",
-		"******######################**********************",
-		"****************************************#####*****",
-		"***************************************###********",
-		"**************************************###*********",
-		"**************************************##**********",
-		"**************************************##**********",
-		"**************************************##**********",
+		"#################*******************#########*****",
+		"************************************#*************",
+		"****************************#########*************",
+		"************************************#*************",
+		"************************************#*************",
 		"**************************************************",
 		"**************************************************",
 		"**************************************************",
@@ -132,10 +132,10 @@ void Map::generate_map()
 			}
 			else if (count > 0)
 			{
-				tWidth = dx * (float)count;					// Tile width is the lenght of consecutive '#' characters (creating one tile)
+				tWidth = dx * (float)count;					// Tile width is the length of consecutive '#' characters, count, times the resolution of each tile (creating one tile)
 				tHeight = dy;								// Tile height is the resolution of the tile in the y
-				x = (j * dx) - (tWidth / 2.0f);				// x coordinate is the width of the tile divided by two
-				y = screenHeight - (0.5f * dy) - (i * dy);	// y coordinate is the current row from the top (minus half a tile resolution) 
+				x = (j * dx) - (tWidth / 2.0f);				// x coordinate is the current column (at the end of the tile) minus half the width of the tile.
+				y = screenHeight - (0.5f * dy) - (i * dy);	// y coordinate is the current row from the top (plus half a tile resolution) 
 				tiles[n_tiles] = new Tile(x, y, (double)tWidth, (double)tHeight);
 				n_tiles++;
 				count = 0;
@@ -145,7 +145,7 @@ void Map::generate_map()
 		{
 			tWidth = dx * (float)count;
 			tHeight = dy;
-			x = ((cols - 1) * dx) - (tWidth / 2.0f);
+			x = ((cols - 1) * dx) - (tWidth / 2.0f);		// For the end tile, the end of the tile is the end of the screen
 			y = screenHeight - (0.5f * dy) - (i * dy);
 			tiles[n_tiles] = new Tile(x, y, (double)tWidth, (double)tHeight);
 			n_tiles++;
