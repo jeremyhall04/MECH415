@@ -52,12 +52,6 @@ void main()
 	p_enemies[3] = new Largeboy(200.0f, 850.0f, map, &SH);
 	p_enemies[4] = new Cannonboy(900.0f, 100.0f, map, &SH);
 	p_enemies[5] = new Cannonboy(900.0f, 900.0f, map, &SH);
-	
-	//_______________________________Audio init______________________________//
-
-	//Playing background audio, with different tracks for single and multiplayer
-	if (multiplayer) SH.play_audio_loop("Led_Zeppelin.wav");
-	else SH.play_audio_loop("17 - Allied Combat 2.wav");
 
 	//_______________________________Network init____________________________________//
 
@@ -155,6 +149,13 @@ void main()
 	}
 
 	//____________________________________GAME LOOP_________________________________________//
+
+	// Start background music
+	if (multiplayer)
+		SH.play_audio_loop("17 - Allied Combat 2.wav");
+	else
+		SH.play_audio_loop("Led_Zeppelin.wav");
+
 
 	while (is_running)
 	{
