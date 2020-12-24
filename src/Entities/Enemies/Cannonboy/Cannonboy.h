@@ -4,5 +4,5 @@
 class Cannonboy : public Enemy
 {
 public:
-	Cannonboy(float x, float y, SceneHandler* SH);
+	Cannonboy(float x, float y, Map* map, SceneHandler* SH);
 };

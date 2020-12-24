@@ -14,4 +14,5 @@
 #include "Entities/Enemies/Turret/Turret.h"
 #include "Entities/Enemies/Smallboy/Smallboy.h"
 #include "Entities/Player/Player.h"
-
+#include "Entities/Enemies/Largeboy/Largeboy.h"
+#include "Entities/Enemies/Cannonboy/Cannonboy.h"
