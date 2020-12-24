@@ -79,27 +79,27 @@ void main()
 	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
 	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
-	int menu_option = 0;
+	char menu_option;
 
 	menu_option = SH.main_menu();
 
 	// Chose which gameplay type
 	switch (menu_option)
 	{
-	case 1:
+	case '1':
 		std::cout << "\nSingleplayer Selected";
 		is_running = true;
 		break;
-	case 2:
+	case '2':
 		std::cout << "\nMultiplayer Selected. Make sure you have the correct IPV6!";
 		multiplayer = true;
 		break;
-	case 3:
+	case '3':
 		std::cout << "\nTest mode";
 		is_running = true;
 		debugging = true;
 		break;
-	case 4:
+	case '4':
 		std::cout << "\nExiting";
 		is_running = false;
 		break;

@@ -81,16 +81,15 @@ void SceneHandler::play_audio_loop(char file_name[])
 int SceneHandler::main_menu()
 {
 	std::cout << "\nMain Menu";
-	int selection = 0;
-	while (selection == 0)
+	while (1)
 	{
+		char selection;
 		std::cout << "\nType in an option: \n(1) Play Singleplayer\t(2) Play Multiplayer\t(3) Test Mode (SinglePlayer, No Enemies)\t(4) Exit\n";
 		std::cin >> selection;
-		if (selection != 1 && selection != 2 && selection != 3 && selection != 4)
+		if (selection == '1' || selection == '2' || selection == '3' || selection == '4')
 		{
-			std::cout << "\nError, invalid input";
-			selection = 0;
+			return selection;
 		}
+		std::cout << "\nError, invalid input";
 	}
-	return selection;
 }
