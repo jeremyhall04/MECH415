@@ -10,7 +10,7 @@ void main()
 	//_________________________GAME SETTINGS______________________________//
 
 	bool is_running = false; // Set true in menu to allow game to run
-	bool multiplayer = false; // Set to true if you want to play multiplayer
+	bool multiplayer = true; // Set to true if you want to play multiplayer
 	bool debugging = false; // Set to true if you don't want enemies to spawn
 
 	//_________________________________Game Init________________________________________//
@@ -87,7 +87,7 @@ void main()
 
 	int menu_option = 0;
 
-	menu_option = SH.main_menu();
+	/*menu_option = SH.main_menu();
 
 	switch (menu_option)
 	{
@@ -108,7 +108,7 @@ void main()
 		std::cout << "\nExiting";
 		is_running = false;
 		break;
-	}
+	}*/
 
 	if (multiplayer)
 	{
@@ -141,7 +141,7 @@ void main()
 			is_running = true;//starts game loop
 		}
 
-		size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); // Player state package size
+		//size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); // Player state package size
 
 	}
 
@@ -176,6 +176,7 @@ void main()
 			//________________________SENDING DATA______________________________//
 
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
+			size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); // Player state package size
 			send6(buffer_out, size, IP_address_send, sock, port);//Sending player data
 
 			//________________________RECEIVE DATA______________________________//
