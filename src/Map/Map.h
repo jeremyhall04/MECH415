@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Tile.h"
+#include "../Hitbox/Hitbox.h"
 #define N_MAX_TILES 1000
 #define TILES_X 20
 #define TILES_Y 50
@@ -14,12 +14,10 @@ public:
 	Map();
 	~Map();
 	void generate_map();
-	void drawTiles();
 	float get_screen_width();
 	float get_screen_height();
-
-	int n_tiles; // Number of active tiles
-	Tile* tiles[N_MAX_TILES] = { NULL };
+	int n_hb; // Number of Hitboxes
+	Hitbox* hitboxes[N_MAX_TILES] = { NULL };
 protected:
 	int map_sprite_id;
 	void get_screen_size();

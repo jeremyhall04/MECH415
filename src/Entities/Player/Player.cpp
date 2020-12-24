@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <cmath>
+#include <iostream>
 #include "Player.h"
 #include "../../../2D_graphics.h"
 
@@ -286,13 +287,12 @@ bool Player::tile_collision_test(float x, float y)
 		Hitbox* player_hb = new Hitbox(x, y, this->width, this->height);
 		if (player_hb == NULL)
 		{
-			printf("\nError in tile_collision test, nullptr\n");
+			std::cout << "\nError in tile_collision test, nullptr\n";
 			return false;
 		}
-		for (int i = 0; i < map->n_tiles; i++)
+		for (int i = 0; i < map->n_hb; i++)
 		{
-			Hitbox* tile_hb = (Hitbox*)map->tiles[i];
-			if (tile_hb->collision_test(player_hb))		// Checking for collision against tiles
+			if (map->hitboxes[i]->collision_test(player_hb))
 			{
 				collision = true;
 			}

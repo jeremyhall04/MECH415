@@ -60,9 +60,9 @@ void BulletHandler::update_entity_bullets(Entity* shooter, Entity** targets, int
 bool BulletHandler::map_collision_check(Hitbox* bullet_hb)
 {
 	bool is_collided = false;
-	for (int j = 0; j < map->n_tiles; j++)  //Checking collisions against tiles
+	for (int j = 0; j < map->n_hb; j++)  //Checking collisions against tiles
 	{
-		Tile* curTile = map->tiles[j];
+		/*Tile* curTile = map->tiles[j];
 		if (curTile != NULL)
 		{
 			if (curTile->collision_test(bullet_hb))
@@ -70,6 +70,12 @@ bool BulletHandler::map_collision_check(Hitbox* bullet_hb)
 				is_collided = true;
 				break;
 			}
+		}*/
+		Hitbox* curHb = map->hitboxes[j];
+		if (curHb->collision_test(bullet_hb))
+		{
+			is_collided = true;
+			break;
 		}
 	}
 	if (!is_collided)						//Checking collisions against boundaries
