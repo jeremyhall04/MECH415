@@ -1,18 +1,12 @@
 #include "Header.h"
-#include <ctime>
 #include "../UDP_com.h"
 #include "../UDP_com6.h"
 #include "../2D_graphics.h"
-
-#include "Bullet/BulletHandler.h"
 
 using namespace std;
 
 void main()
 {
-	clock_t start;
-	double duration;
-
 	//_________________________________Game Init________________________________________//
 	SceneHandler SH;
 	Map* map = new Map();
@@ -121,9 +115,6 @@ void main()
 
 	while (is_running)
 	{
-		start = clock();
-
-
 		clear();
 		draw_sprite(map_sprite_id, 200, 200, 0, -1);
 		GetCursorPos(&pt);
@@ -172,9 +163,6 @@ void main()
 		SH.round_timer_count(); //round coundown timer
 
 		update(); //update 2D graphics
-
-		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
-		//cout << "\nduration = " << duration;
 	}
 
 	//_______________________________END OF GAME LOOP__________________________________//
