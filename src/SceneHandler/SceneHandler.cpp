@@ -58,10 +58,7 @@ void SceneHandler::display_countdown()
 	}
 }
 
-/// <summary>
-/// This function plays the audio filed passed to it 
-/// </summary>
-/// <param name="file_name"> The wav file to be played is passed as the function argument </param>
+/// Plays the audio (.wav) filed passed to it 
 void SceneHandler::play_audio_loop(char file_name[]) 
 {
 	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);

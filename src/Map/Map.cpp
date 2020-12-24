@@ -2,24 +2,23 @@
 
 using namespace std;
 
+/// <summary>
+/// Map constructor.
+/// 
+/// Reads from DirectX's window.txt to retrieve the screen width and height.
+/// 
+/// Generates map.
+/// </summary>
 Map::Map()
 {
 	get_screen_size();
-	//n_tiles = 0;
 	n_hb = 0;
 	generate_map();
 }
 
+/// Map destructor
 Map::~Map()
 {
-	/*for (int i = 0; i < N_MAX_TILES; i++)
-	{
-		if (tiles[i] != NULL)
-		{
-			delete tiles[i];
-			tiles[i] = NULL;
-		}
-	}*/
 	for (int i = 0; i < N_MAX_TILES; i++)
 	{
 		if (hitboxes[i] != NULL)
@@ -69,10 +68,10 @@ float Map::get_screen_height()
 /// <summary>
 /// Generates a Tile map according to an array of strings.
 /// 
-/// Reads through string array where '#' character indicates a wall/Tile.
+/// Reads through string array where '#' character indicates a tile. (***NOTE: tile describes a Hitbox object)
 /// 
 /// For each row, create tiles corresponding to number of consecutive '#' characters.
-/// aka. Tile width is the number of consecutive tiles (count) multiplied by the width of the screen resolution (dx)
+/// aka. The width of the tile (A.K.A. the Hitbox instance) is the number of consecutive tiles (count) multiplied by the width of the screen resolution (dx)
 /// </summary>
 void Map::generate_map()
 {
@@ -134,7 +133,6 @@ void Map::generate_map()
 				tHeight = dy;								// Tile height is the resolution of the tile in the y
 				x = (j * dx) - (tWidth / 2.0f);				// x coordinate is the current column (at the end of the tile) minus half the width of the tile.
 				y = screenHeight - (0.5f * dy) - (i * dy);	// y coordinate is the current row from the top (plus half a tile resolution) 
-				//tiles[n_tiles] = new Tile(x, y, (double)tWidth, (double)tHeight);
 				hitboxes[n_hb] = new Hitbox(x, y, (double)tWidth, (double)tHeight);
 				n_hb++;
 				count = 0;
@@ -146,7 +144,6 @@ void Map::generate_map()
 			tHeight = dy;
 			x = ((cols - 1) * dx) - (tWidth / 2.0f);	// For the end tile, the end of the tile is the end of the screen
 			y = screenHeight - (0.5f * dy) - (i * dy);
-			//tiles[n_tiles] = new Tile(x, y, (double)tWidth, (double)tHeight);
 			hitboxes[n_hb] = new Hitbox(x, y, (double)tWidth, (double)tHeight);
 			n_hb++;
 			count = 0;
