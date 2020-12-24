@@ -130,14 +130,15 @@ void main()
 				connected = true;
 			}
 			Sleep(100);
-			if (connected) // Send message once connection acheived to allow other client to move beyond the connecting stage
-			{
-				strcpy_s(buffer_init, "Connected!"); // Loading message to buffer after connection secured
-				size = 11; // Size of strcp_s message to be sent in buffer after connection secured
-				send6(buffer_init, size, IP_address_send, sock, port);
-				cout << "\n\nConnected";
-				is_running = true;//starts game loop
-			}
+		}
+
+		if (connected) // Send message once connection acheived to allow other client to move beyond the connecting stage
+		{
+			strcpy_s(buffer_init, "Connected!"); // Loading message to buffer after connection secured
+			size = 11; // Size of strcp_s message to be sent in buffer after connection secured
+			send6(buffer_init, size, IP_address_send, sock, port);
+			cout << "\n\nConnected";
+			is_running = true;//starts game loop
 		}
 
 		size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); // Player state package size
