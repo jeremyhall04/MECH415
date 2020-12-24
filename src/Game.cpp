@@ -7,12 +7,17 @@ using namespace std;
 
 void main()
 {
+	//_________________________GAME SETTINGS______________________________//
+
+	bool multiplayer = false; // Set to true if you want to play multiplayer
+	bool debugging = false; // Set to true if you don't want enemies to spawn
+
 	//_________________________________Game Init________________________________________//
-	SceneHandler SH;
+
 	Map* map = new Map();
+	SceneHandler SH(map);
 	BulletHandler BH(map);
 	bool is_running = true;
-	bool multiplayer = false;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
@@ -39,19 +44,29 @@ void main()
 		player2.is_alive = false;
 	}
 
-	const int N_enemies = 6;//Declaring number of enemies
-	Enemy* p_enemies[N_enemies];//Declaring array of enemies
-	p_enemies[0] = new Smallboy(700.0f, 500.0f, map, &SH);//declaring enemy type and starting state
+	const int N_enemies = 6;
+	Enemy* p_enemies[N_enemies];
+	p_enemies[0] = new Smallboy(700.0f, 500.0f, map, &SH); //Declaring Enemy type
 	p_enemies[1] = new Turret(300.0f, 500.0f, map, &SH);
 	p_enemies[2] = new Turret(200.0f, 250.0f, map, &SH);
 	p_enemies[3] = new Largeboy(200.0f, 850.0f, map, &SH);
 	p_enemies[4] = new Cannonboy(900.0f, 100.0f, map, &SH);
 	p_enemies[5] = new Cannonboy(900.0f, 900.0f, map, &SH);
 
-	//_______________________________Audio init____________________
+	if (debugging)
+	{
+		for (int i = 0; i < N_enemies; i++)
+		{
+			p_enemies[i]->is_alive = false;
+		}
+	}
+	
+	//_______________________________Audio init______________________________//
+
 	//Playing background audio, with different tracks for single and multiplayer
 	if (multiplayer) SH.play_audio_loop("Led_Zeppelin.wav");
 	else SH.play_audio_loop("17 - Allied Combat 2.wav");
+
 	//_______________________________Network init____________________________________//
 
 	char buffer_init[NMAX_UDP_BUFFER];//Buffer for initial connection establishment
@@ -154,8 +169,7 @@ void main()
 			BH.update_entity_bullets((Entity*)&player2, (Entity**)p_enemies, N_enemies);
 		}
 
-			//Running update for all enemy entities and bullet collision
-
+			//Enemies
 		for (int i = 0; i < N_enemies; i++) //using array of pointer enemies
 		{
 			Enemy* curEnemy = p_enemies[i];
@@ -165,12 +179,14 @@ void main()
 
 		SH.round_timer_count(); //round coundown timer
 
+		SH.display_countdown();
+
 		update(); //update 2D graphics
 	}
 
 	//_______________________________END OF GAME LOOP__________________________________//
 
-	//__________Clearing Memory_____________//
+	// Clearing dynamically allocated memory
 
 	for (int i = 0; i < N_enemies; i++)
 	{

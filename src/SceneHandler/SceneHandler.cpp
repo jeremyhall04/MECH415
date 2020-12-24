@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "../../2D_graphics.h"
 
 #include <Windows.h>
 #include <mmsystem.h> // For audio functions
@@ -10,12 +11,16 @@
 /// <summary>
 /// Constructor initializes round_timer
 /// </summary>
-SceneHandler::SceneHandler() { round_timer = COUNTDOWN_TIMER_START; }
+SceneHandler::SceneHandler(Map* map) 
+{ 
+	this->map = map;
+	round_timer = COUNTDOWN_TIMER_START; 
+}
 
 /// <summary>
 /// Deconstructor for SceneHandler class
 /// </summary>
-SceneHandler::~SceneHandler(){}
+SceneHandler::~SceneHandler() {}
 
 /// <summary>
 /// Decreases round timer by dt
@@ -41,6 +46,21 @@ void SceneHandler::round_timer_count()
 float SceneHandler::get_round_timer()
 {
 	return round_timer;
+}
+
+/// Returns the round timer in seconds
+int SceneHandler::get_round_timer_secs()
+{
+	return round_timer;
+}
+
+void SceneHandler::display_countdown()
+{
+	if (get_round_timer() > 0.0f)
+	{
+		text("Round Begins In:", (double)map->get_screen_width() * 0.20, (double)map->get_screen_height() * 0.55, 1.5);
+		text(get_round_timer_secs() + 1, (double)map->get_screen_width() * 0.60, (double)map->get_screen_height() * 0.55, 1.5);
+	}
 }
 
 /// <summary>

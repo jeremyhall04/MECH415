@@ -31,6 +31,7 @@ void BulletHandler::update_entity_bullets(Entity* shooter, Entity** targets, int
 		for (int j = 0; j < N_targets; j++) 	// Checking collision against targets hitbox
 		{
 			Entity* curTarget = targets[j];
+
 			if (!curTarget->is_alive)
 				continue;
 			if (curTarget->collision_test(bullet_hb))
@@ -39,7 +40,7 @@ void BulletHandler::update_entity_bullets(Entity* shooter, Entity** targets, int
 				bullet_collided(shooter, i);
 				break;
 			}
-		}
+	}
 		if (curBullet->is_alive && map_collision_check(bullet_hb)) // Checking collision against map
 		{
 			bullet_collided(shooter, i);
