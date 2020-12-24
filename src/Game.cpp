@@ -39,11 +39,14 @@ void main()
 		player2.is_alive = false;
 	}
 
-	const int N_enemies = 3;
+	const int N_enemies = 6;
 	Enemy* p_enemies[N_enemies];
 	p_enemies[0] = new Smallboy(700.0f, 500.0f, map, &SH);
 	p_enemies[1] = new Turret(300.0f, 500.0f, map, &SH);
 	p_enemies[2] = new Turret(200.0f, 250.0f, map, &SH);
+	p_enemies[3] = new Largeboy(200.0f, 850.0f, map, &SH);
+	p_enemies[4] = new Cannonboy(900.0f, 100.0f, map, &SH);
+	p_enemies[5] = new Cannonboy(900.0f, 900.0f, map, &SH);
 
 	//_______________________________Audio init____________________
 	//Playing background audio, with different tracks for single and multiplayer
