@@ -2,8 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+
 #include "../../2D_graphics.h"
 
+//#include <Windows.h>
 #include <Windows.h>
 #include <mmsystem.h> // For audio functions
 #pragma comment(lib, "winmm.lib") // links a windows library
@@ -17,9 +19,8 @@ SceneHandler::SceneHandler(Map* map)
 	round_timer = COUNTDOWN_TIMER_START; 
 }
 
-/// <summary>
+
 /// Deconstructor for SceneHandler class
-/// </summary>
 SceneHandler::~SceneHandler() {}
 
 /// <summary>
@@ -51,7 +52,7 @@ float SceneHandler::get_round_timer()
 /// Returns the round timer in seconds
 int SceneHandler::get_round_timer_secs()
 {
-	return round_timer;
+	return (int)round_timer;
 }
 
 // Displays the countdown timer before the game begins
@@ -70,6 +71,22 @@ void SceneHandler::display_countdown()
 /// <param name="file_name"> The wav file to be played is passed as the function argument </param>
 void SceneHandler::play_audio_loop(char file_name[]) 
 {
-
 	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);
+}
+
+int SceneHandler::main_menu()
+{
+	std::cout << "\nMain Menu";
+	int selection = 0;
+	while (selection == 0)
+	{
+		std::cout << "\nType in an option: \n(1) Play Singleplayer\t(2) Play Multiplayer\t(3) Test Mode (SinglePlayer, No Enemies)\t(4) Exit\n";
+		std::cin >> selection;
+		if (selection != 1 && selection != 2 && selection != 3 && selection != 4)
+		{
+			std::cout << "\nError, invalid input";
+			selection = 0;
+		}
+	}
+	return selection;
 }

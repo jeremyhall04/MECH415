@@ -9,6 +9,7 @@ void main()
 {
 	//_________________________GAME SETTINGS______________________________//
 
+	bool is_running = false; // Set true in menu to allow game to run
 	bool multiplayer = false; // Set to true if you want to play multiplayer
 	bool debugging = false; // Set to true if you don't want enemies to spawn
 
@@ -17,7 +18,6 @@ void main()
 	Map* map = new Map();
 	SceneHandler SH(map);
 	BulletHandler BH(map);
-	bool is_running = true;
 
 	HWND hwnd = FindWindow(NULL, TEXT("DirectX window"));
 	POINT pt; //Cursor position
@@ -52,14 +52,6 @@ void main()
 	p_enemies[3] = new Largeboy(200.0f, 850.0f, map, &SH);
 	p_enemies[4] = new Cannonboy(900.0f, 100.0f, map, &SH);
 	p_enemies[5] = new Cannonboy(900.0f, 900.0f, map, &SH);
-
-	if (debugging)
-	{
-		for (int i = 0; i < N_enemies; i++)
-		{
-			p_enemies[i]->is_alive = false;
-		}
-	}
 	
 	//_______________________________Audio init______________________________//
 
@@ -93,18 +85,42 @@ void main()
 	char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:2cd4:6f77:476d:fceb"; //Nathan
 	//char IP_address_send[NMAX_ADDRESS] = "2001:0:2877:7aa:3003:6f77:bd7c:618"; //Jeremy
 
+	int menu_option = 0;
+
+	menu_option = SH.main_menu();
+
+	switch (menu_option)
+	{
+	case 1:
+		std::cout << "\nSingleplayer Selected";
+		is_running = true;
+		break;
+	case 2:
+		std::cout << "\nMultiplayer Selected. Make sure you have the correct IPV6!";
+		multiplayer = true;
+		break;
+	case 3:
+		std::cout << "\Test mode";
+		is_running = true;
+		debugging = true;
+		break;
+	case 4:
+		std::cout << "\nExiting";
+		is_running = false;
+		break;
+	}
+
 	if (multiplayer)
 	{
-		//Activating network, socket for UDP6 com, and loading the initialization buffer to be sent while connecting players
-		port = 37000;//Setting port for networking
+		// Activating network, socket for UDP6 com, and loading the initialization buffer to be sent while connecting players
+		port = 37000; //S etting port for networking
 		activate_network();
 		activate_socket6(port, IP_address_local, sock);
 		strcpy_s(buffer_init, "Connecting....");
-		size = 16;//Setting size for initial buffer while trying to connect
+		size = 16; // Setting size for initial buffer while trying to connect
 		bool connected = false;
-		is_running = false;
 
-		while (!connected)//Will continue to send messages until a message is received
+		while (!connected) // Send messages until connection is achieved 
 		{
 			send6(buffer_init, size, IP_address_send, sock, port);//sends init buffer
 			cout << "\n\nConnecting ...";
@@ -114,19 +130,26 @@ void main()
 				connected = true;
 			}
 			Sleep(100);
+			if (connected) // Send message once connection acheived to allow other client to move beyond the connecting stage
+			{
+				strcpy_s(buffer_init, "Connected!"); // Loading message to buffer after connection secured
+				size = 11; // Size of strcp_s message to be sent in buffer after connection secured
+				send6(buffer_init, size, IP_address_send, sock, port);
+				cout << "\n\nConnected";
+				is_running = true;//starts game loop
+			}
 		}
-		if (connected)
-			//Sends message once connected to ensure other player also receives a message 
-			//to move beyond the connecting stage
-		{
-			strcpy_s(buffer_init, "Connected!");//loading message to buffer after connection secured
-			size = 11;//Size of strcp_s message to be sent in buffer after connection secured
-			send6(buffer_init, size, IP_address_send, sock, port);
-			cout << "\n\nConnected";
-			is_running = true;//starts game loop
-		}
-		size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); //calculating buffer size for game loop
 
+		size = (4 * sizeof(float)) + sizeof(double) + sizeof(bool); // Player state package size
+
+	}
+
+	if (debugging)
+	{
+		for (int i = 0; i < N_enemies; i++)
+		{
+			p_enemies[i]->is_alive = false;
+		}
 	}
 
 	//____________________________________GAME LOOP_________________________________________//
@@ -141,8 +164,6 @@ void main()
 		c_y = map->get_screen_height() - static_cast<float>(pt.y);
 
 		if (KEY('Q')) break;
-		
-		//___________________________UPDATE() & RENDER_________________________________________//
 
 			//Player 1
 		player.update(c_x, c_y);
@@ -151,12 +172,12 @@ void main()
 			//Player 2
 		if (multiplayer)//Check if game is in multiplayer mode before running network functions
 		{
-			//________________________SENDING DATA______________________________________________//
+			//________________________SENDING DATA______________________________//
 
 			player.load_buffer_out(p_buffer_out);//This loads the outgoing buffer with player pos,theta, shooting info
 			send6(buffer_out, size, IP_address_send, sock, port);//Sending player data
 
-			//________________________RECEIVE DATA______________________________________________//
+			//________________________RECEIVE DATA______________________________//
 
 			for (i = 0; i < 3; i++)//Loop to increase chance of package being received and read
 			{

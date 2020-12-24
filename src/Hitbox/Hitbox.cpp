@@ -45,6 +45,16 @@ float Hitbox::get_top()
 	return y_p + (float)(height / 2.0);
 }
 
+double Hitbox::get_width()
+{
+	return width;
+}
+
+double Hitbox::get_height()
+{
+	return height;
+}
+
 /// <summary>
 /// Takes a point (x,y) and verifies if it is within the Hitbox boundaries.
 /// </summary>

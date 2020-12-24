@@ -9,6 +9,8 @@ public:
 	float get_right();
 	float get_bottom();
 	float get_top();
+	double get_width();
+	double get_height();
 	bool collision_test(Hitbox* hb);
 	float x_p, y_p;
 protected:
