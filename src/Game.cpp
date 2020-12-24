@@ -10,7 +10,7 @@ void main()
 	//_________________________GAME SETTINGS______________________________//
 
 	bool is_running = false; // Set true in menu to allow game to run
-	bool multiplayer = true; // Set to true if you want to play multiplayer
+	bool multiplayer = false; // Set to true if you want to play multiplayer
 	bool debugging = false; // Set to true if you don't want enemies to spawn
 
 	//_________________________________Game Init________________________________________//
@@ -87,8 +87,9 @@ void main()
 
 	int menu_option = 0;
 
-	/*menu_option = SH.main_menu();
+	menu_option = SH.main_menu();
 
+	// Chose which gameplay type
 	switch (menu_option)
 	{
 	case 1:
@@ -108,7 +109,7 @@ void main()
 		std::cout << "\nExiting";
 		is_running = false;
 		break;
-	}*/
+	}
 
 	if (multiplayer)
 	{
@@ -165,6 +166,8 @@ void main()
 		c_y = map->get_screen_height() - static_cast<float>(pt.y);
 
 		if (KEY('Q')) break;
+
+		//________________UPDATE AND RENDER_________________//
 
 			//Player 1
 		player.update(c_x, c_y);

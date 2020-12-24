@@ -2,10 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
 #include "../../2D_graphics.h"
-
-//#include <Windows.h>
 #include <Windows.h>
 #include <mmsystem.h> // For audio functions
 #pragma comment(lib, "winmm.lib") // links a windows library
@@ -19,15 +16,14 @@ SceneHandler::SceneHandler(Map* map)
 	round_timer = COUNTDOWN_TIMER_START; 
 }
 
-
-/// Deconstructor for SceneHandler class
+/// Deconstructor
 SceneHandler::~SceneHandler() {}
 
 /// <summary>
 /// Decreases round timer by dt
 /// 
-/// if round time is at 0s or less sets round_timer to timer_end value
-/// <>
+/// Sets countdown timer to static number and stops decreasing
+/// <summary>
 void SceneHandler::round_timer_count()
 {
 	if (round_timer > 0.0)
@@ -40,22 +36,19 @@ void SceneHandler::round_timer_count()
 	}
 }
 
-/// <summary>
-/// Function returns time remaining in round_timer
-/// </summary>
-/// <returns> return round_timer </returns>
+/// Returns round_timer
 float SceneHandler::get_round_timer()
 {
 	return round_timer;
 }
 
-/// Returns the round timer in seconds
+/// Returns the round timer as integer
 int SceneHandler::get_round_timer_secs()
 {
 	return (int)round_timer;
 }
 
-// Displays the countdown timer before the game begins
+/// Displays the countdown timer
 void SceneHandler::display_countdown()
 {
 	if (get_round_timer() > 0.0f)
@@ -74,6 +67,20 @@ void SceneHandler::play_audio_loop(char file_name[])
 	PlaySoundA(file_name, NULL, SND_ASYNC | SND_LOOP);
 }
 
+/// <summary>
+/// Command line menu.
+/// 
+/// Checks and sets input if valid.
+/// 
+/// Determines game mode:
+/// 
+/// 1 = SinglePlayer
+/// 2 = Multiplayer
+/// 3 = Test Mode (no enemies)
+/// 4 = Exit program
+/// 
+/// </summary>
+/// <returns> selected game mode </returns>
 int SceneHandler::main_menu()
 {
 	std::cout << "\nMain Menu";

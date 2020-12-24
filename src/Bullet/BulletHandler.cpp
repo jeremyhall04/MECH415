@@ -2,6 +2,10 @@
 #include <cmath>
 #include <iostream>
 
+/// <summary>
+/// BulletHandler constructor
+/// </summary>
+/// <param name="map">Reference to map object</param>
 BulletHandler::BulletHandler(Map* map)
 {
 	this->map = map;

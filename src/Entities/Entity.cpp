@@ -25,6 +25,11 @@ Entity::Entity(Map* map, SceneHandler* SH)
 	R = 50.0f;
 }
 
+/// <summary>
+/// Entity destructor.
+/// 
+/// Deletes all dynamically allocated memory (aka. bullets[])
+/// </summary>
 Entity::~Entity()
 {
 	for (int i = 0; i < N_MAX_BULLETS; i++)
