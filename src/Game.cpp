@@ -100,7 +100,7 @@ void main()
 		multiplayer = true;
 		break;
 	case 3:
-		std::cout << "\Test mode";
+		std::cout << "\nTest mode";
 		is_running = true;
 		debugging = true;
 		break;
