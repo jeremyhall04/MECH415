@@ -54,12 +54,13 @@ int SceneHandler::get_round_timer_secs()
 	return round_timer;
 }
 
+// Displays the countdown timer before the game begins
 void SceneHandler::display_countdown()
 {
 	if (get_round_timer() > 0.0f)
 	{
 		text("Round Begins In:", (double)map->get_screen_width() * 0.20, (double)map->get_screen_height() * 0.55, 1.5);
-		text(get_round_timer_secs() + 1, (double)map->get_screen_width() * 0.60, (double)map->get_screen_height() * 0.55, 1.5);
+		text(get_round_timer_secs() + 1.0, (double)map->get_screen_width() * 0.60, (double)map->get_screen_height() * 0.55, 1.5);
 	}
 }
 
